@@ -1,0 +1,131 @@
+
+#nav_content{
+    background-color: #650e79;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 6em;
+    border-bottom: solid 10px #ffda59;
+  }
+  
+  #nav_content img{
+    position: absolute;
+    left: 0;
+    width: auto;
+    height: 5em;
+    margin-left: 2em;
+  }
+  
+  #nav_content h1, a span, a span:link, a span:visited, a span:focus, a span:active, #games_preview h1{
+    font-weight: bold;
+    background-image: linear-gradient(
+      to top,
+      #cb9b51 22%, 
+      #f6e27a 45%,
+      #f6f2c0 50%,
+      #f6e27a 55%,
+      #cb9b51 78%,
+      #462523 100%
+    );
+    color:transparent;
+    -webkit-background-clip:text;
+  }
+  
+  a:link, a:visited, a:focus, a:active{
+    text-decoration: none;
+  }
+  
+  #nav_content h1{
+    margin: 20px 0;
+  }
+  
+  #user_bar{
+    position: absolute;
+    right: 0;
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  #user_bar li{
+    display: inline-flex;
+    margin-right: 2em;
+    font-size: larger;
+    padding: 5px;  
+  }
+  
+  
+  #user_bar li:hover{
+    cursor: pointer;
+  }
+  
+  #main_page{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: #562d79;
+    height: 60em;
+    width: 100%;
+    border-bottom: solid 20px #ffda59;
+  }  
+  
+  #main_page button{
+    margin-top: 1em;
+  }
+  
+  #main_page button, #nav_content button, #game_selector button{
+    border-radius: 20px;
+    font-size: x-large;
+    font-weight: bold;
+    padding: 7px;
+    background-color: #ffda59;
+    width: max-content;
+    border: 1px solid #ffda59;
+    color: black;
+  }
+  
+  button:hover{
+    cursor: pointer;
+  }
+  
+  #games_preview{
+    background-color: #a2377f;
+    background-image: url("../assets/background.png");
+    background-size: 100% 100%;
+    width: 100%;
+    height: 60em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  
+  #game_selector{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 25px 0px;
+  }
+
+  #game_selector img{ 
+    border-radius: 25px;
+    height: 10em;
+    width: 10em;
+  }
+  
+  #game_list li{
+    display: inline-flex;
+    margin: 0 4em;
+  }
+
+  #game_list a{
+    text-align: center;
+    font-size: xx-large;
+  }
+  
+  #register_button{
+    margin-top: 1.5em;
+  }
