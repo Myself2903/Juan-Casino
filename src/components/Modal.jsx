@@ -23,7 +23,7 @@ const Modal = props =>{
                         <h2 className="modal-title">{props.params['game']}</h2>
                     </div>
                     <div className="modal-body">
-                        {props.content}
+                        {props.params['content']}
                     </div>
                     <div className="modal-footer">
                         <button className="button" onClick={props.onClose} >Cerrar</button>

@@ -12,8 +12,8 @@ const GamesPreview = ()=>{
     const [modalShow, setModalShow] = useState(false);
     const [modelParams, setModelParams] = useState([]); 
 
-    const manageShowModal = game =>{
-        setModelParams({'game': game})
+    const manageShowModal = (game, description) =>{
+        setModelParams({'game': game, 'content': description})
         setModalShow(true)        
     }
 
@@ -23,28 +23,28 @@ const GamesPreview = ()=>{
             <div id="game_selector">
             <ul id="game_list">
                 <li>
-                    <div className='game' onClick={()=> manageShowModal("Poker")}>
+                    <div className='game' onClick={()=> manageShowModal("Póker", "Crea la mejor combinación de 5 cartas para ganar. 2 - 4 jugadores. Se necesitan mínimo 25 fichas para jugar.")}>
                         <img alt="poker" src={poker}></img><br />
                         <span>Poker</span>
                     </div>
                 </li>
                         
                 <li>
-                    <div className='game' onClick={()=> manageShowModal("Tragamonedas")}>
+                    <div className='game' onClick={()=> manageShowModal("Tragamonedas", "Consigue una de las combinaciones posibles para ganar fichas. 1 jugador. Se necesitan mínimo 2 fichas para jugar.")}>
                         <img alt="tragamonedas" src={slots}></img><br />
                         <span>Tragamonedas</span>
                     </div>
                 </li>
 
                 <li>
-                    <div className='game' onClick={()=> manageShowModal("Blackjack")}>
+                    <div className='game' onClick={()=> manageShowModal("Blackjack", "Intenta acercarte lo más posible hasta el 21 sin pasarte. 2 - 4 jugadores. Se necesitan mínimo 25 fichas para jugar.")}>
                         <img alt="blackjack" src={blackjack}></img><br />
                         <span>Blackjack</span>  
                     </div>
                 </li>
 
                 <li>
-                    <div className='game' onClick={()=> manageShowModal("Ruleta")}>
+                    <div className='game' onClick={()=> manageShowModal("Ruleta", "Atina la posición en la que se detiene la ruleta para multiplicar tu apuesta. 1 - 4 jugadores. Se necesitan mínimo 5 fichas para jugar.")}>
                         <img alt="ruleta" src={roulette}></img><br />
                         <span>Ruleta</span>  
                     </div>
