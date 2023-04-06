@@ -25,6 +25,16 @@
     border: 1px solid #ffda59;
     color: black;
 }
-  
+
+#root a:hover, .button:hover{
+  border-radius: 20px;
+  font-size: x-large;
+  font-weight: bold;
+  padding: 2px 7px;
+  background-color: #0f0f0f;
+  width: max-content;
+  border: 1px solid #0f0f0f;
+  color: gold;
+}  
   
 
