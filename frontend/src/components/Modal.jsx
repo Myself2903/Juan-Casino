@@ -20,15 +20,19 @@ const Modal = props =>{
             <div className={'modal'} onClick={props.onClose}>
                 <div className="modal-content" onClick={e => e.stopPropagation()}>
                     <div className="modal-header">
-                        <h2 className="modal-title">{props.params['game']}</h2>
+                        {props.params['header']}
                     </div>
                     <div className="modal-body">
                         {props.params['content']}
                     </div>
-                    <div className="modal-footer">
-                        <button className="button" onClick={props.onClose} >Cerrar</button>
-                        <a className="button play" onClick={props.game}>Jugar</a>
-                    </div>
+                    {!props.params['footer'] ? 
+                        (<></>)
+                        :(
+                            <div className="modal-footer">
+                                {props.params['footer']}
+                            </div>
+                        )
+                    }
                 </div>
             </div>
             
