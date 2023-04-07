@@ -6,8 +6,8 @@ app = FastAPI()
 
 #url allowed to query
 origins = [
-        "http://localhost",
-        "http://localhost:5173/",
+    "http://localhost",
+    "http://localhost:5173",
 ]
 
 

@@ -47,11 +47,11 @@ users_test = {
 
 def search_user(username: str): #search user in db
     if username in users_test:
-        return User(**users_test[username]) #** para el numero de parametros variable
+        return User(**users_test[username]) #** for variable params number
 
 def search_userDB(username: str): #search user in db
     if username in users_test:
-        return UserDB(**users_test[username]) #** para el numero de parametros variable
+        return UserDB(**users_test[username]) 
 
 async def auth_user(token: str = Depends(oauth2)): #check token auth
     exception = HTTPException(
@@ -71,13 +71,13 @@ async def auth_user(token: str = Depends(oauth2)): #check token auth
     
 
 
-
 @router.post("/login")
 async def login(form: OAuth2PasswordRequestForm = Depends()): 
     user_db = users_test.get(form.username) #search user in public information
     if not user_db:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Usuario no encontrado")
-    
+        
+
     user = search_userDB(form.username)   #search user in db
     
 

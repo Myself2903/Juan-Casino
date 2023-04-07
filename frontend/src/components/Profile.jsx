@@ -5,7 +5,8 @@ export default function Profile() {
   const navigate = useNavigate();
 
   const signOut = () => {
-    localStorage.removeItem("temitope");
+    localStorage.removeItem("auth_token")
+    localStorage.removeItem("auth_token_type")
     navigate("/");
   };
 
@@ -13,7 +14,7 @@ export default function Profile() {
     <>
       <div style={{ marginTop: 20, minHeight: 700 }}>
         <h1>Profile page</h1>
-        <p>Hello there, welcome to your profile page</p>
+        <p>pagina de perfil de usuario</p>
 
         <button onClick={signOut}>sign out</button>
       </div>

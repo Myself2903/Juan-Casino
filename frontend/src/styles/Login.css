@@ -26,3 +26,8 @@ input{
     background-color: aliceblue;
     color:black
 }
+
+.errorMessage{
+    font-size: medium;
+    color: red;
+}

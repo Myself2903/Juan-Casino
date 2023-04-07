@@ -62,7 +62,7 @@ const GamesPreview = ()=>{
                 </li>
             </ul>
 
-            <Register />
+            <Login />
             </div>
             <Modal show={modalShow} onClose={()=> setModalShow(false)} params={modelParams} />
         </section>
