@@ -1,10 +1,9 @@
 import './App.css'
-import Header from './components/Header'
-import Presentation from './components/Presentation'
-import GamesPreview from './components/GamesPreview'
 import {Routes, Route} from "react-router-dom"
 import Profile from './components/Profile.jsx'
 import { RequireToken } from './Auth'
+import MainPage from './components/MainPage'
+import Register from './components/Register'
 
 function App() {
 
@@ -14,9 +13,7 @@ function App() {
         <Route 
           path="/" 
           element = {<>
-                        <Header />
-                        <Presentation />
-                        <GamesPreview />
+                        <MainPage/>
                     </>}
         />
         
@@ -27,6 +24,13 @@ function App() {
                 <Profile/>
               </RequireToken>
             }
+        />
+
+        <Route 
+          path="/register"
+          element = {
+            <Register />
+          }
         />
       </Routes>
     </div>

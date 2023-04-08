@@ -1,21 +1,5 @@
 
-#root h1{
-    font-weight: bold;
-    background-image: linear-gradient(
-      to top,
-      #cb9b51 22%, 
-      #f6e27a 45%,
-      #f6f2c0 50%,
-      #f6e27a 55%,
-      #cb9b51 78%,
-      #462523 100%
-    );
-    color:transparent;
-    -webkit-background-clip:text;
-    margin: 20px;
-  }
-
-#root a, .button {
+.button {
     border-radius: 20px;
     font-size: x-large;
     font-weight: bold;
@@ -26,13 +10,9 @@
     color: black;
 }
 
-#root a:hover, .button:hover{
-  border-radius: 20px;
-  font-size: x-large;
+.button:hover{
   font-weight: bold;
-  padding: 2px 7px;
   background-color: #0f0f0f;
-  width: max-content;
   border: 1px solid #0f0f0f;
   color: gold;
 }  

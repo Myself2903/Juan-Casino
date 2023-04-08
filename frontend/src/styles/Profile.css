@@ -1,0 +1,14 @@
+
+body{
+    background-color: #650e79;
+}
+
+.profilePage{
+    margin: 10px;
+}
+
+.profilePage h1{
+    color: white;
+    font-weight: bold;
+    margin: 0;
+}

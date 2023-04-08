@@ -19,39 +19,57 @@ crypt = CryptContext(schemes=["bcrypt"])
 
 class User(BaseModel): #user to show
     username: str
+    name: str
+    surname: str
     email: str
+    birth_date: datetime
+    coins: int
 
 class UserDB(User): #user to search in db
     password: str
 
 #test case
-users_test = {
-    "Juan":{
-        "username": "Juan",
+users_test = [
+    {
+        "username": "JuanTheFox",
+        "name": "Juan",
+        "surname": "Quintero",
         "email": "juanlazorra69@gmail.com",
+        "birth_date": datetime(year=2002, month=9, day=23),
+        "coins": 69,
         "password": "$2a$12$EQ16dkf4gW59qC5Cx35jyeI3R/5Z0hc/jRmnOvELju9tEvBtWP9BK"
     },
 
-    "Abuelo":{
+    {
         "username": "abuelo",
+        "name": "Daniel",
+        "surname": "Rodriguez",
         "email": "abuelo11@gmail.com",
+        "birth_date": datetime(year=2003, month=1, day=11),
+        "coins": 13,
         "password": "$2a$12$PUaivrGMmSMPPzAE3sABcOgAPcikheRkemxWYZH94W3j2iNxDxUS."
     },
 
-    "Hotkins": {
+    {
         "username": "Hotkins",
+        "name": "Gohan",
+        "surname": "Hotkins",
         "email": "gohanHotkins@gmail.com",
+        "birth_date": datetime(year=2003, month=10, day=20),
+        "coins": 0,
         "password": "$2a$12$9MT2pFxiG2Rf2Z5ftDjGZuJ9ISIFrYonB6q5bF/XR/.2rcXZD6Nii"
     }
-}
+]
 
-def search_user(username: str): #search user in db
-    if username in users_test:
-        return User(**users_test[username]) #** for variable params number
+def search_user(email: str): #search user
+    for user in users_test:
+        if email == user['email']:
+            return User(**user) #** for variable params number
 
-def search_userDB(username: str): #search user in db
-    if username in users_test:
-        return UserDB(**users_test[username]) 
+def search_userDB(email: str): #search user in db
+    for user in users_test:
+        if email == user['email']:
+            return UserDB(**user)
 
 async def auth_user(token: str = Depends(oauth2)): #check token auth
     exception = HTTPException(
@@ -60,22 +78,22 @@ async def auth_user(token: str = Depends(oauth2)): #check token auth
                     headers={"WWW-Authenticate": "Bearer"}
                 )
     try:
-        username = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM]).get("sub")
-        if username is None:
+        email = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM]).get("email")
+        if email is None:
             raise exception
         
     except JWTError:
         raise exception
 
-    return search_user(username)
+    return search_user(email)
     
 
 
 @router.post("/login")
 async def login(form: OAuth2PasswordRequestForm = Depends()): 
-    user_db = users_test.get(form.username) #search user in public information
+    user_db = search_user(form.username) #search user in public information
     if not user_db:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Usuario no encontrado")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuario no encontrado")
         
 
     user = search_userDB(form.username)   #search user in db
@@ -83,10 +101,11 @@ async def login(form: OAuth2PasswordRequestForm = Depends()):
 
     if not crypt.verify(form.password, user.password):  #check password
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Contraseña incorrecta")
-
+        
     #acces token sent when login
     access_token = {
         "sub": user.username,
+        "email": user.email,
         "exp": datetime.utcnow() + timedelta(minutes=ACCES_TOKEN_DURATION)
     }
 
@@ -94,6 +113,6 @@ async def login(form: OAuth2PasswordRequestForm = Depends()):
 
 
 @router.get("/profile")
-async def Profile(user: User = Depends(auth_user)): #return profile info
+async def Profile(user: User = Depends(auth_user)): #return profile info. It requires the user to be authorized (logged)
     return user
 

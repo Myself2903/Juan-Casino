@@ -1,0 +1,119 @@
+.title, .game span{
+  font-weight: bold;
+  background-image: linear-gradient(
+    to top,
+    #cb9b51 22%, 
+    #f6e27a 45%,
+    #f6f2c0 50%,
+    #f6e27a 55%,
+    #cb9b51 78%,
+    #462523 100%
+  );
+  color:transparent;
+  -webkit-background-clip:text;
+  margin: 20px;
+}
+
+#nav_content{
+    background-color: #650e79;
+    /* position: fixed; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 6em;
+    border-bottom: solid 10px #ffda59;
+  }
+  
+  #nav_content img{
+    position: absolute;
+    left: 0;
+    width: auto;
+    height: 5em;
+    margin-left: 2em;
+  }
+
+  #user_bar{
+    position: absolute;
+    right: 0;
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  #user_bar li{
+    display: inline-flex;
+    margin-right: 2em;
+    font-size: larger;
+    padding: 5px;  
+  }
+  
+  
+  #user_bar li:hover{
+    cursor: pointer;
+  }
+  
+#main_page{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: #562d79;
+    background-image: url("../assets/background.png");
+    height: 60em;
+    width: 100%;
+    border-bottom: solid 20px #ffda59;
+}  
+
+#main_page .button{
+    margin-top: 1.5em;
+}
+
+#main_page img:hover{
+  cursor: pointer;
+}
+
+#games_preview{
+    background-color: #a2377f;
+    background-image: url("../assets/background.png");
+    background-repeat: repeat;
+    /* background-size: 100% 100%; */
+    width: 100%;
+    height: max-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+
+#game_selector{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 25px 0px;
+}
+
+#game_selector img{ 
+    border-radius: 25px;
+    height: 10em;
+    width: 10em;
+}
+  
+#game_list li{
+    display: inline-flex;
+    margin: 0 3em;
+}
+
+.game{
+  text-align: center;
+  font-size: xx-large;
+  padding: 10px;
+  border-radius: 20px;
+}
+
+.game:hover{
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.2);
+  outline: goldenrod solid 4px;
+}
+
