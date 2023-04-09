@@ -4,11 +4,12 @@ import slots from '../assets/slots.jpg'
 import blackjack from '../assets/blackjack.jpg'
 import roulette from '../assets/roulette.jpg'
 import { useState } from 'react';
-import Login from './Login';
-import Modal from './Modal';
+import Login from '../components/Login';
+import Modal from '../components/Modal';
 import { useNavigate } from 'react-router-dom';
-
 import '../styles/MainPage.css'
+import { fetchToken } from '../Auth';
+import Signout from '../components/Signout'
 
 const MainPage = ()=>{
     const [modalShow, setModalShow] = useState(false); //hook for modal window
@@ -27,7 +28,7 @@ const MainPage = ()=>{
     }
 
     //specific set form for game Modal
-    const showModalGame = (game, description)=>{ //Muestra la información de un juego en un modal
+    const showModalGame = (game, description)=>{ //Show game info with Modal
         let header = <h2 className="modal-title">{game}</h2>
         let footer = <>
                         <button className="button" onClick={()=> setModalShow(false)} >Cerrar</button>
@@ -40,14 +41,18 @@ const MainPage = ()=>{
     return(
         <>
             <header>
-            <nav id="nav_content">
-                <img alt="logo" src={logo} />
-                <h1 className='title'>¡Juega y Gana!</h1>
-                <ul id="user_bar">
-                    <li> <button className='button' onClick={()=>navigate('/register')}>Registrate</button></li>
-                    <li><Login/></li>
-                </ul>
-            </nav>
+                <nav id="nav_content">
+                    <img alt="logo" src={logo} />
+                    <h1 className='title'>¡Juega y Gana!</h1>
+                    <ul id="user_bar">
+                        {fetchToken() ?  <li><Signout/></li> :
+                            <>
+                                <li> <button className='button' onClick={()=>navigate('/register')}>Registrate</button></li>
+                                <li><Login/></li>
+                            </>
+                        }
+                    </ul>
+                </nav>
             </header>
             
             <section id="main_page">

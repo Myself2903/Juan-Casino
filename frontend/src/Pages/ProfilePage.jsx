@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router";
 import { useState, useEffect } from "react";
 import axios from 'axios';
-import '../styles/Profile.css'
+import '../styles/ProfilePage.css'
+import SignOut from  '../components/Signout'
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -31,14 +32,6 @@ export default function Profile() {
     fetchData()
   } , [])
 
-  //SignOut Function
-  //remove token and token type from locale storage
-  const signOut = () => {
-    localStorage.removeItem("auth_token") 
-    localStorage.removeItem("auth_token_type")
-    navigate("/");
-  };
-
 
   return (
     <>
@@ -54,7 +47,7 @@ export default function Profile() {
             <p>Fecha Nacimiento: {data.birth_date}</p>
         </div>
 
-        <button onClick={signOut}>cerrar sesión</button>
+        <SignOut/>
       </div>
     </>
   );

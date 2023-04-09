@@ -1,0 +1,40 @@
+
+.registerHeader{
+    display: inline-flex;
+    align-items: center;
+}
+
+.registerTitle{
+    margin: 5px;
+}
+
+
+.registerForm{
+    margin-left: 5em;
+}
+
+.field{
+    margin: 10px;
+    font-size: x-large;
+    font-weight: bold;
+}
+
+.field input{
+    height: 2em;
+    width: 20em;
+    background-color: aliceblue;
+    color: black;
+    border: solid 1px rgb(150, 150, 150);
+    border-radius: 4px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-calendar-picker-indicator {
+    width: 100%;
+    position: absolute;
+    opacity: 0;
+}
+
+.registerForm .button{
+    margin-top: 2em;
+}

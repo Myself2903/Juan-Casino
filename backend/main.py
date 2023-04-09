@@ -1,6 +1,8 @@
 from fastapi import FastAPI
-from Routers import Login
 from fastapi.middleware.cors import CORSMiddleware
+from Controller.Login import router as login_router
+from Controller.Profile import router as profile_router
+from Controller.RegisterUser import router as register_router
 
 app = FastAPI()
 
@@ -20,5 +22,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(Login.router)
+app.include_router(login_router)
+app.include_router(profile_router)
+app.include_router(register_router)
 

@@ -1,9 +1,9 @@
 import './App.css'
 import {Routes, Route} from "react-router-dom"
-import Profile from './components/Profile.jsx'
 import { RequireToken } from './Auth'
-import MainPage from './components/MainPage'
-import Register from './components/Register'
+import MainPage from './Pages/MainPage'
+import Register from './Pages/RegisterPage'
+import Profile from './Pages/ProfilePage'
 
 function App() {
 

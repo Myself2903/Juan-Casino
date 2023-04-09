@@ -5,9 +5,13 @@
     font-weight: bold;
     padding: 2px 7px;
     background-color: #ffda59;
+    height: min-content;
     width: max-content;
     border: 1px solid #ffda59;
     color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .button:hover{
