@@ -24,8 +24,10 @@
 
 .modal-content{
     width: 500px;
-    background-color: #fff;
-    color: black;
+    background-color: #a2377f;
+    color: white;
+    background-image: url("../assets/background.png");
+    border: solid 0.4em goldenrod;
 }
 
 .modal-header, .modal-footer{
@@ -38,8 +40,8 @@
 
 .modal-body{
     padding: 10px;
-    border-top: 1px solid #eee;
-    border-bottom: 1px solid #eee;
+    border-top: 1px solid #7e2b62;
+    border-bottom: 1px solid #7e2b62;
 }
 
 .button.play{

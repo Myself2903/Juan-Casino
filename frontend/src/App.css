@@ -9,9 +9,7 @@
     width: max-content;
     border: 1px solid #ffda59;
     color: black;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    
 }
 
 .button:hover{
