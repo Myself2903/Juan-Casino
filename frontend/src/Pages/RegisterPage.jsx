@@ -2,6 +2,10 @@ import { useNavigate } from "react-router-dom"
 import { useState } from "react";
 import '../styles/RegisterPage.css';
 import axios from "axios";
+import logo from '../assets/Juan_Logo.svg';
+import decoration from '../assets/SafeWithChips.svg';
+import leftchips from '../assets/greenPurpleChips.svg';
+import rightchips from '../assets/orangeBlueChips.svg';
 
 export default function Register(){
     const navigate = useNavigate();
@@ -34,45 +38,74 @@ export default function Register(){
     }
     
     return(
-        <div className="registerPage">
-            <header className="registerHeader">
-                <button className="button backButton" onClick={()=>navigate("/")}> &lt;-</button>
-                <h1 className="registerTitle">Register page</h1>
-            </header>            
+        <>
+        <header>
+            <nav id="nav_content">
+                <img alt="logo" src={logo} />
+                <h1 className='title'>¡Registrate!</h1>
+            </nav>
+        </header>
 
-            <form className="registerForm">
-                <div className="field">   
-                    <label>Nombres: </label>
-                    <input type="text"  onChange={(e)=>setUserData({...userData, name: e.target.value})} required />
+        <div className="backgroundimg">
+            <div className="registerPage">
+            <div>
+                <img src={decoration} alt="caja_fuerte" />
+            </div>
+
+            <div className="registerItems">
+                <form className="registerForm">
+                    <div className="field">   
+                        <label>Nombres: </label>
+                    </div>
+                    <div className="field"> 
+                        <input type="text"  onChange={(e)=>setUserData({...userData, name: e.target.value})} required />
+                    </div>
+
+                    <div className="field">   
+                        <label>Apellidos: </label>
+                    </div>
+                    <div className="field">
+                        <input type="text" onChange={(e)=>setUserData({...userData, surname: e.target.value})} required />
+                    </div>
+
+                    <div className="field">   
+                        <label>Nombre de usuario: </label>
+                    </div>
+                    <div className="field"> 
+                        <input type="text" onChange={(e)=>setUserData({...userData, username: e.target.value})} required />
+                    </div>
+
+                    <div className="field">
+                        <label>Fecha de Nacimiento: </label>
+                    </div>
+                    <div className="field">
+                        <input type="date"  onChange={(e)=>setUserData({...userData, birth_date: e.target.value})} required/>
+                    </div>
+                    
+                    <div className="field">
+                        <label>Correo: </label>
+                    </div>
+                    <div className="field">
+                        <input type="email" onChange={(e)=>setUserData({...userData, email: e.target.value})} required/>
+                    </div>  
+
+                    <div className="field">
+                        <label>Contraseña: </label>
+                    </div>
+                    <div className="field">
+                        <input type="password" onChange={(e)=>setUserData({...userData, password: e.target.value})} required/>
+                    </div>               
+                </form>
+                <div id="registerButton">
+                        <button className="button" onClick={register} type="submit">registrarse</button>
                 </div>
-
-                <div className="field">   
-                    <label>Apellidos: </label>
-                    <input type="text" onChange={(e)=>setUserData({...userData, surname: e.target.value})} required />
-                </div>
-
-                <div className="field">   
-                    <label>Nombre de usuario: </label>
-                    <input type="text" onChange={(e)=>setUserData({...userData, username: e.target.value})} required />
-                </div>
-
-                <div className="field">
-                    <label>Fecha de Nacimiento: </label>
-                    <input type="date"  onChange={(e)=>setUserData({...userData, birth_date: e.target.value})} required/>
-                </div>
-                
-                <div className="field">
-                    <label>Correo: </label>
-                    <input type="email" onChange={(e)=>setUserData({...userData, email: e.target.value})} required/>
-                </div>  
-
-                <div className="field">
-                    <label>Contraseña: </label>
-                    <input type="password" onChange={(e)=>setUserData({...userData, password: e.target.value})} required/>
-                </div>
-
-                <button className="button" onClick={register} type="submit">registrar</button>
-            </form> 
+            </div>
         </div>
-    )
+        <div className="chipsDecoration">
+            <img id="leftC" alt="fichas" src={leftchips} />
+            <img id="rightC" alt="fichas" src={rightchips} />
+        </div>
+        </div>
+        </>
+    );
 }

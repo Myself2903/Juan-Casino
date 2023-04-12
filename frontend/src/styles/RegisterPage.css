@@ -6,11 +6,27 @@
 
 .registerTitle{
     margin: 5px;
+    color: gold;
 }
 
 
 .registerForm{
-    margin-left: 5em;
+    color: white;
+    display: grid;
+    grid-template-columns: 40% 60%;
+    padding-left: 5em;
+}
+
+.registerPage{
+    padding-top: 2em;
+    padding-left: 6em;
+    display: flex;
+}
+
+.backgroundimg{
+    background-color: #111111;
+    background-image: url("../assets/background.png");
+    size: 120% 120%;
 }
 
 .field{
@@ -22,19 +38,39 @@
 .field input{
     height: 2em;
     width: 20em;
-    background-color: aliceblue;
+    background-color: lavenderblush;
     color: black;
-    border: solid 1px rgb(150, 150, 150);
-    border-radius: 4px;
+    border-image: url(../assets/goldBorder.png) 30 stretch;
+    border-radius: 8px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-}
-
-::-webkit-calendar-picker-indicator {
-    width: 100%;
-    position: absolute;
-    opacity: 0;
 }
 
 .registerForm .button{
     margin-top: 2em;
+}
+
+#registerButton{
+    text-align: center;
+    margin-top: 3em;
+    margin-bottom: 3em;
+}
+
+.chipsDecoration{
+    display: flex;
+    justify-content: space-around;
+    height: 0.01em;
+}
+
+#leftC{
+    position: relative;
+    left: -10em;
+    top: -11em;
+    height: 11em;
+}
+
+#rightC{
+    position: relative;
+    left: 10em;
+    top: -11em;
+    height: 11em;
 }
