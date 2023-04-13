@@ -1,18 +1,20 @@
 import psycopg2
+from Model.UserDB import UserDB
 
 class UserConnection():
     conn = None
 
+    #conection setting
     def __init__(self):
         try:
             self.conn = psycopg2.connect("dbname=Juan_Casino user=nico password=myself2903 host=localhost port=5432")
 
         except psycopg2.OperationalError as error:
-            # print("################################################################################################")
             print(error)
             self.conn.close()
     
 
+    #get all users. (Not include password)
     def getUsers(self):
         with self.conn.cursor() as cur:
             data = cur.execute("""
@@ -30,7 +32,9 @@ class UserConnection():
 
             return cur.fetchall()
         
-    def getUser(self, id:int):
+
+    #info to show query. Return all info but password    
+    def getUserShow(self, id:int):
         with self.conn.cursor() as cur:
             data = cur.execute("""
                 SELECT 
@@ -43,33 +47,39 @@ class UserConnection():
                     idImage
                 
                 FROM "User"
-                WHERE userId=%d;
+                WHERE idUser=%s;
             """, (id,))
             return cur.fetchone()
-        
-    def getUser(self, email: str):
+    
+    #validation query, return only id and password
+    def getUserAuth(self, email: str):
         with self.conn.cursor() as cur:
             data = cur.execute("""
                 SELECT 
                     idUser,
-                    name,
-                    surname,
-                    username,
-                    birthdate,
-                    coins,
-                    idImage
+                    password
                 
                 FROM "User"
                 WHERE email=%s;
             """, (email,))
             return cur.fetchone()
 
-    def addUser(self, data):
+    def addUser(self, data: UserDB):
+        print(data.password)
         with self.conn.cursor() as cur:
             cur.execute("""
-                INSERT INTO  "User"(name, surname, username, email, password, birthdate, coins, idImage) 
-                VALUES(%(name)s, %(surname)s, %(username)s, %(email)s, %(password)s, %(birthdate)s, %(coins)s , %(img)s);
-            """, data)     
+                INSERT INTO "User" (name, surname, username, email, password, birthdate, coins, idImage) 
+                VALUES (%(name)s, %(surname)s, %(username)s, %(email)s, %(password)s, %(birth_date)s, %(coins)s, %(img)s);
+            """, {
+                'name': data.name,
+                'surname': data.surname,
+                'username': data.username,
+                'email': data.email,
+                'password': data.password,
+                'birth_date': data.birth_date,
+                'coins': data.coins,
+                'img': data.img,
+            })    
             self.conn.commit()
 
     def updateUser(self, data):

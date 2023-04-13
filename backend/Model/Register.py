@@ -1,18 +1,18 @@
 from fastapi import Depends, HTTPException, status
 from Model.UserDB import UserDB
-from Model.searchUser import search_userDB
-from Model.users_test import users_test
+from Model.UserConnection import UserConnection
 import bcrypt
 
 
 async def register(newUser: UserDB = Depends()):
-    print(search_userDB(newUser))
-    if search_userDB(newUser.email) is None:
+    conn = UserConnection()
+
+    if conn.getUserAuth(newUser.email) is None:
         hashPassword = newUser.password.encode()
         sal = bcrypt.gensalt()
-        newUser.password = bcrypt.hashpw(hashPassword, sal)
-        users_test.append(newUser)
-        return(users_test)
+        newUser.password = bcrypt.hashpw(hashPassword, sal).decode('utf-8') #.decode to convert the encrypted password into a str
+        conn.addUser(newUser)
+        raise HTTPException(status_code=status.HTTP_201_CREATED, detail="Usuario creado")
     
     else:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="cuenta ya existente")

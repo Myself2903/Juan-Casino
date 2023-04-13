@@ -3,7 +3,7 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import jwt, JWTError
 from passlib.context import CryptContext
 from datetime import datetime, timedelta
-from Model.searchUser import *
+from Model.UserConnection import UserConnection
 
 SECRET_KEY  = '40sasldkjwd2123bvquweo0pimsañpoqweim' 
 ALGORITHM = "HS256"
@@ -19,32 +19,34 @@ async def auth_user(token: str = Depends(oauth2)): #check token auth
                     headers={"WWW-Authenticate": "Bearer"}
                 )
     try:
-        email = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM]).get("email")
-        if email is None:
+        id = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM]).get("id")
+        if id is None:
             raise exception
         
     except JWTError:
         raise exception
 
-    return search_user(email)
+    conn = UserConnection()
+
+    return conn.getUserShow(id)
 
 
 async def verifyLogin(form: OAuth2PasswordRequestForm = Depends()):
-        user_db = search_user(form.username) #search user in public information
-        if not user_db:
+        conn = UserConnection()
+        user = conn.getUserAuth(form.username) #search email in data base. username is convention from OAuth library
+
+        #User not found
+        if not user:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuario no encontrado")
-            
-
-        user = search_userDB(form.username)   #search user in db
         
-
-        if not crypt.verify(form.password, user.password):  #check password
+        #check password
+        if not crypt.verify(form.password, user[1]):   #query return two values touple. [1] is the password 
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Contraseña incorrecta")
             
         #acces token sent when login
         access_token = {
-            "sub": user.username,
-            "email": user.email,
+            "id": user[0],
+            "email": user[1],
             "exp": datetime.utcnow() + timedelta(minutes=ACCES_TOKEN_DURATION)
         }
 
