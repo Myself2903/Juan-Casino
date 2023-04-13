@@ -1,14 +1,136 @@
 
 body{
-    background-color: #650e79;
+    background-color: rgb(155, 61, 158);
+    margin: 0;
+}
+
+#nav_content2 h1{
+    margin: 0;
 }
 
 .profilePage{
-    margin: 10px;
+    display: flex;
+    flex-direction: column;
 }
 
-.profilePage h1{
+.profilePage h2{
     color: white;
     font-weight: bold;
+    align-self: center;
+}
+
+.userCard{
+    align-self: center;
+    display: flex;
+    justify-content: space-around;
+    background-color: gold;
+    border-radius: 1.5em;
+    height: 14em;
+    width: 35em;
+    padding: 2em 0.5em;
+    color: black;
+    font-style: oblique;
+    font-weight: bold;
+    box-shadow: rgba(0, 0, 0, 0.5) 0.5em 0.5em;
+    margin: 2em 0 8em 0;
+}
+
+.profilePicture{
+    height: 12em;
+    width: 12em;
+    background-color: white;
+    border-radius: 0.5em;
+    padding: 2px;
+}
+
+.userInfo{
+    width: 20em;
+}
+
+.personalData{
+    border-top: gold solid 0.2em;
+    width: 100%;
+    align-content: center;
+    text-align: center;
+    background-color: #562d79;
+    background-image: url("../assets/background.png");
+    margin: 0;
+}
+
+.personalInfo{
+    text-align: left;
+    color: black;
+    display: grid;
+    grid-template-columns: 40% 60%;
+    margin: 2em 25em;
+    align-self: center;
+}
+
+td{
+    border: 2px solid goldenrod;
+    text-align: left;
+    padding: 8px;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 60%;
+    color: white;
+    margin: 3em 16em;
+}
+  
+tr:nth-child(even) {
+    background-color: #3a3a3a;
+}
+
+tr:nth-child(odd) {
+    background-color: #202020;
+}
+
+.friends{
+    display: grid;
+    margin: 3em;
+    grid-template-columns: 33% 33% 33%;
+}
+
+.friendCard{
+    align-self: center;
+    display: flex;
+    justify-content: space-around;
+    background-color: gold;
+    border-radius: 1.5em;
+    height: 6em;
+    width: 20em;
+    padding: 2em 0.5em;
+    color: black;
+    font-style: oblique;
+    font-weight: bold;
+    box-shadow: rgba(0, 0, 0, 0.5) 0.5em 0.5em;
+    margin: 2em 0 8em 0;
+}
+
+.friendPicture{
+    height: 6em;
+    width: 6em;
+    background-color: white;
+    border-radius: 50%;
+    padding: 2px;
+}
+
+.friendInfo{
+    width: 12em;
+    font-size: 1.8em;
+    display: flex;
+    flex-direction: column;
+    margin: 0.1em 0;
+}
+
+.friendInfo h4{
+    color: rgba(0, 0, 0, 0.6);
+    margin: 0;
+}
+
+.friendInfo p{
     margin: 0;
 }
