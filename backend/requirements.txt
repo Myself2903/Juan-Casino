@@ -1,0 +1,6 @@
+uvicorn[standard]
+fastapi
+pyjwt
+python-jose[cryptography]
+passlib[bcrypt]
+psycopg2

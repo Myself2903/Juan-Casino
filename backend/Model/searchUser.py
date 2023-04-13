@@ -5,12 +5,14 @@ def search_user(email: str): #search user
     for user in users_test:
         if email == user.email:
             return User(
+                id= user.id,
                 username= user.username,
                 name= user.name,
                 surname= user.surname,
                 email= user.email,
                 birth_date= user.birth_date,
-                coins= user.coins                
+                coins= user.coins,
+                img= user.img
             ) #** for variable params number
 
 def search_userDB(email: str): #search user in db
