@@ -26,3 +26,7 @@ app.include_router(login_router)
 app.include_router(profile_router)
 app.include_router(register_router)
 
+@app.get("/")
+def read_root():
+    return{"Hello": "Wolrd"}
+

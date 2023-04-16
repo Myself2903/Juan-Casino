@@ -1,10 +1,10 @@
 from fastapi import Depends, HTTPException, status
-from Model.UserDB import UserDB
-from Model.UserConnection import UserConnection
+from Model.entity.User import User
+from Model.dao.UserDAO import UserConnection
 import bcrypt
 
 
-async def register(newUser: UserDB = Depends()):
+async def register(newUser: User = Depends()):
     conn = UserConnection()
 
     if conn.getUserAuth(newUser.email) is None:

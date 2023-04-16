@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends
-from Model.User import User
+from Model.entity.User import User
 from Model.Auth import auth_user
 
 router = APIRouter() #fastAPI instance
