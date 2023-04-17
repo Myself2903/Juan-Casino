@@ -4,3 +4,4 @@ pyjwt
 python-jose[cryptography]
 passlib[bcrypt]
 psycopg2
+python-multipart
