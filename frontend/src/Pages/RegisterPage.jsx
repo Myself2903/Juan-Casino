@@ -6,6 +6,7 @@ import logo from '../assets/Juan_Logo.svg';
 import decoration from '../assets/SafeWithChips.svg';
 import leftchips from '../assets/greenPurpleChips.svg';
 import rightchips from '../assets/orangeBlueChips.svg';
+import qs from 'qs';
 
 export default function Register(){
     const navigate = useNavigate();
@@ -13,24 +14,27 @@ export default function Register(){
         username: "",
         name: "",
         surname: "",
+        email: "",
         birth_date: "",
         coins: 100, //default coins when new account created
-        password: ""
+        password: "",
     })
 
     const register = async(event)=>{
         event.preventDefault()
         console.log(userData)
-        
+        console.log("tipo de username: ", typeof(userData.surname))
+        console.log("tipo de email: ", typeof(userData.email))
+        console.log("tipo de birth_date: ", typeof(userData.birth_date))
         //API Call
         await axios
-        .post("http://127.0.0.1:8000/register", userData,{ 
+        .post(`https://juan-casino-backend.onrender.com/register?${qs.stringify(userData)}`, {}, { 
             headers:{
                 'Content-Type': 'application/x-www-form-urlencoded'
-             }
-        })
+        }})
         .then(response =>{
                 console.log(response)
+                navigate(("/"))
         })
         .catch(error =>{
             console.log(error)

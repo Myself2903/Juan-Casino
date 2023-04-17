@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from datetime import datetime
+from datetime import date
 from typing import Optional
 
 class User(BaseModel): #user to show
@@ -8,10 +8,8 @@ class User(BaseModel): #user to show
     name: str
     surname: str
     email: str
-    birth_date: datetime
+    birth_date: date
     coins: int
     img: Optional[str]
     password: str
-
-
 

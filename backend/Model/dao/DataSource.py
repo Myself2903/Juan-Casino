@@ -1,5 +1,4 @@
 import psycopg2
-import json
 
 class DataSource:
     conn = None
@@ -7,7 +6,7 @@ class DataSource:
     #connection setting
     def __init__ (self):
         try:
-            self.conn = psycopg2.connect("postgres://nico:pvhiEeWAfPnjoGPhTIpCSyC3VT8cABxE@dpg-cgu1vdiut4mcfrg9vg2g-a.oregon-postgres.render.com/juancasinodb")
+            self.conn = psycopg2.connect("postgres://nico:pvhiEeWAfPnjoGPhTIpCSyC3VT8cABxE@dpg-cgu1vdiut4mcfrg9vg2g-a/juancasinodb")
 
         except psycopg2.OperationalError as error:
             print(error)

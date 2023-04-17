@@ -28,5 +28,5 @@ app.include_router(register_router)
 
 @app.get("/")
 def read_root():
-    return{"Hello": "Wolrd"}
+    return{"Hello": "World"}
 

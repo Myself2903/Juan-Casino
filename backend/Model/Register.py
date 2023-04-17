@@ -6,7 +6,6 @@ import bcrypt
 
 async def register(newUser: User = Depends()):
     conn = UserConnection()
-
     if conn.getUserAuth(newUser.email) is None:
         hashPassword = newUser.password.encode()
         sal = bcrypt.gensalt()
