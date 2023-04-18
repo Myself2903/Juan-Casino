@@ -9,7 +9,7 @@ import redChip from '../assets/chip_red.svg';
 
 export default function Profile() {
   const navigate = useNavigate();
-  const url = 'http://127.0.0.1:8000'
+  const url = 'https://juan-casino-backend.onrender.com'
   const urlExtension = '/profile'
   const [data, setData] = useState([])
 
