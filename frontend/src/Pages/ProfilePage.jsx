@@ -63,42 +63,9 @@ export default function Profile() {
           </div>
         </div>
 
-        {/*
-        <div className="personalData">
-          <h2>Información personal</h2>
-          
-          <div className="personalInfo">
-            <p>Fichas:</p> <p>{data.coins}</p>
-            <p>Nombre:</p> <p>{data.name}</p>
-            <p>Apellido:</p> <p>{data.surname}</p>
-            <p>Correo:</p> <p>{data.email}</p>
-            <p>Fecha Nacimiento:</p> <p>{data.birth_date}</p>
-          </div>
-          <table>
-            <tr>
-              <td>Fichas:</td>
-              <td>{data.coins}</td>
-            </tr>
-            <tr>
-              <td>Nombre:</td>
-              <td>{data.name}</td>
-            </tr>
-            <tr>
-              <td>Apellido:</td>
-              <td>{data.surname}</td>
-            </tr>
-            <tr>
-              <td>Correo:</td>
-              <td>{data.email}</td>
-            </tr>
-            <tr>
-              <td>Fecha Nacimiento:</td>
-              <td>{data.birth_date}</td>
-            </tr>
-          </table>
+        <div className="friendsTittle">
+          <h2>Amigos:</h2>
         </div>
-        */}
-        <h2>Amigos:</h2>
         <div className="friends">
           {/* volver las tarjetas una función reutilizable*/}
           <div className="friendCard">

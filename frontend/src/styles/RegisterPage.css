@@ -1,4 +1,11 @@
 
+.background{
+    background-color: #111111;
+    background-image: url("../assets/background.png");
+    width: 100%;
+    height: max-content;
+}
+
 .registerHeader{
     display: inline-flex;
     align-items: center;
@@ -18,15 +25,9 @@
 }
 
 .registerPage{
-    padding-top: 2em;
-    padding-left: 6em;
+    padding-top: 8em;
+    padding-left: 5%;
     display: flex;
-}
-
-.backgroundimg{
-    background-color: #111111;
-    background-image: url("../assets/background.png");
-    size: 120% 120%;
 }
 
 .field{
@@ -38,7 +39,7 @@
 .field input{
     height: 2em;
     width: 20em;
-    background-color: lavenderblush;
+    background-color: #f8e5ee;
     color: black;
     border-image: url(../assets/goldBorder.png) 30 stretch;
     border-radius: 8px;
@@ -57,20 +58,24 @@
 
 .chipsDecoration{
     display: flex;
-    justify-content: space-around;
-    height: 0.01em;
+    justify-content: space-between;
 }
 
 #leftC{
     position: relative;
-    left: -10em;
-    top: -11em;
     height: 11em;
 }
 
 #rightC{
     position: relative;
-    left: 10em;
-    top: -11em;
     height: 11em;
+}
+
+.registerItems{
+    width: 60%;
+    height: 30em;
+}
+
+.sideImage{
+    width: 40%;
 }

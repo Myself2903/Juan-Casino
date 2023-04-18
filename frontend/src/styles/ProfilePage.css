@@ -1,8 +1,4 @@
 
-body{
-    background-color: rgb(155, 61, 158);
-    margin: 0;
-}
 
 #nav_content2 h1{
     margin: 0;
@@ -11,6 +7,7 @@ body{
 .profilePage{
     display: flex;
     flex-direction: column;
+    background-color: #232c33;
 }
 
 .profilePage h2{
@@ -90,8 +87,16 @@ tr:nth-child(odd) {
 
 .friends{
     display: grid;
-    margin: 3em;
+    justify-content: space-between;
+    padding: 2%;
     grid-template-columns: 33% 33% 33%;
+    background-color: #9f2042;
+}
+
+.friendsTittle{
+    background-color: #eec170;
+    text-align: center;
+    height: 4em;
 }
 
 .friendCard{
