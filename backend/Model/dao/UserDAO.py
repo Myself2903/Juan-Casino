@@ -1,7 +1,7 @@
 from Model.entity.User import User
 from Model.dao.DataSource import DataSource
 
-class UserConnection():
+class UserDAO():
     conn = DataSource().conn
 
 
@@ -18,9 +18,8 @@ class UserConnection():
                     birthdate,
                     coins,
                     idImage
-                FROM "User";
+                FROM "user";
             """)
-
             return cur.fetchall()
         
 
@@ -38,21 +37,22 @@ class UserConnection():
                     coins,
                     idimage
                 
-                FROM "User"
+                FROM "user"
                 WHERE idUser=%s;
             """, (id,))
-
             data = cur.fetchone()
-            data = {
-                'iduser': data[0],
-                'name': data[1],
-                'surname': data[2],
-                'username': data[3],
-                'email': data [4],
-                'birthdate': data[5],
-                'coins': data[6],
-                'idimage': data[7]
-            }
+
+            if data is not None:
+                data = {
+                    'iduser': data[0],
+                    'name': data[1],
+                    'surname': data[2],
+                    'username': data[3],
+                    'email': data [4],
+                    'birthdate': data[5],
+                    'coins': data[6],
+                    'idimage': data[7]
+                }                
 
             return data
     
@@ -64,22 +64,24 @@ class UserConnection():
                     idUser,
                     password
                 
-                FROM "User"
+                FROM "user"
                 WHERE email=%s;
             """, (email,))
 
             data = cur.fetchone()
-            data = {
-                'iduser': data[0],
-                'password': data[1]
-            }
+
+            if data is not None:
+                data = {
+                    'iduser': data[0],
+                    'password': data[1]
+                }
             return data
 
     def addUser(self, data: User):
         print(data.password)
         with self.conn.cursor() as cur:
             cur.execute("""
-                INSERT INTO "User" (name, surname, username, email, password, birthdate, coins, idImage) 
+                INSERT INTO "user" (name, surname, username, email, password, birthdate, coins, idImage) 
                 VALUES (%(name)s, %(surname)s, %(username)s, %(email)s, %(password)s, %(birth_date)s, %(coins)s, %(img)s);
             """, {
                 'name': data.name,
@@ -96,7 +98,7 @@ class UserConnection():
     def updateUser(self, data: User):
         with self.conn.cursor() as cur:
             cur.execute("""
-                UPDATE "User" SET 
+                UPDATE "user" SET 
                     name=%(name)s, 
                     surname=%(surname)s, 
                     username=%(username)s, 
@@ -113,7 +115,7 @@ class UserConnection():
     def deleteUser(self, id: int):
         with self.conn.cursor() as cur:
             cur.execute("""
-                DELETE FROM "User" WHERE iduser= %s
+                DELETE FROM "user" WHERE iduser= %s
             """, (id,))
             self.conn.commit()
 

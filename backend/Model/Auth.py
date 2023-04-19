@@ -3,7 +3,7 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import jwt, JWTError
 from passlib.context import CryptContext
 from datetime import datetime, timedelta
-from Model.dao.UserDAO import UserConnection
+from Model.dao.UserDAO import UserDAO
 
 SECRET_KEY  = '40sasldkjwd2123bvquweo0pimsañpoqweim' 
 ALGORITHM = "HS256"
@@ -26,12 +26,12 @@ async def auth_user(token: str = Depends(oauth2)): #check token auth
     except JWTError:
         raise exception
 
-    conn = UserConnection()
+    conn = UserDAO()
     return conn.getUserShow(id)
 
 
 async def verifyLogin(form: OAuth2PasswordRequestForm = Depends()):
-        conn = UserConnection()
+        conn = UserDAO()
         user = conn.getUserAuth(form.username) #search email in data base. username is convention from OAuth library
 
         #User not found
