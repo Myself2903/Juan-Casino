@@ -6,7 +6,7 @@ import logo from '../assets/Juan_Logo.svg';
 import decoration from '../assets/SafeWithChips.svg';
 import leftchips from '../assets/greenPurpleChips.svg';
 import rightchips from '../assets/orangeBlueChips.svg';
-import qs from 'qs';
+
 
 export default function Register(){
     const navigate = useNavigate();
@@ -50,9 +50,9 @@ export default function Register(){
             </nav>
         </header>
 
-        <div className="backgroundimg">
+        <div className="background">
             <div className="registerPage">
-            <div>
+            <div className="sideImage">
                 <img src={decoration} alt="caja_fuerte" />
             </div>
 
