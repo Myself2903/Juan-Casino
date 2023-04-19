@@ -3,13 +3,13 @@ from datetime import date
 from typing import Optional
 
 class User(BaseModel): #user to show
-    id: Optional[int]
+    iduser: Optional[int]
     username: str
     name: str
     surname: str
     email: str
-    birth_date: date
+    birthdate: date
     coins: int
-    img: Optional[str]
+    idimage: Optional[str]
     password: str
 

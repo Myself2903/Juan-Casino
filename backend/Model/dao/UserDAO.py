@@ -27,25 +27,39 @@ class UserConnection():
     #info to show query. Return all info but password    
     def getUserShow(self, id:int):
         with self.conn.cursor() as cur:
-            data = cur.execute("""
+            cur.execute("""
                 SELECT 
-                    idUser,
+                    iduser,
                     name,
                     surname,
                     username,
+                    email,
                     birthdate,
                     coins,
-                    idImage
+                    idimage
                 
                 FROM "User"
                 WHERE idUser=%s;
             """, (id,))
-            return cur.fetchone()
+
+            data = cur.fetchone()
+            data = {
+                'iduser': data[0],
+                'name': data[1],
+                'surname': data[2],
+                'username': data[3],
+                'email': data [4],
+                'birthdate': data[5],
+                'coins': data[6],
+                'idimage': data[7]
+            }
+
+            return data
     
     #validation query, return only id and password
     def getUserAuth(self, email: str):
         with self.conn.cursor() as cur:
-            data = cur.execute("""
+            cur.execute("""
                 SELECT 
                     idUser,
                     password
@@ -53,7 +67,13 @@ class UserConnection():
                 FROM "User"
                 WHERE email=%s;
             """, (email,))
-            return cur.fetchone()
+
+            data = cur.fetchone()
+            data = {
+                'iduser': data[0],
+                'password': data[1]
+            }
+            return data
 
     def addUser(self, data: User):
         print(data.password)
@@ -67,9 +87,9 @@ class UserConnection():
                 'username': data.username,
                 'email': data.email,
                 'password': data.password,
-                'birth_date': data.birth_date,
+                'birth_date': data.birthdate,
                 'coins': data.coins,
-                'img': data.img,
+                'img': data.idimage,
             })    
             self.conn.commit()
 
@@ -93,7 +113,7 @@ class UserConnection():
     def deleteUser(self, id: int):
         with self.conn.cursor() as cur:
             cur.execute("""
-                DELETE FROM "User" WHERE userId= %s
+                DELETE FROM "User" WHERE iduser= %s
             """, (id,))
             self.conn.commit()
 

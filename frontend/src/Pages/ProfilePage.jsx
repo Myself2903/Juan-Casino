@@ -9,7 +9,10 @@ import redChip from '../assets/chip_red.svg';
 
 export default function Profile() {
   const navigate = useNavigate();
+  // access on cloud
   const url = 'https://juan-casino-backend.onrender.com'
+  //test access
+  // const url = 'http://127.0.0.1:8000'
   const urlExtension = '/profile'
   const [data, setData] = useState([])
 
@@ -27,6 +30,7 @@ export default function Profile() {
       .then(response =>{
         console.log(response)
         setData(response.data) //store data 
+        console.log(data);
       })
       .catch(error =>{
         console.log("error: "+ error)
@@ -56,10 +60,10 @@ export default function Profile() {
               <img className="profilePicture" src={picture} alt="fotoDePerfil"/>
           </div>
           <div className="userInfo">
-            <p>{data.username} #{data.id}</p>
+            <p>{data.username} #{data.iduser}</p>
             <p>{data.name} {data.surname}</p>
             <p>{data.email}</p>
-            <p>{data.birth_date}</p>
+            <p>{data.birthdate}</p>
           </div>
         </div>
 
