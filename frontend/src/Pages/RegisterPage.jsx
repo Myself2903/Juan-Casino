@@ -6,7 +6,7 @@ import logo from '../assets/Juan_Logo.svg';
 import decoration from '../assets/slotMachine.svg';
 import leftchips from '../assets/greenPurpleChips.svg';
 import rightchips from '../assets/orangeBlueChips.svg';
-
+import qs from 'qs';
 
 export default function Register(){
     const navigate = useNavigate();
@@ -15,7 +15,7 @@ export default function Register(){
         name: "",
         surname: "",
         email: "",
-        birth_date: "",
+        birthdate: "",
         coins: 100, //default coins when new account created
         password: "",
     })
@@ -25,13 +25,15 @@ export default function Register(){
         console.log(userData)
         console.log("tipo de username: ", typeof(userData.surname))
         console.log("tipo de email: ", typeof(userData.email))
-        console.log("tipo de birth_date: ", typeof(userData.birth_date))
+        console.log("tipo de birth_date: ", typeof(userData.birthdate))
+
         //API Call
         await axios
         .post(`https://juan-casino-backend.onrender.com/register?${qs.stringify(userData)}`, {}, { 
             headers:{
                 'Content-Type': 'application/x-www-form-urlencoded'
-        }})
+            }
+        })
         .then(response =>{
                 console.log(response)
                 navigate(("/"))
@@ -83,7 +85,7 @@ export default function Register(){
                         <label>Fecha de Nacimiento: </label>
                     </div>
                     <div className="field">
-                        <input type="date"  onChange={(e)=>setUserData({...userData, birth_date: e.target.value})} required/>
+                        <input type="date"  onChange={(e)=>setUserData({...userData, birthdate: e.target.value})} required/>
                     </div>
                     
                     <div className="field">
