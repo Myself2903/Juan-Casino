@@ -18,5 +18,12 @@ async def getFriends(iduser: int):
 
 @router.post("/profile/friends/new")
 async def newFriend(iduserRequested: int, userRequest: User = Depends(auth_user)): #first arg usr to add as friend, second the one who sent it
-    print("eche")
     return await fo.addFriend(userRequest['iduser'], iduserRequested)
+
+@router.post("/profile/friends/delete")
+async def deleteFriend(iduser2: int, iduser1: User = Depends(auth_user)):
+    return await fo.deleteFriend(iduser1['iduser'], iduser2)
+
+@router.post("/profile/friends/accept")
+async def acceptFriendship(iduser2: int, iduser1: User = Depends(auth_user)):
+    return await fo.acceptFrienship(iduser1['iduser'], iduser2)
