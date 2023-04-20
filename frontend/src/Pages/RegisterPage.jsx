@@ -3,7 +3,7 @@ import { useState } from "react";
 import '../styles/RegisterPage.css';
 import axios from "axios";
 import logo from '../assets/Juan_Logo.svg';
-import decoration from '../assets/SafeWithChips.svg';
+import decoration from '../assets/slotMachine.svg';
 import leftchips from '../assets/greenPurpleChips.svg';
 import rightchips from '../assets/orangeBlueChips.svg';
 

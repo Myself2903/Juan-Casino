@@ -10,6 +10,7 @@ app = FastAPI()
 origins = [
     "http://localhost",
     "http://localhost:5173",
+    'https://juan-casino-69424f.netlify.app/',
 ]
 
 

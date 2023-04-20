@@ -5,7 +5,8 @@ import '../styles/ProfilePage.css';
 import SignOut from  '../components/Signout';
 import logo from '../assets/Juan_Logo.svg';
 import picture from '../assets/horsePortrait.svg';
-import redChip from '../assets/chip_red.svg';
+import man from '../assets/sadJuan.jpg';
+
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -70,47 +71,13 @@ export default function Profile() {
         <div className="friendsTittle">
           <h2>Amigos:</h2>
         </div>
+        <div className="noFriends">
+          <h3>No hay amigos que mostrar...</h3>
+          <img id="sadHorse" src={man} alt="caballo triste" />
+        </div>
         <div className="friends">
           {/* volver las tarjetas una función reutilizable*/}
-          <div className="friendCard">
-            <div className="userPicture">
-                <img className="friendPicture" src={picture} alt="fotoDePerfil"/>
-            </div>
-            <div className="friendInfo">
-              <h4>#1313</h4>
-              <p>MenQueHueva</p>
-            </div>
-          </div>
-
-          <div className="friendCard">
-            <div className="userPicture">
-                <img className="friendPicture" src={picture} alt="fotoDePerfil"/>
-            </div>
-            <div className="friendInfo">
-              <h4>#1987</h4>
-              <p>ElAbuelo</p>
-            </div>
-          </div>
-
-          <div className="friendCard">
-            <div className="userPicture">
-                <img className="friendPicture" src={picture} alt="fotoDePerfil"/>
-            </div>
-            <div className="friendInfo">
-              <h4>#6969</h4>
-              <p>DuckBoi</p>
-            </div>
-          </div>
-
-          <div className="friendCard">
-            <div className="userPicture">
-                <img className="friendPicture" src={picture} alt="fotoDePerfil"/>
-            </div>
-            <div className="friendInfo">
-              <h4>#0123</h4>
-              <p>Myself</p>
-            </div>
-          </div>
+          
 
         </div>
 
