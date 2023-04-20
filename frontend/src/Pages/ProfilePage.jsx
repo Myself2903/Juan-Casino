@@ -5,7 +5,7 @@ import '../styles/ProfilePage.css';
 import SignOut from  '../components/Signout';
 import logo from '../assets/Juan_Logo.svg';
 import picture from '../assets/horsePortrait.svg';
-import man from '../assets/sadJuan.jpg';
+import man from '../assets/SadJuan.jpg';
 
 
 export default function Profile() {
