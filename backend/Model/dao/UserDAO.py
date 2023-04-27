@@ -105,7 +105,6 @@ class UserDAO():
                     username=%(username)s, 
                     email=%(email)s, 
                     birthdate=%(birthdate)s, 
-                    coins=%(coins)s,
                     idImage=%(img)s
 
                 WHERE idUser=%(id)s
@@ -115,7 +114,6 @@ class UserDAO():
                 'username': data.username,
                 'email': data.email,
                 'birthdate': data.birthdate,
-                'coins': data.coins,
                 'img': data.idimage,
                 'id': iduser,
             })
@@ -129,6 +127,16 @@ class UserDAO():
                     password = %s
                 WHERE idUser=%s
             """, (newPassword,iduser,))
+
+            self.conn.commit()
+
+    def updateCoins(self, updatedCoins:int, iduser: int):
+        with self.conn.cursor() as cur:
+            cur.execute("""
+                UPDATE "user" SET 
+                    coins = %s
+                WHERE idUser=%s
+            """, (updatedCoins,iduser,))
 
             self.conn.commit()
 

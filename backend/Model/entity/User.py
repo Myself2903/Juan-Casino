@@ -9,7 +9,7 @@ class User(BaseModel): #user to show
     surname: str
     email: str
     birthdate: date
-    coins: int
+    coins: Optional[int]
     idimage: Optional[str]
 
 class UserDB(User):

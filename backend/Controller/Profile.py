@@ -1,8 +1,7 @@
 from fastapi import APIRouter, Depends
 from Model.entity.User import User
-from Model.entity.User import UserDB
 from Model.Auth import auth_user
-from Model.UserOperation import update as updateUser, updatePassword as updPass, delete 
+from Model.UserOperation import update as updateUser, updatePassword as updPass, delete , updateCoins as updCoins
 import Model.FriendOperation as fo
 
 
@@ -19,6 +18,10 @@ async def updateProfile(updatedUser: User, user: User = Depends(auth_user)):
 @router.put("/profile/updatepassword")
 async def updatePassword(newPassword: str, user: User = Depends(auth_user)):
     return await updPass(user['iduser'] , newPassword)
+
+@router.put("/profile/coins")
+async def updateCoins(amount: int, user: User = Depends(auth_user)):
+    return await updCoins(amount,user['coins'], user['iduser'])
 
 @router.delete("/profile/delete")
 async def deleteProfile(user: User = Depends(auth_user)):

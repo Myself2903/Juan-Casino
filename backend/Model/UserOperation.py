@@ -23,7 +23,8 @@ async def register(newUser: UserDB = Depends()):
 
 async def update(idUser: int, updatedUser: User = Depends()):
     conn = UserDAO()
-    if(conn.getUserAuth(updatedUser.email) is None):
+    existentUser = conn.getUserAuth(updatedUser.email)
+    if(existentUser is None or existentUser['iduser'] == idUser):
         conn.updateUser(idUser, updatedUser)
         raise HTTPException(status_code=status.HTTP_200_OK, detail="cuenta actualizada")
     else:
@@ -43,3 +44,15 @@ async def updatePassword(idUser: int, newPassword: str):
     password = encryptPassword(newPassword)
     conn.updatePassword(idUser, password)
     raise HTTPException(status_code=status.HTTP_200_OK, detail="contraseña actualizada")
+
+async def updateCoins(amount:int, currentCoins:int, iduser: int):
+    conn = UserDAO()
+    if(type(amount) == int):
+        totalCoins = currentCoins+amount
+        if(totalCoins < 0):
+            conn.updateCoins(0, iduser)
+        else:
+            conn.updateCoins(totalCoins, iduser)
+        raise HTTPException(status_code=status.HTTP_200_OK, detail="monedas actualizadas")
+    else:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail= "monto invalido")
