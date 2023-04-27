@@ -63,26 +63,11 @@
     align-self: center;
 }
 
-td{
-    border: 2px solid goldenrod;
-    text-align: left;
-    padding: 8px;
-}
-
-table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
-    width: 60%;
+.noFriends{
+    text-align: center;
+    padding-top: 1em;
     color: white;
-    margin: 3em 16em;
-}
-  
-tr:nth-child(even) {
-    background-color: #3a3a3a;
-}
-
-tr:nth-child(odd) {
-    background-color: #202020;
+    background-color: #9f2042;
 }
 
 .friends{
