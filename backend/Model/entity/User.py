@@ -11,5 +11,7 @@ class User(BaseModel): #user to show
     birthdate: date
     coins: int
     idimage: Optional[str]
+
+class UserDB(User):
     password: str
 

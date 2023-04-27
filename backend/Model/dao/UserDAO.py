@@ -1,4 +1,4 @@
-from Model.entity.User import User
+from Model.entity.User import UserDB
 from Model.dao.DataSource import DataSource
 
 class UserDAO():
@@ -77,7 +77,7 @@ class UserDAO():
                 }
             return data
 
-    def addUser(self, data: User):
+    def addUser(self, data: UserDB):
         print(data.password)
         with self.conn.cursor() as cur:
             cur.execute("""
@@ -95,7 +95,8 @@ class UserDAO():
             })    
             self.conn.commit()
 
-    def updateUser(self, data: User):
+
+    def updateUser(self, iduser: int, data: UserDB):
         with self.conn.cursor() as cur:
             cur.execute("""
                 UPDATE "user" SET 
@@ -103,15 +104,34 @@ class UserDAO():
                     surname=%(surname)s, 
                     username=%(username)s, 
                     email=%(email)s, 
-                    password=%(password)s, 
                     birthdate=%(birthdate)s, 
                     coins=%(coins)s,
                     idImage=%(img)s
 
-                WHERE userId=%(id)s
-            """, data)
+                WHERE idUser=%(id)s
+            """, {
+                'name': data.name,
+                'surname': data.surname,
+                'username': data.username,
+                'email': data.email,
+                'birthdate': data.birthdate,
+                'coins': data.coins,
+                'img': data.idimage,
+                'id': iduser,
+            })
+
             self.conn.commit()
     
+    def updatePassword(self,iduser: int, newPassword: str):
+        with self.conn.cursor() as cur:
+            cur.execute("""
+                UPDATE "user" SET 
+                    password = %s
+                WHERE idUser=%s
+            """, (newPassword,iduser,))
+
+            self.conn.commit()
+
     def deleteUser(self, id: int):
         with self.conn.cursor() as cur:
             cur.execute("""
