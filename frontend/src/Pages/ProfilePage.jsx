@@ -5,7 +5,8 @@ import '../styles/ProfilePage.css';
 import SignOut from  '../components/Signout';
 import logo from '../assets/Juan_Logo.svg';
 import picture from '../assets/horsePortrait.svg';
-import man from '../assets/SadJuan.jpg';
+import man from '../assets/JuanTriste.svg';
+import Edit from '../components/EditUser';
 
 
 export default function Profile() {
@@ -45,7 +46,7 @@ export default function Profile() {
     <>
       <header>
           <nav id="nav_content">
-              <img alt="logo" src={logo} />
+              <img alt="logo" src={logo} onClick={()=>navigate('/')}/>
               <h1 className='title'>Perfil de usuario</h1>
               <div id="user_bar">
                 <SignOut/>
@@ -67,20 +68,23 @@ export default function Profile() {
             <p>{data.birthdate}</p>
           </div>
         </div>
+        <button className="button">Editar</button>
 
         <div className="friendsTittle">
           <h2>Amigos:</h2>
         </div>
-        <div className="noFriends">
-          <h3>No hay amigos que mostrar...</h3>
-          <img id="sadHorse" src={man} alt="caballo triste" />
-        </div>
-        <div className="friends">
-          {/* volver las tarjetas una función reutilizable*/}
-          
+        <div className="friendSpace">
+          <div className="noFriends">
+            <h3>No hay amigos que mostrar...</h3>
+            <img id="sadHorse" src={man} alt="caballo triste" />
+          </div>
+          <div className="friends">
+            {/* volver las tarjetas una función reutilizable*/}
+            
 
-        </div>
-
+          </div>
+            <button className="button" onClick={()=>navigate('/friends')}>Añadir amigos</button>
+          </div>
       </div>
     </>
   );

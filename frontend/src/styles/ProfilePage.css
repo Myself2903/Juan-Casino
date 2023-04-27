@@ -4,6 +4,10 @@
     margin: 0;
 }
 
+#nav_content img:hover{
+    cursor: pointer;
+}
+
 .profilePage{
     display: flex;
     flex-direction: column;
@@ -14,6 +18,11 @@
     color: white;
     font-weight: bold;
     align-self: center;
+}
+
+.profilePage button{
+    align-self: center;
+    margin-bottom: 1em;
 }
 
 .userCard{
@@ -29,7 +38,7 @@
     font-style: oblique;
     font-weight: bold;
     box-shadow: rgba(0, 0, 0, 0.5) 0.5em 0.5em;
-    margin: 2em 0 8em 0;
+    margin: 2em 0 4em 0;
 }
 
 .profilePicture{
@@ -67,7 +76,6 @@
     text-align: center;
     padding-top: 1em;
     color: white;
-    background-color: #9f2042;
 }
 
 .friends{
@@ -75,7 +83,12 @@
     justify-content: space-between;
     padding: 2%;
     grid-template-columns: 33% 33% 33%;
+}
+
+.friendSpace{
+    text-align: center;
     background-color: #9f2042;
+    padding-bottom: 2em;
 }
 
 .friendsTittle{

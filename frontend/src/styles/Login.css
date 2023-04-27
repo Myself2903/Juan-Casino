@@ -39,6 +39,7 @@
 
 .invalidInput{
     border: solid 1px red;
+    background-color: pink;
 }
 
 .formInput::placeholder{

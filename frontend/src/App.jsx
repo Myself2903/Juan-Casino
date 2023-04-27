@@ -4,6 +4,7 @@ import { RequireToken } from './Auth'
 import MainPage from './Pages/MainPage'
 import Register from './Pages/RegisterPage'
 import Profile from './Pages/ProfilePage'
+import Friend from './Pages/FriendPage'
 
 function App() {
 
@@ -22,6 +23,15 @@ function App() {
             element ={
               <RequireToken>
                 <Profile/>
+              </RequireToken>
+            }
+        />
+
+        <Route 
+            path="/friends" 
+            element ={
+              <RequireToken>
+                <Friend/>
               </RequireToken>
             }
         />
