@@ -10,18 +10,16 @@ class UserDAO():
         with self.conn.cursor() as cur:
             data = cur.execute("""
                 SELECT           
-                    idUser,
-                    name,
-                    surname,
+                    iduser,
                     username,
-                    email,
                     birthdate,
-                    coins,
-                    idImage
+                    idimage
                 FROM "user";
             """)
-            return cur.fetchall()
-        
+            
+            columns = [desc[0] for desc in cur.description]  # obtiene los nombres de las columnas
+            return [dict(zip(columns, row)) for row in cur.fetchall()]  # convierte las tuplas en diccionarios
+           
 
     #info to show query. Return all info but password    
     def getUserShow(self, id:int):
@@ -38,23 +36,16 @@ class UserDAO():
                     idimage
                 
                 FROM "user"
-                WHERE idUser=%s;
+                WHERE iduser=%s;
             """, (id,))
+
             data = cur.fetchone()
-
-            if data is not None:
-                data = {
-                    'iduser': data[0],
-                    'name': data[1],
-                    'surname': data[2],
-                    'username': data[3],
-                    'email': data [4],
-                    'birthdate': data[5],
-                    'coins': data[6],
-                    'idimage': data[7]
-                }                
-
-            return data
+            
+            if data:
+                columns = [desc[0] for desc in cur.description]
+                return dict(zip(columns, data))
+            else:
+                return None
     
     #validation query, return only id and password
     def getUserAuth(self, email: str):

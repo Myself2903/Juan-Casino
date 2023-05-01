@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from Model.entity.User import User
 from Model.Auth import auth_user
-from Model.UserOperation import update as updateUser, updatePassword as updPass, delete , updateCoins as updCoins
+from Model.UserOperation import update as updateUser, updatePassword as updPass, delete , updateCoins as updCoins, getUsers as getusr
 import Model.FriendOperation as fo
 
 
@@ -10,6 +10,10 @@ router = APIRouter() #fastAPI instance
 @router.get("/profile")
 async def profile(user: User = Depends(auth_user)): #return profile info. It requires the user to be authorized (logged)
     return user
+
+@router.get("/users")
+async def getUsers():
+    return await getusr()
 
 @router.put("/profile/update")
 async def updateProfile(updatedUser: User, user: User = Depends(auth_user)):

@@ -2,6 +2,7 @@ from fastapi import Depends, HTTPException, status
 from Model.entity.User import UserDB
 from Model.entity.User import User
 from Model.dao.UserDAO import UserDAO
+from Model.dao.ImageDAO import ImageDAO
 import bcrypt
 
 def encryptPassword(password: str):
@@ -14,12 +15,20 @@ async def register(newUser: UserDB = Depends()):
     conn = UserDAO()
     if conn.getUserAuth(newUser.email) is None:
         newUser.password = encryptPassword(newUser.password)
+        newUser.idimage = 1
         conn.addUser(newUser)
         raise HTTPException(status_code=status.HTTP_201_CREATED, detail="Usuario creado")
     
     else:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="cuenta ya existente")
 
+
+async def getUsers():
+    conn = UserDAO()
+    data = conn.getUsers()
+    for i in data:
+        i['idimage'] = ImageDAO().getImageSource(i['idimage'])
+    return data
 
 async def update(idUser: int, updatedUser: User = Depends()):
     conn = UserDAO()
