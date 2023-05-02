@@ -4,6 +4,7 @@ from jose import jwt, JWTError
 from passlib.context import CryptContext
 from datetime import datetime, timedelta
 from Model.dao.UserDAO import UserDAO
+from Model.dao.ImageDAO import ImageDAO
 
 SECRET_KEY  = '40sasldkjwd2123bvquweo0pimsañpoqweim' 
 ALGORITHM = "HS256"
@@ -27,7 +28,9 @@ async def auth_user(token: str = Depends(oauth2)): #check token auth
         raise exception
 
     conn = UserDAO()
-    return conn.getUserShow(id)
+    data = conn.getUserShow(id)
+    data['idimage'] = ImageDAO().getImageSource(data['idimage'])
+    return data
 
 
 async def verifyLogin(form: OAuth2PasswordRequestForm = Depends()):

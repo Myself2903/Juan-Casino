@@ -13,7 +13,7 @@ import Signout from '../components/Signout'
 
 const MainPage = ()=>{
     const [modalShow, setModalShow] = useState(false); //hook for modal window
-    const [modelParams, setModalParams] = useState([]);  //hook for params used on <Modal>
+    const [modalParams, setModalParams] = useState([]);  //hook for params used on <Modal>
 
     const navigate = useNavigate(); // navigate instance
 
@@ -95,7 +95,7 @@ const MainPage = ()=>{
 
                 <Login />
                 </div>
-                <Modal show={modalShow} onClose={()=> setModalShow(false)} params={modelParams} />
+                <Modal show={modalShow} onClose={()=> setModalShow(false)} params={modalParams} />
             </section>
         </>
     );

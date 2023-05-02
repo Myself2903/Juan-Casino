@@ -7,6 +7,7 @@ import logo from '../assets/Juan_Logo.svg';
 import picture from '../assets/horsePortrait.svg';
 import man from '../assets/JuanTriste.svg';
 import Edit from '../components/EditUser';
+import UserCard from "../components/UserCard";
 
 
 export default function Profile() {
@@ -30,9 +31,17 @@ export default function Profile() {
     async function fetchData(){
       await axios.get(url+urlExtension, config) //get query with token as a header config
       .then(response =>{
-        console.log(response)
-        setData(response.data) //store data 
-        console.log(data);
+        const info = response.data
+        setData({
+          'iduser': info.iduser,
+          'name': info.name,
+          'surname': info.surname,
+          'username': info.username,
+          'email': info.email,
+          'birthdate': info.birthdate,
+          'picture': info.idimage
+        }) //store data
+        
       })
       .catch(error =>{
         console.log("error: "+ error)
@@ -57,22 +66,16 @@ export default function Profile() {
       <div className="profilePage">
         
         <h2>Tarjeta de usuario</h2>
-        <div className="userCard">
-          <div className="userPicture">
-              <img className="profilePicture" src={picture} alt="fotoDePerfil"/>
-          </div>
-          <div className="userInfo">
-            <p>{data.username} #{data.iduser}</p>
-            <p>{data.name} {data.surname}</p>
-            <p>{data.email}</p>
-            <p>{data.birthdate}</p>
-          </div>
-        </div>
+
+        <UserCard params={data} /> 
+        <p>{data['picture']}</p>
+
         <button className="button">Editar</button>
 
         <div className="friendsTittle">
           <h2>Amigos:</h2>
         </div>
+        
         <div className="friendSpace">
           <div className="noFriends">
             <h3>No hay amigos que mostrar...</h3>

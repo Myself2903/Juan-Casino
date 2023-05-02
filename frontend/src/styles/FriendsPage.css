@@ -24,7 +24,6 @@
     height: 100%;
     display: flex;
     width: 100%;
-    text-align: center;
     padding-bottom: 2em;
     padding-top: 3em;
     align-items: baseline;
@@ -89,4 +88,8 @@
 .userID{
     color: rgb(144, 144, 144);
     margin-left: 5px;
+}
+
+.userFound{
+    
 }

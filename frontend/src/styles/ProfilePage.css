@@ -25,33 +25,6 @@
     margin-bottom: 1em;
 }
 
-.userCard{
-    align-self: center;
-    display: flex;
-    justify-content: space-around;
-    background-color: gold;
-    border-radius: 1.5em;
-    height: 14em;
-    width: 35em;
-    padding: 2em 0.5em;
-    color: black;
-    font-style: oblique;
-    font-weight: bold;
-    box-shadow: rgba(0, 0, 0, 0.5) 0.5em 0.5em;
-    margin: 2em 0 4em 0;
-}
-
-.profilePicture{
-    height: 12em;
-    width: 12em;
-    background-color: white;
-    border-radius: 0.5em;
-    padding: 2px;
-}
-
-.userInfo{
-    width: 20em;
-}
 
 .personalData{
     border-top: gold solid 0.2em;

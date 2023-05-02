@@ -3,6 +3,7 @@
   import axios from 'axios';
   import SignOut from  '../components/Signout';
   import logo from '../assets/Juan_Logo.svg';
+  import UserCard from "../components/UserCard";
   import '../styles/FriendsPage.css';
 
   export default function Profile() {
@@ -13,6 +14,7 @@
     // const url = 'http://127.0.0.1:8000'
     const urlExtension = '/users'
     const [data, setData] = useState([])
+    const [userFound, setUserFound] = useState([])
     const [displayData, setDisplayData] = useState(false)
     const [query, setQuery] = useState("")
     const filteredData =  data.filter(item => {
@@ -26,12 +28,6 @@
       }
     }
     const searchBarRef = useRef(null)
-    //set Modal params and show it. The params idea is for more customizable and reusable code
-    const manageModal = (header, content, footer) =>{
-        setModalParams({'header': header, 'content': content, 'footer': footer})
-        setModalShow(true)        
-    }
-
 
 
     // useEffect for save data at hook
@@ -55,10 +51,17 @@
       e.preventDefault()
     }
 
-    function showUserData(e){
+    function showUserData(user){
       searchBarRef.current.value = ''
       setDisplayData(true)
       setQuery("")
+      setUserFound({
+        'iduser': user.iduser,
+        'username': user.username,
+        'birthdate': user.birthdate,
+        'picture': user.idimage
+        }
+      )
     }
 
     return (
@@ -89,20 +92,18 @@
                 {query == "" || filteredData.length == 0 ? <></> : 
                   <div className="userData">
                     {filteredData.map(item => (
-                        <div key={item['iduser']} onClick={showUserData}>
+                        <div key={item['iduser']} onClick={()=> showUserData(item)}>
                           <img className="userImage" src= {item['idimage']} alt="user image"/>
                           {item['username']}<label className="userID">#{item['iduser']}</label>
                         </div>
                     ))}
                   </div>
                 }
-            <div>
+            <div className="userFound">
               {displayData ? 
-                
-                <label> user info </label>
+                <UserCard params={userFound}/>
               :<></>}
             </div>
-
           </div>
         </section>
         
