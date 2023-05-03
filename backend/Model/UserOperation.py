@@ -25,10 +25,7 @@ async def register(newUser: UserDB = Depends()):
 
 async def getUsers():
     conn = UserDAO()
-    data = conn.getUsers()
-    for i in data:
-        i['idimage'] = ImageDAO().getImageSource(i['idimage'])
-    return data
+    return conn.getUsers()
 
 async def update(idUser: int, updatedUser: User = Depends()):
     conn = UserDAO()

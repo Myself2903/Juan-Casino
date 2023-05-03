@@ -13,43 +13,51 @@ import UserCard from "../components/UserCard";
 export default function Profile() {
   const navigate = useNavigate();
   // access on cloud
-  const url = 'https://juan-casino-backend.onrender.com'
+  // const url = 'https://juan-casino-backend.onrender.com'
   //test access
-  // const url = 'http://127.0.0.1:8000'
+  const url = 'http://127.0.0.1:8000'
   const urlExtension = '/profile'
-  const [data, setData] = useState([])
-
   const token = localStorage.getItem("auth_token")
-  const config = {
+  const [userData, setuserData] = useState([])
+  const [userFriends, setUserFriends] = useState([])
+  const instance = axios.create({
     headers: {
-      'Authorization' : `Bearer ${token}`
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token
     }
-  }
+  });
 
-  // useEffect for save data at hook
+
+  // useEffect for save userData at hook
   useEffect(()=>{
-    async function fetchData(){
-      await axios.get(url+urlExtension, config) //get query with token as a header config
-      .then(response =>{
-        const info = response.data
-        setData({
-          'iduser': info.iduser,
-          'name': info.name,
-          'surname': info.surname,
-          'username': info.username,
-          'email': info.email,
-          'birthdate': info.birthdate,
-          'picture': info.idimage
-        }) //store data
-        
-      })
-      .catch(error =>{
-        console.log("error: "+ error)
-      })
-    }
-    fetchData()
-  } , [])
-
+    instance.get(url+urlExtension) //get query with token as a header config
+    .then(response =>{
+      const info = response.data
+      setuserData({
+        'iduser': info[0],
+        'name': info[1],
+        'surname': info[2],
+        'username': info[3],
+        'email': info[4],
+        'birthdate': info[5],
+        'picture': info[7]
+      }) //store userData     
+    })
+    .catch(error =>{
+      console.log("error: "+ error)
+    })
+  },[])
+  
+  useEffect(()=>{
+    instance.get(url+urlExtension+'/friends', {
+      params:{
+        iduser: userData['iduser']
+      }
+    }).then(response =>{
+      setUserFriends(response.data)
+      console.log(response.data)
+    })
+  },[userData])
 
   return (
     <>
@@ -67,9 +75,9 @@ export default function Profile() {
         
         <h2>Tarjeta de usuario</h2>
 
-        <UserCard params={data} /> 
-        <p>{data['picture']}</p>
-
+        <div className="userCardContainer">
+          <UserCard params={userData} /> 
+        </div>
         <button className="button">Editar</button>
 
         <div className="friendsTittle">
@@ -77,13 +85,16 @@ export default function Profile() {
         </div>
         
         <div className="friendSpace">
-          <div className="noFriends">
-            <h3>No hay amigos que mostrar...</h3>
-            <img id="sadHorse" src={man} alt="caballo triste" />
-          </div>
+          {userFriends.length == 0 ?
+            <div className="noFriends">
+              <h3>No hay amigos que mostrar...</h3>
+              <img id="sadHorse" src={man} alt="caballo triste" />
+            </div>
+            :
+            <p>i do have friends c:</p>
+          }
+
           <div className="friends">
-            {/* volver las tarjetas una función reutilizable*/}
-            
 
           </div>
             <button className="button" onClick={()=>navigate('/friends')}>Añadir amigos</button>

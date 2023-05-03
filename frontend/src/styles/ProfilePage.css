@@ -25,6 +25,11 @@
     margin-bottom: 1em;
 }
 
+.userCardContainer{
+    align-self: center;
+    width: 35%;
+}
+
 
 .personalData{
     border-top: gold solid 0.2em;

@@ -10,15 +10,15 @@ class UserDAO():
         with self.conn.cursor() as cur:
             data = cur.execute("""
                 SELECT           
-                    iduser,
-                    username,
-                    birthdate,
-                    idimage
-                FROM "user";
+                    "user".iduser,
+                    "user".username,
+                    "user".birthdate,
+                    image.src
+                FROM "user"
+                JOIN image ON "user".idimage = image.idimage
             """)
             
-            columns = [desc[0] for desc in cur.description]  # obtiene los nombres de las columnas
-            return [dict(zip(columns, row)) for row in cur.fetchall()]  # convierte las tuplas en diccionarios
+            return cur.fetchall()
            
 
     #info to show query. Return all info but password    
@@ -26,26 +26,21 @@ class UserDAO():
         with self.conn.cursor() as cur:
             cur.execute("""
                 SELECT 
-                    iduser,
-                    name,
-                    surname,
-                    username,
-                    email,
-                    birthdate,
-                    coins,
-                    idimage
+                    "user".iduser,
+                    "user".name,
+                    "user".surname,
+                    "user".username,
+                    "user".email,
+                    "user".birthdate,
+                    "user".coins,
+                    image.src
                 
                 FROM "user"
-                WHERE iduser=%s;
+                JOIN image ON "user".idimage = image.idimage
+                WHERE iduser=%s
             """, (id,))
-
-            data = cur.fetchone()
             
-            if data:
-                columns = [desc[0] for desc in cur.description]
-                return dict(zip(columns, data))
-            else:
-                return None
+            return cur.fetchone()
     
     #validation query, return only id and password
     def getUserAuth(self, email: str):
@@ -56,24 +51,17 @@ class UserDAO():
                     password
                 
                 FROM "user"
-                WHERE email=%s;
+                WHERE email=%s
             """, (email,))
 
-            data = cur.fetchone()
-
-            if data is not None:
-                data = {
-                    'iduser': data[0],
-                    'password': data[1]
-                }
-            return data
+            return cur.fetchone()
 
     def addUser(self, data: UserDB):
         print(data.password)
         with self.conn.cursor() as cur:
             cur.execute("""
                 INSERT INTO "user" (name, surname, username, email, password, birthdate, coins, idImage) 
-                VALUES (%(name)s, %(surname)s, %(username)s, %(email)s, %(password)s, %(birth_date)s, %(coins)s, %(img)s);
+                VALUES (%(name)s, %(surname)s, %(username)s, %(email)s, %(password)s, %(birth_date)s, %(coins)s, %(img)s)
             """, {
                 'name': data.name,
                 'surname': data.surname,

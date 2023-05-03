@@ -9,16 +9,16 @@
   export default function Profile() {
     const navigate = useNavigate();
     // access on cloud
-    const url = 'https://juan-casino-backend.onrender.com'
+    // const url = 'https://juan-casino-backend.onrender.com'
     //test access
-    // const url = 'http://127.0.0.1:8000'
+    const url = 'http://127.0.0.1:8000'
     const urlExtension = '/users'
     const [data, setData] = useState([])
     const [userFound, setUserFound] = useState([])
     const [displayData, setDisplayData] = useState(false)
     const [query, setQuery] = useState("")
     const filteredData =  data.filter(item => {
-      return String(item['username']).toLowerCase().includes(query.toLowerCase())
+      return String(item[1]).toLowerCase().includes(query.toLowerCase())
     })
 
     const token = localStorage.getItem("auth_token")
@@ -56,10 +56,10 @@
       setDisplayData(true)
       setQuery("")
       setUserFound({
-        'iduser': user.iduser,
-        'username': user.username,
-        'birthdate': user.birthdate,
-        'picture': user.idimage
+        'iduser': user[0],
+        'username': user[1],
+        'birthdate': user[2],
+        'picture': user[3]
         }
       )
     }
@@ -76,8 +76,8 @@
             </nav>
         </header>
 
+        <button className="backButton" onClick={()=>navigate('/profile')}>&lt;-</button>
         <section className="searchSection">
-          <button className="backButton">&lt;-</button>
           <div className="friendAdd">
                 <form onSubmit={onSubmit}>
                   <input
@@ -92,19 +92,20 @@
                 {query == "" || filteredData.length == 0 ? <></> : 
                   <div className="userData">
                     {filteredData.map(item => (
-                        <div key={item['iduser']} onClick={()=> showUserData(item)}>
-                          <img className="userImage" src= {item['idimage']} alt="user image"/>
-                          {item['username']}<label className="userID">#{item['iduser']}</label>
+                        <div key={item[0]} onClick={()=> showUserData(item)}>
+                          <img className="userImage" src= {item[3]} alt="user image"/>
+                          {item[1]}<label className="userID">#{item[0]}</label>
                         </div>
                     ))}
                   </div>
                 }
-            <div className="userFound">
+            
+          </div>
+          <div className="userFound">
               {displayData ? 
                 <UserCard params={userFound}/>
               :<></>}
             </div>
-          </div>
         </section>
         
       </>

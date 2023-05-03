@@ -5,48 +5,30 @@ from Model.dao.UserDAO import UserDAO
 class FriendsDAO():
     conn = DataSource().conn
 
-    def getFriendsId(self, iduser: int):
-        with self.conn.cursor() as cur:
-            data = cur.execute("""
-                select *
-                from "friends"
-                where iduser1 = %s or iduser2 = %s
-            """, (iduser, iduser))
-            
-            friendList = []
-           
-            for i in cur.fetchall():
-                print(i)
-                if i[0] == iduser:
-                    friendList.append((i[1], i[2]))
-                else:
-                    friendList.append((i[0], i[2]))
-            
-            return friendList
-        
-
     def getFriends(self, iduser: int):
-        userConn = UserDAO()
-        friendList = self.getFriendsId(iduser)
-
-        if len(friendList) == 0:
-            print("niño, no tienes amigos")
-            return None
+        with self.conn.cursor() as cur:
+            cur.execute("""
+                select 
+                    "user".iduser,
+                    "user".username,
+                    "user".birthdate,
+                    image.src
+                from "user"
+                join (	select 
+                            case
+                                when iduser1 = %(id)s
+                                    then iduser2
+                                when iduser2 = %(id)s
+                                    then iduser1
+                            end as iduser
+                        from friends
+                        where iduser1 = %(id)s or iduser2 =%(id)s
+                    ) as friends on "user".iduser = friends.iduser
+                join image on "user".idimage = image.idimage
+            """, {'id': iduser})
             
-        else:
-            friends = []
-
-            for i in friendList:
-                friendData = userConn.getUserShow(i[0])
-                friendData = {
-                    'iduser': friendData['iduser'],
-                    'username': friendData['username'],
-                    'idimage': friendData['idimage'],
-                    'accepted': i[1]
-                }
-                friends.append(friendData)
-                
-            return friends
+            return cur.fetchall()
+        
         
     def addFriend(self, iduserRequest: int, iduserRequested):
         with self.conn.cursor() as cur:

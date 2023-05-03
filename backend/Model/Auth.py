@@ -28,9 +28,7 @@ async def auth_user(token: str = Depends(oauth2)): #check token auth
         raise exception
 
     conn = UserDAO()
-    data = conn.getUserShow(id)
-    data['idimage'] = ImageDAO().getImageSource(data['idimage'])
-    return data
+    return conn.getUserShow(id)
 
 
 async def verifyLogin(form: OAuth2PasswordRequestForm = Depends()):
@@ -42,13 +40,13 @@ async def verifyLogin(form: OAuth2PasswordRequestForm = Depends()):
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuario no encontrado")
         
         #check password
-        if not crypt.verify(form.password, user['password']):   #query return two values touple. [1] is the password 
+        if not crypt.verify(form.password, user[1]):   #query return two values touple. [1] is the password 
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Contraseña incorrecta")
             
         #acces token sent when login
         access_token = {
-            "id": user['iduser'],
-            "email": user['password'],
+            "id": user[0],
+            "password": user[1],
             "exp": datetime.utcnow() + timedelta(minutes=ACCES_TOKEN_DURATION)
         }
 

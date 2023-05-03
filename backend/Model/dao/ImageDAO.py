@@ -8,7 +8,6 @@ class ImageDAO():
             cur.execute("""
                 SELECT 
                     src
-                
                 FROM image
                 WHERE idimage=%s;
             """, (id,))
