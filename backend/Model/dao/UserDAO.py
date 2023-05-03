@@ -1,5 +1,6 @@
 from Model.entity.User import UserDB
 from Model.dao.DataSource import DataSource
+from datetime import date
 
 class UserDAO():
     conn = DataSource().conn
@@ -75,27 +76,16 @@ class UserDAO():
             self.conn.commit()
 
 
-    def updateUser(self, iduser: int, data: UserDB):
+    def updateUser(self, iduser: int,  username: str, surname: str, name: str, birthdate: date):
         with self.conn.cursor() as cur:
             cur.execute("""
                 UPDATE "user" SET 
-                    name=%(name)s, 
-                    surname=%(surname)s, 
-                    username=%(username)s, 
-                    email=%(email)s, 
-                    birthdate=%(birthdate)s, 
-                    idImage=%(img)s
-
-                WHERE idUser=%(id)s
-            """, {
-                'name': data.name,
-                'surname': data.surname,
-                'username': data.username,
-                'email': data.email,
-                'birthdate': data.birthdate,
-                'img': data.idimage,
-                'id': iduser,
-            })
+                    name=%s, 
+                    surname=%s, 
+                    username=%s,
+                    birthdate=%s
+                WHERE idUser=%s
+            """, (name, surname, username, birthdate, iduser))
 
             self.conn.commit()
     

@@ -1,8 +1,8 @@
 from fastapi import Depends, HTTPException, status
 from Model.entity.User import UserDB
-from Model.entity.User import User
 from Model.dao.UserDAO import UserDAO
-from Model.dao.ImageDAO import ImageDAO
+from datetime import date
+from dateutil.relativedelta import relativedelta
 import bcrypt
 
 def encryptPassword(password: str):
@@ -14,11 +14,13 @@ def encryptPassword(password: str):
 async def register(newUser: UserDB = Depends()):
     conn = UserDAO()
     if conn.getUserAuth(newUser.email) is None:
-        newUser.password = encryptPassword(newUser.password)
-        newUser.idimage = 1
-        conn.addUser(newUser)
-        raise HTTPException(status_code=status.HTTP_201_CREATED, detail="Usuario creado")
-    
+        if relativedelta(date.today(), newUser.birthdate).years >= 10:
+            newUser.password = encryptPassword(newUser.password)
+            newUser.idimage = 1
+            conn.addUser(newUser)
+            raise HTTPException(status_code=status.HTTP_201_CREATED, detail="Usuario creado")
+        else:
+            raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail="no cumple los requisitos minimos de edad")
     else:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="cuenta ya existente")
 
@@ -27,14 +29,13 @@ async def getUsers():
     conn = UserDAO()
     return conn.getUsers()
 
-async def update(idUser: int, updatedUser: User = Depends()):
+async def update(idUser: int, username: str, surname: str, name: str, birthdate: date):
     conn = UserDAO()
-    existentUser = conn.getUserAuth(updatedUser.email)
-    if(existentUser is None or existentUser['iduser'] == idUser):
-        conn.updateUser(idUser, updatedUser)
+    if(relativedelta(date.today(), birthdate).years >= 10):
+        conn.updateUser(idUser,username, surname, name ,birthdate)
         raise HTTPException(status_code=status.HTTP_200_OK, detail="cuenta actualizada")
-    else:
-       raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="email ya existente")
+    
+    raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="no cumple los requisitos minimos de edad")
 
 async def delete(idUser: int):
     conn = UserDAO()

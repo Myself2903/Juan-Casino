@@ -13,9 +13,9 @@ import UserCard from "../components/UserCard";
 export default function Profile() {
   const navigate = useNavigate();
   // access on cloud
-  // const url = 'https://juan-casino-backend.onrender.com'
+  const url = 'https://juan-casino-backend.onrender.com'
   //test access
-  const url = 'http://127.0.0.1:8000'
+  // const url = 'http://127.0.0.1:8000'
   const urlExtension = '/profile'
   const token = localStorage.getItem("auth_token")
   const [userData, setuserData] = useState([])

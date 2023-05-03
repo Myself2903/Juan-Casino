@@ -3,7 +3,7 @@ from Model.entity.User import User
 from Model.Auth import auth_user
 from Model.UserOperation import update as updateUser, updatePassword as updPass, delete , updateCoins as updCoins, getUsers as getusr
 import Model.FriendOperation as fo
-
+from datetime import date
 
 router = APIRouter() #fastAPI instance
 
@@ -16,8 +16,8 @@ async def getUsers():
     return await getusr()
 
 @router.put("/profile/update")
-async def updateProfile(updatedUser: User, user: User = Depends(auth_user)):
-    return await updateUser(user['iduser'] , updatedUser)
+async def updateProfile(username: str, surname: str, name: str, birthdate: date, user: User = Depends(auth_user)):
+    return await updateUser(user[0] , username, surname, name ,birthdate)
 
 @router.put("/profile/updatepassword")
 async def updatePassword(newPassword: str, user: User = Depends(auth_user)):

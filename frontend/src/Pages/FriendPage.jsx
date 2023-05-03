@@ -6,12 +6,12 @@
   import UserCard from "../components/UserCard";
   import '../styles/FriendsPage.css';
 
-  export default function Profile() {
+  export default function FriendPage() {
     const navigate = useNavigate();
     // access on cloud
-    // const url = 'https://juan-casino-backend.onrender.com'
+    const url = 'https://juan-casino-backend.onrender.com'
     //test access
-    const url = 'http://127.0.0.1:8000'
+    // const url = 'http://127.0.0.1:8000'
     const urlExtension = '/users'
     const [data, setData] = useState([])
     const [userFound, setUserFound] = useState([])
