@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Body
 from Model.entity.User import User
 from Model.Auth import auth_user
 from Model.UserOperation import update as updateUser, updatePassword as updPass, delete , updateCoins as updCoins, getUsers as getusr
@@ -16,7 +16,7 @@ async def getUsers():
     return await getusr()
 
 @router.put("/profile/update")
-async def updateProfile(username: str, surname: str, name: str, birthdate: date, user: User = Depends(auth_user)):
+async def updateProfile(username: str = Body(...), surname: str = Body(...), name: str = Body(...), birthdate: date = Body(...), user: User = Depends(auth_user)):
     return await updateUser(user[0] , username, surname, name ,birthdate)
 
 @router.put("/profile/updatepassword")

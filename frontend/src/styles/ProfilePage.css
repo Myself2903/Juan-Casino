@@ -8,6 +8,10 @@
     cursor: pointer;
 }
 
+.editButton{
+    text-align: center;
+}
+
 .profilePage{
     display: flex;
     flex-direction: column;

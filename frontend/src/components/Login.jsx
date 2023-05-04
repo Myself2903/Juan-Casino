@@ -3,6 +3,7 @@ import {fetchToken} from '../Auth'
 import { useState } from 'react'
 import axios from "axios";
 import Modal from './Modal'
+import Loading from './Loading'
 import '../styles/Login.css'
 
 
@@ -11,8 +12,14 @@ import '../styles/Login.css'
 
 export default function Login(){
     const [showModal, setShowModal] = useState(false) // Modal hook
+    const [showLoading, setShowLoading] = useState(false) //loading screen
 
     const navigate = useNavigate() 
+
+    const loadTime = () => {
+        navigate('/register')
+
+    }
 
     //json structure need for query
     const [loginForm, setLoginForm] = useState({
@@ -22,7 +29,7 @@ export default function Login(){
     
     //hooks for show error when login attempt
     const [emailValid, setEmailValid] = useState(true)
-    const [passwordValid, setPasswordValid] = useState(true) 
+    const [passwordValid, setPasswordValid] = useState(true)
 
     //login verification function
     const login = async(event) => {
@@ -61,6 +68,7 @@ export default function Login(){
             if (response.data.access_token) {
                 localStorage.setItem("auth_token", response.data.access_token)  //token
                 localStorage.setItem("auth_token_type", response.data.token_type) //token type
+                setShowLoading(false)
                 navigate("/profile"); //navigate to profile page
             }
         })
@@ -78,6 +86,7 @@ export default function Login(){
                 default:
                     break;
             }
+            setShowLoading(false)
         });
     }
     
@@ -112,14 +121,14 @@ export default function Login(){
                                     </label>
                                     <a className='forgotPassword'>¿Olvidaste tu contraseña?</a>
 
-                                    <button className='button loginButton' type='submit'>Iniciar sesión </button>
+                                    <button className='button loginButton' type='submit' onClick={()=>setShowLoading(true)}>Iniciar sesión </button>
                                 </form>
                             </div>
                         )}
                     </div>
 
     //Modal footer
-    const footer = <div className='footer'> <button className='button registerButton'>Nueva cuenta</button></div>
+    const footer = <div className='footer'> <button className='button registerButton' onClick={()=>navigate('/register')}>Nueva cuenta</button></div>
 
     return (
         <div>
@@ -134,6 +143,12 @@ export default function Login(){
                     setPasswordValid(true)
                 }}
                 params ={{'header': header, 'content': content, 'footer': footer}}
+            />
+            <Loading
+                show = {showLoading}
+                onClose = {() => {
+                    setShowLoading(false)
+                }}
             />
         </div>
     )

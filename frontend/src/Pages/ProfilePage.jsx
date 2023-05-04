@@ -4,7 +4,6 @@ import axios from 'axios';
 import '../styles/ProfilePage.css';
 import SignOut from  '../components/Signout';
 import logo from '../assets/Juan_Logo.svg';
-import picture from '../assets/horsePortrait.svg';
 import man from '../assets/JuanTriste.svg';
 import Edit from '../components/EditUser';
 import UserCard from "../components/UserCard";
@@ -49,14 +48,16 @@ export default function Profile() {
   },[])
   
   useEffect(()=>{
-    instance.get(url+urlExtension+'/friends', {
-      params:{
-        iduser: userData['iduser']
-      }
-    }).then(response =>{
-      setUserFriends(response.data)
-      console.log(response.data)
-    })
+    if(userData.length != 0){
+      instance.get(url+urlExtension+'/friends', {
+        params:{
+          iduser: userData['iduser']
+        }
+      }).then(response =>{
+        setUserFriends(response.data)
+        console.log(response.data)
+      })
+    }
   },[userData])
 
   return (
@@ -78,7 +79,9 @@ export default function Profile() {
         <div className="userCardContainer">
           <UserCard params={userData} /> 
         </div>
-        <button className="button">Editar</button>
+        <div className="editButton">
+          <Edit/>
+        </div>
 
         <div className="friendsTittle">
           <h2>Amigos:</h2>

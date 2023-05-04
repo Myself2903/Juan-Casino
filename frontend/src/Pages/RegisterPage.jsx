@@ -6,10 +6,12 @@ import logo from '../assets/Juan_Logo.svg';
 import decoration from '../assets/slotMachine.svg';
 import leftchips from '../assets/greenPurpleChips.svg';
 import rightchips from '../assets/orangeBlueChips.svg';
-import qs from 'qs';
 
 export default function Register(){
     const navigate = useNavigate();
+    const url = 'https://juan-casino-backend.onrender.com'
+    //const url = 'http://127.0.0.1:8000'
+    const urlExtension = '/register'
     const [userData, setUserData] = useState({
         username: "",
         name: "",
@@ -22,16 +24,11 @@ export default function Register(){
 
     const register = async(event)=>{
         event.preventDefault()
-        console.log(userData)
-        console.log("tipo de username: ", typeof(userData.surname))
-        console.log("tipo de email: ", typeof(userData.email))
-        console.log("tipo de birth_date: ", typeof(userData.birthdate))
-
         //API Call
         await axios
-        .post(`https://juan-casino-backend.onrender.com/register?${qs.stringify(userData)}`, {}, { 
+        .post(url+urlExtension, userData, { 
             headers:{
-                'Content-Type': 'application/x-www-form-urlencoded'
+                'Content-Type': 'application/json'
             }
         })
         .then(response =>{

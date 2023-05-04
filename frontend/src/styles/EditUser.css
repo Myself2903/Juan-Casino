@@ -1,0 +1,65 @@
+
+.header{
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    font-size: xx-large;
+}
+
+.editForm{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.loginButton{
+    margin: 10px;
+    width: 14em;
+    border-radius: 10px;
+}
+
+
+.formInput{
+    height: 3em;
+    width: 25em;
+    background-color: aliceblue;
+    color:black;
+    border: solid 1px rgb(150, 150, 150);
+    margin: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+}
+
+.errorMessage{
+    font-size: small;
+    color: red;
+    margin-bottom: 5px;
+}
+
+.invalidInput{
+    border: solid 1px red;
+    background-color: pink;
+}
+
+.formInput::placeholder{
+    color: #999;
+    font-style: italic;
+}
+
+.forgotPassword{
+    color: rgb(53, 115, 201);
+    font-size: small;
+    margin-top: 0px;
+    margin-bottom: 10px;
+}
+
+.footer{
+    text-align: center;
+}
+
+.registerButton{
+    border-radius: 10px;
+    width: 8em;
+    margin: 5px;
+}
