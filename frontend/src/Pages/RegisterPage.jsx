@@ -10,7 +10,7 @@ import rightchips from '../assets/orangeBlueChips.svg';
 export default function Register(){
     const navigate = useNavigate();
     const url = 'https://juan-casino-backend.onrender.com'
-    //const url = 'http://127.0.0.1:8000'
+    // const url = 'http://127.0.0.1:8000'
     const urlExtension = '/register'
     const [userData, setUserData] = useState({
         username: "",

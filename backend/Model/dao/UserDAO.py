@@ -58,7 +58,6 @@ class UserDAO():
             return cur.fetchone()
 
     def addUser(self, data: UserDB):
-        print(data.password)
         with self.conn.cursor() as cur:
             cur.execute("""
                 INSERT INTO "user" (name, surname, username, email, password, birthdate, coins, idImage) 

@@ -14,7 +14,8 @@ def encryptPassword(password: str):
 async def register(newUser: UserDB = Depends()):
     conn = UserDAO()
     if conn.getUserAuth(newUser.email) is None:
-        if relativedelta(date.today(), newUser.birthdate).years >= 10:
+        edad = relativedelta(date.today(), newUser.birthdate).years
+        if edad >= 10 and edad <= 80:
             newUser.password = encryptPassword(newUser.password)
             newUser.idimage = 1
             conn.addUser(newUser)
@@ -31,7 +32,8 @@ async def getUsers():
 
 async def update(idUser: int, username: str, surname: str, name: str, birthdate: date):
     conn = UserDAO()
-    if(relativedelta(date.today(), birthdate).years >= 10):
+    edad = relativedelta(date.today(), birthdate).years
+    if edad >= 10 and edad <= 80:
         conn.updateUser(idUser,username, surname, name ,birthdate)
         raise HTTPException(status_code=status.HTTP_200_OK, detail="cuenta actualizada")
     
