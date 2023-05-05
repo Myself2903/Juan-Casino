@@ -11,21 +11,20 @@
   );
   color:transparent;
   -webkit-background-clip:text;
-  margin: 20px;
+  margin: 1%;
 }
 
-#nav_content{
+.nav_content{
     background-color: #7b0d1e;
-    /* position: fixed; */
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 6em;
+    height: min-content;
     border-bottom: solid 10px #EEC170;
   }
   
-  #nav_content img{
+  .nav_content img{
     position: absolute;
     left: 0;
     width: auto;
@@ -33,14 +32,29 @@
     margin-left: 2em;
   }
 
-  #user_bar{
+  @media (max-width: 480px) {
+    .nav_content img, #nav_content .title {
+      display: none;
+    }
+
+    .nav_content{
+      height: 6em;
+    }
+
+    .user_bar .button{
+      position: static;
+      padding: 0;
+    }
+  }
+
+  .user_bar{
     position: absolute;
     right: 0;
     display: flex;
     justify-content: flex-end;
   }
   
-  #user_bar li{
+  .user_bar li{
     display: inline-flex;
     margin-right: 2em;
     font-size: larger;
@@ -48,7 +62,7 @@
   }
   
   
-  #user_bar li:hover{
+  .user_bar li:hover{
     cursor: pointer;
   }
   
@@ -59,13 +73,19 @@
     flex-direction: column;
     background-color: #232c33;
     background-image: url("../assets/background.png");
-    height: 60em;
+    height: max-content;
     width: 100%;
     border-bottom: solid 20px #ffda59;
 }  
 
 #main_page .button{
-    margin-top: 1.5em;
+    margin: 4% 0;
+}
+
+#main_page img{
+  margin-top: 5%;
+  width: 32%;
+  height: 32%;
 }
 
 #main_page img:hover{
@@ -76,13 +96,12 @@
     background-color: #9f2042;
     background-image: url("../assets/background.png");
     background-repeat: repeat;
-    /* background-size: 100% 100%; */
     width: 100%;
     height: max-content;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
   }
 
 
@@ -90,19 +109,17 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 25px 0px;
-}
-
-#game_selector img{ 
-    border-radius: 25px;
-    height: 10em;
-    width: 10em;
+    justify-content: center;
+    text-align: center;
+    margin-bottom: 2em;
 }
   
 #game_list li{
     display: inline-flex;
-    margin: 0 3em;
+    margin: 1em 3em;
+    padding: 0;
 }
+
 
 .game{
   text-align: center;
@@ -110,6 +127,34 @@
   padding: 10px;
   border-radius: 20px;
 }
+
+.game img{ 
+  border-radius: 25px;
+  height: 10em;
+  width: 10em;
+}
+
+@media (max-width: 480px) {
+
+  #game_list{
+    padding: 0;
+  }
+
+  #game_list li{
+    margin: 5%;
+  }
+
+  .game img{
+    height: 5em;
+    width: 5em;
+  }
+
+  #games_preview .title{
+    font-size: 200%;
+  }
+  
+}
+
 
 .game:hover{
   cursor: pointer;

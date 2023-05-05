@@ -1,10 +1,11 @@
   import { useNavigate } from "react-router";
   import { useState, useEffect, useRef} from "react";
   import axios from 'axios';
-  import SignOut from  '../components/Signout';
   import logo from '../assets/Juan_Logo.svg';
   import UserCard from "../components/UserCard";
   import '../styles/FriendsPage.css';
+import { fetchToken } from "../Auth";
+import DropdownMenu from "../components/DropdownMenu";
 
   export default function FriendPage() {
     const navigate = useNavigate();
@@ -21,7 +22,8 @@
       return String(item[1]).toLowerCase().includes(query.toLowerCase())
     })
 
-    const token = localStorage.getItem("auth_token")
+    const token = fetchToken()
+
     const config = {
       headers: {
         'Authorization' : `Bearer ${token}`
@@ -67,17 +69,14 @@
     return (
       <>
         <header>
-            <nav id="nav_content">
+            <nav className="nav_content">
                 <img alt="logo" src={logo} onClick={()=>navigate('/')}/>
                 <h1 className='title'>Añade amigos</h1>
-                <div id="user_bar">
-                  <SignOut/>
-                </div>
+                <DropdownMenu image={logo} />
             </nav>
         </header>
 
-        <button className="backButton" onClick={()=>navigate('/profile')}>&lt;-</button>
-        <section className="searchSection">
+        <main className="searchSection">
           <div className="friendAdd">
                 <form onSubmit={onSubmit}>
                   <input
@@ -106,7 +105,7 @@
                 <UserCard params={userFound}/>
               :<></>}
             </div>
-        </section>
+        </main>
         
       </>
     );

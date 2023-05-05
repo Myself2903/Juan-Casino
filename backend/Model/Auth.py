@@ -4,7 +4,6 @@ from jose import jwt, JWTError
 from passlib.context import CryptContext
 from datetime import datetime, timedelta
 from Model.dao.UserDAO import UserDAO
-from Model.dao.ImageDAO import ImageDAO
 
 SECRET_KEY  = '40sasldkjwd2123bvquweo0pimsañpoqweim' 
 ALGORITHM = "HS256"

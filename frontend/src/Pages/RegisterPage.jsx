@@ -43,8 +43,8 @@ export default function Register(){
     return(
         <>
         <header>
-            <nav id="nav_content">
-                <img alt="logo" src={logo} onClick={()=>navigate('/')}/>
+            <nav className="nav_content">
+                <img alt="logo" src={logo} onClick={()=>navigate('/')} className="logo"/>
                 <h1 className='title'>¡Registrate!</h1>
             </nav>
         </header>

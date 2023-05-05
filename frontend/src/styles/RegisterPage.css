@@ -1,4 +1,8 @@
 
+.nav_content .logo:hover{
+    cursor: pointer;
+}
+
 .background{
     background-color: #111111;
     background-image: url("../assets/background.png");

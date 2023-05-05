@@ -2,12 +2,12 @@ import { useNavigate } from "react-router";
 import { useState, useEffect } from "react";
 import axios from 'axios';
 import '../styles/ProfilePage.css';
-import SignOut from  '../components/Signout';
 import logo from '../assets/Juan_Logo.svg';
 import man from '../assets/JuanTriste.svg';
 import Edit from '../components/EditUser';
 import UserCard from "../components/UserCard";
-
+import DropdownMenu from "../components/DropdownMenu"
+import { fetchToken } from "../Auth";
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ export default function Profile() {
   //test access
   // const url = 'http://127.0.0.1:8000'
   const urlExtension = '/profile'
-  const token = localStorage.getItem("auth_token")
+  const token = fetchToken()
   const [userData, setuserData] = useState([])
   const [userFriends, setUserFriends] = useState([])
   const instance = axios.create({
@@ -44,6 +44,8 @@ export default function Profile() {
     })
     .catch(error =>{
       console.log("error: "+ error)
+      localStorage.removeItem('auth_token');
+      navigate("/")
     })
   },[])
   
@@ -63,16 +65,14 @@ export default function Profile() {
   return (
     <>
       <header>
-          <nav id="nav_content">
-              <img alt="logo" src={logo} onClick={()=>navigate('/')}/>
+          <nav className="nav_content">
+              <img alt="logo" src={logo} onClick={()=>navigate('/')} className="logo"/>
               <h1 className='title'>Perfil de usuario</h1>
-              <div id="user_bar">
-                <SignOut/>
-              </div>
+              <DropdownMenu image={userData.picture}/>
           </nav>
       </header>
 
-      <div className="profilePage">
+      <main className="profilePage">
         
         <h2>Tarjeta de usuario</h2>
 
@@ -102,7 +102,7 @@ export default function Profile() {
           </div>
             <button className="button" onClick={()=>navigate('/friends')}>Añadir amigos</button>
           </div>
-      </div>
+      </main>
     </>
   );
 }

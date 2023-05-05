@@ -16,11 +16,6 @@ export default function Login(){
 
     const navigate = useNavigate() 
 
-    const loadTime = () => {
-        navigate('/register')
-
-    }
-
     //json structure need for query
     const [loginForm, setLoginForm] = useState({
         username: "",
@@ -34,7 +29,6 @@ export default function Login(){
     //login verification function
     const login = async(event) => {
         event.preventDefault(); //prevent page to reload
-        console.log(loginForm); //shows query params
         
         //check for not empty
         if(loginForm.username == ""){ 
@@ -61,9 +55,6 @@ export default function Login(){
             }
         })
         .then(response => {
-            console.log(response)    
-            console.log(response.data.access_token, "response.data.token");
-
             //save token in local storage
             if (response.data.access_token) {
                 localStorage.setItem("auth_token", response.data.access_token)  //token
