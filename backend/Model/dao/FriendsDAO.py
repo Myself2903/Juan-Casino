@@ -5,7 +5,7 @@ from Model.dao.UserDAO import UserDAO
 class FriendsDAO():
     conn = DataSource().conn
 
-    def getFriends(self, iduser: int):
+    def getFriends(self, iduser: int, accepted: bool):
         with self.conn.cursor() as cur:
             cur.execute("""
                 select 
@@ -22,13 +22,14 @@ class FriendsDAO():
                                     then iduser1
                             end as iduser
                         from friends
-                        where iduser1 = %(id)s or iduser2 =%(id)s
+                        where (iduser1 = %(id)s or iduser2 =%(id)s)
+                        and accepted = %(accepted)s
                     ) as friends on "user".iduser = friends.iduser
                 join image on "user".idimage = image.idimage
-            """, {'id': iduser})
+            """, {'id': iduser, 'accepted': accepted})
             
             return cur.fetchall()
-        
+    
         
     def addFriend(self, iduserRequest: int, iduserRequested):
         with self.conn.cursor() as cur:

@@ -39,7 +39,11 @@ async def deleteProfile(user: User = Depends(auth_user)):
 
 @router.get("/profile/friends")
 async def getFriends(iduser: int):
-    return await fo.getFriends(iduser)
+    return await fo.getFriends(iduser, True)
+
+@router.get("/profile/pendingFriends")
+async def getPedingFriends(user: User = Depends(auth_user)):
+    return await fo.getFriends(user[0], False)
 
 @router.get("/profile/areFriends")
 async def areFriends(iduser: int, user: User = Depends(auth_user)):
