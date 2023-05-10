@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, Body
 from Model.entity.User import User
 from Model.Auth import auth_user
-from Model.UserOperation import update as updateUser, updatePassword as updPass, delete , updateCoins as updCoins, getUsers as getusr
+import Model.UserOperation as usrOp
 import Model.FriendOperation as fo
 from datetime import date
 
@@ -12,24 +12,28 @@ async def profile(user: User = Depends(auth_user)): #return profile info. It req
     return user
 
 @router.get("/users")
-async def getUsers():
-    return await getusr()
+async def getUsers(user: User = Depends(auth_user)):
+    return await usrOp.getUsers(user[0])
+
+@router.get("/profile/getImage")
+async def getUserImage(user: User = Depends(auth_user)):
+    return await usrOp.getUserImage(user[0])
 
 @router.put("/profile/update")
 async def updateProfile(username: str = Body(...), surname: str = Body(...), name: str = Body(...), birthdate: date = Body(...), user: User = Depends(auth_user)):
-    return await updateUser(user[0] , username, surname, name ,birthdate)
+    return await usrOp.update(user[0] , username, surname, name ,birthdate)
 
 @router.put("/profile/updatepassword")
 async def updatePassword(newPassword: str, user: User = Depends(auth_user)):
-    return await updPass(user['iduser'] , newPassword)
+    return await usrOp.updatePassword(user['iduser'] , newPassword)
 
 @router.put("/profile/coins")
 async def updateCoins(amount: int, user: User = Depends(auth_user)):
-    return await updCoins(amount,user['coins'], user['iduser'])
+    return await usrOp.updateCoins(amount,user['coins'], user['iduser'])
 
 @router.delete("/profile/delete")
 async def deleteProfile(user: User = Depends(auth_user)):
-    return await delete(user['iduser'])
+    return await usrOp.delete(user['iduser'])
 
 #friends router
 
@@ -37,15 +41,19 @@ async def deleteProfile(user: User = Depends(auth_user)):
 async def getFriends(iduser: int):
     return await fo.getFriends(iduser)
 
+@router.get("/profile/areFriends")
+async def areFriends(iduser: int, user: User = Depends(auth_user)):
+    return await fo.areFriends(iduser, user[0])
+
 
 @router.post("/profile/friends/new")
-async def newFriend(iduserRequested: int, userRequest: User = Depends(auth_user)): #first arg usr to add as friend, second the one who sent it
-    return await fo.addFriend(userRequest['iduser'], iduserRequested)
+async def newFriend(request_data: dict= Body(...), userRequest: User = Depends(auth_user)): #first arg usr to add as friend, second the one who sent it
+    return await fo.addFriend(userRequest[0], request_data.get('iduserRequested'))
 
 @router.delete("/profile/friends/delete")
-async def deleteFriend(iduser2: int, iduser1: User = Depends(auth_user)):
-    return await fo.deleteFriend(iduser1['iduser'], iduser2)
+async def deleteFriend(request_data: dict = Body(...), iduser1: User = Depends(auth_user)):
+    return await fo.deleteFriend(iduser1[0], request_data.get("iduserDeleted"))
 
 @router.post("/profile/friends/accept")
 async def acceptFriendship(iduser2: int, iduser1: User = Depends(auth_user)):
-    return await fo.acceptFrienship(iduser1['iduser'], iduser2)
+    return await fo.acceptFrienship(iduser1[0], iduser2)

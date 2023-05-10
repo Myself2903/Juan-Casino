@@ -36,5 +36,34 @@
 
 .userInfo p{
     font-size: x-large;
-    
+    margin: 0.5em;
+}
+
+.areFriends{
+    color: rgba(2, 131, 2, 0.866);    
+}
+
+.friendRequest{
+    margin: 2px;
+    border: solid 2px green;
+    background-color: #bfff00;
+}
+
+.friendRequest:hover{
+    border: 2px solid green;
+    color: black;
+    background-color: rgba(72, 222, 117, 0.866);
+}
+
+
+.friendRemove{
+    margin: 2px;
+    border: solid 2px red;
+    background-color: #ffa600;
+}
+
+.friendRemove:hover{
+    border: solid 2px red;
+    color: black;
+    background-color: rgba(222, 72, 72, 0.866);
 }

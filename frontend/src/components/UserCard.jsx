@@ -12,6 +12,7 @@ const UserCard = props => {
                 {params['name'] && params['surname'] ? <p>{params['name']} {params['surname']}</p> : <></>}
                 {params['email'] ? <p>{params['email']}</p>: <></>}
                 <p>{params['birthdate']}</p>
+                {params['areFriends'] ? params['areFriends']: <></>}
             </div>
         </div>
     )

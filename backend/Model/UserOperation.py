@@ -26,9 +26,13 @@ async def register(newUser: UserDB = Depends()):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="cuenta ya existente")
 
 
-async def getUsers():
+async def getUsers(iduserSearching: int):
     conn = UserDAO()
-    return conn.getUsers()
+    return conn.getUsers(iduserSearching)
+
+async def getUserImage(iduser: int):
+    conn = UserDAO()
+    return conn.getUserShow(iduser)[-1]
 
 async def update(idUser: int, username: str, surname: str, name: str, birthdate: date):
     conn = UserDAO()

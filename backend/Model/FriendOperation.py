@@ -38,6 +38,10 @@ async def addFriend(iduserRequest: int, iduserRequested: int):
         conn.addFriend(iduserRequest, iduserRequested)
         raise HTTPException(status_code=status.HTTP_200_OK, detail = "solicitud enviada")
 
+async def areFriends(iduser1:int , iduser2: int):
+    conn = FriendsDAO()
+    return conn.areFriends(iduser1, iduser2)
+
 async def deleteFriend(iduser1: int, iduser2: int):
     conn = FriendsDAO()
 

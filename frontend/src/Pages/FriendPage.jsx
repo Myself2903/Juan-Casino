@@ -13,7 +13,8 @@ import DropdownMenu from "../components/DropdownMenu";
     const url = 'https://juan-casino-backend.onrender.com'
     //test access
     // const url = 'http://127.0.0.1:8000'
-    const urlExtension = '/users'
+    const urlExtension = '/profile'
+    const [usrImage, setUsrImage] = useState("")
     const [data, setData] = useState([])
     const [userFound, setUserFound] = useState([])
     const [displayData, setDisplayData] = useState(false)
@@ -26,6 +27,7 @@ import DropdownMenu from "../components/DropdownMenu";
 
     const config = {
       headers: {
+        'Content-Type': 'application/json',
         'Authorization' : `Bearer ${token}`
       }
     }
@@ -35,7 +37,7 @@ import DropdownMenu from "../components/DropdownMenu";
     // useEffect for save data at hook
     useEffect(()=>{
       async function fetchData(){
-        await axios.get(url+urlExtension, config) //get query with token as a header config
+        await axios.get(url+"/users", config) //get query with token as a header config
         .then(response =>{
           setData(response.data)
           console.log("data:") 
@@ -45,7 +47,18 @@ import DropdownMenu from "../components/DropdownMenu";
           console.log("error: "+ error)
         })
       }
+
+      async function getImg(){
+        await axios.get(url+urlExtension+'/getImage', config)
+        .then(response =>{
+          setUsrImage(response.data)
+        })
+        .catch(error =>{
+          console.log("error: "+error)
+        })
+      }
       fetchData()
+      getImg()
     } , [])
 
 
@@ -53,26 +66,76 @@ import DropdownMenu from "../components/DropdownMenu";
       e.preventDefault()
     }
 
-    function showUserData(user){
-      searchBarRef.current.value = ''
-      setDisplayData(true)
-      setQuery("")
-      setUserFound({
-        'iduser': user[0],
-        'username': user[1],
-        'birthdate': user[2],
-        'picture': user[3]
-        }
-      )
+    async function showUserData(user){
+      await axios.get(url+urlExtension+"/areFriends",{
+          params: {
+            iduser: user[0]
+          },
+          headers: config.headers 
+        })
+        .then(response =>{
+          searchBarRef.current.value = ''
+          setDisplayData(true)
+          setQuery("")
+          let areFriends
+          if(response.data){
+            areFriends =  <div className="areFriendsContainer">
+                            <p className="areFriends"> ¡Ya son amigos!</p>
+                            <button className= "button friendRemove" onClick={()=> removeFriend(user[0])}>Eliminar amigo</button>
+                          </div> 
+          }
+          else{ areFriends = <button className="button friendRequest" onClick={() => addFriend(user[0])}>Agregar amigo</button> }
+
+          setUserFound({
+            'iduser': user[0],
+            'username': user[1],
+            'birthdate': user[2],
+            'picture': user[3],
+            'areFriends': areFriends
+            }
+          )
+          
+        })
+        .catch(error =>{
+          console.log("error: "+error)
+        })
     }
+
+    async function addFriend(iduserRequested){
+      // console.log(iduser)
+      await axios.post(url+urlExtension+"/friends/new", { iduserRequested  }, config)
+        .then(response => {
+          console.log(response.data)
+          navigate("/profile")
+        })
+        .catch(error => {
+          console.error(error.response.data)
+        });
+      
+    }
+
+    async function removeFriend(iduserDeleted){
+      await axios.delete(url+urlExtension+"/friends/delete", {
+        data: { iduserDeleted },
+        headers: config.headers,
+      })
+        .then(response => {
+          console.log(response.data);
+          navigate("/profile")
+        })
+        .catch(error => {
+          console.error(error.response.data)
+        })
+    }
+    
 
     return (
       <>
         <header>
             <nav className="nav_content">
-                <img alt="logo" src={logo} onClick={()=>navigate('/')}/>
+                <img alt="logo" src={logo} className="logo" onClick={()=>navigate('/')}/>
                 <h1 className='title'>Añade amigos</h1>
-                <DropdownMenu image={logo} />
+                <DropdownMenu image={usrImage} />
             </nav>
         </header>
 
@@ -101,9 +164,7 @@ import DropdownMenu from "../components/DropdownMenu";
             
           </div>
           <div className="userFound">
-              {displayData ? 
-                <UserCard params={userFound}/>
-              :<></>}
+              {displayData ? <UserCard params={userFound}/> : <></>}
             </div>
         </main>
         

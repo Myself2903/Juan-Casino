@@ -1,21 +1,24 @@
-import logo from '../assets/Juan_Logo.svg';
+import logo from '../assets/Juan_Logo.svg'
 import poker from '../assets/poker.jpg'
 import slots from '../assets/slots.jpg'
 import blackjack from '../assets/blackjack.jpg'
 import roulette from '../assets/roulette.jpg'
-import { useState } from 'react';
-import Login from '../components/Login';
-import Modal from '../components/Modal';
-import { useNavigate } from 'react-router-dom';
+import Login from '../components/Login'
+import Modal from '../components/Modal'
 import '../styles/MainPage.css'
-import { fetchToken } from '../Auth';
-import DropdownMenu from '../components/DropdownMenu';
+import DropdownMenu from '../components/DropdownMenu'
+import axios from 'axios'
+import { fetchToken } from '../Auth'
+import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+
 
 const MainPage = ()=>{
     const [modalShow, setModalShow] = useState(false); //hook for modal window
     const [modalParams, setModalParams] = useState([]);  //hook for params used on <Modal>
-
+    const [usrImage, setUsrImage] = useState("")
     const navigate = useNavigate(); // navigate instance
+    const token = fetchToken()
 
     const scrollGamesPreview = ()=>{
         document.getElementById('games_preview').scrollIntoView({ behavior: 'smooth' }) //scroll when clicked the main section to games preview
@@ -36,6 +39,29 @@ const MainPage = ()=>{
                      </>
         manageModal(header, description, footer)
     }
+
+    if(token){
+        async function getImg(){
+            // access on cloud
+            const url = 'https://juan-casino-backend.onrender.com'
+            //test access
+            // const url = 'http://127.0.0.1:8000'
+            const urlExtension = '/profile/getImage'
+            await axios.get(url+urlExtension, {
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization' : `Bearer ${token}`
+                }
+            })
+            .then(response =>{
+              setUsrImage(response.data)
+            })
+            .catch(error =>{
+              console.log("error: "+error.response.data)
+            })
+        }
+          getImg() 
+    }
     
     //page 
     return(
@@ -44,7 +70,7 @@ const MainPage = ()=>{
                 <nav className="nav_content">
                     <img alt="logo" src={logo} />
                     <h1 className='title'>¡Juega y Gana!</h1>
-                    {fetchToken() ?  <li><DropdownMenu image={logo}/></li> :
+                    {token ?  <DropdownMenu image={usrImage}/> :
                         <ul className="user_bar">
                             <li> <button className='button' onClick={()=>navigate('/register')}>Registrate</button></li>
                             <li><Login/></li>
@@ -92,7 +118,7 @@ const MainPage = ()=>{
                                 </div>
                             </li>
                         </ul>
-                        {fetchToken() ?  <></> :
+                        {token ?  <></> :
                             <Login/>
                         }
                     </div>

@@ -18,4 +18,5 @@ class DataSource:
 
     #close connection
     def __def__(self):
-        self.conn.close()
+        if self.conn is not None:
+            self.conn.close()

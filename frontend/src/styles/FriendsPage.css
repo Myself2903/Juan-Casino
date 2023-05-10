@@ -92,7 +92,9 @@
 
 .userFound{
     text-align: center;
-    width: 40%;
+    width: 28%;
     position: absolute;
     top: 25%;
+    padding: 1em;
 }
+

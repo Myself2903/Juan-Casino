@@ -17,11 +17,23 @@ const DropdownMenu = props =>{
         case 'ver amigos':
           navigate("/friends")
           break;
-        case 'cerrar sesión':
+
+        case 'juegos':
+          navigate("/")
+          setTimeout( () => {
+            const gamesPreviewSection = document.getElementById('games_preview');
+            if (gamesPreviewSection) {
+              gamesPreviewSection.scrollIntoView({ behavior: 'smooth' });
+            }
+          }, 500)
+          break;
+        
+          case 'cerrar sesión':
           localStorage.removeItem("auth_token") 
           localStorage.removeItem("auth_token_type")
           navigate("/");
           break;
+        
         default:
           break;
       }
@@ -37,6 +49,7 @@ const DropdownMenu = props =>{
           <ul className="dropdown-items">
             <li className="dropdown-item" onClick={() => handleOptionClick('ver perfil')}>Ver perfil</li>
             <li className="dropdown-item" onClick={() => handleOptionClick('ver amigos')}>Ver amigos</li>
+            <li className="dropdown-item" onClick={() => handleOptionClick('juegos')}>Juegos</li>
             <li className="dropdown-item" onClick={() => handleOptionClick('cerrar sesión')}>Cerrar sesión</li>
           </ul>
         )}

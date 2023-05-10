@@ -13,6 +13,11 @@ import '../styles/Login.css'
 export default function Login(){
     const [showModal, setShowModal] = useState(false) // Modal hook
     const [showLoading, setShowLoading] = useState(false) //loading screen
+    // access on cloud
+    const url = 'https://juan-casino-backend.onrender.com'
+    //test access
+    // const url = 'http://127.0.0.1:8000'
+    const urlExtension = '/login'
 
     const navigate = useNavigate() 
 
@@ -49,7 +54,7 @@ export default function Login(){
 
         //API call
         await axios
-        .post("https://juan-casino-backend.onrender.com/login", loginForm, {
+        .post(url+urlExtension, loginForm, {
             headers:{
                 'Content-Type': 'application/x-www-form-urlencoded'
             }

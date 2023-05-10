@@ -7,7 +7,7 @@ class UserDAO():
 
 
     #get all users. (Not include password)
-    def getUsers(self):
+    def getUsers(self, iduserSearching: int):
         with self.conn.cursor() as cur:
             data = cur.execute("""
                 SELECT           
@@ -17,7 +17,8 @@ class UserDAO():
                     image.src
                 FROM "user"
                 JOIN image ON "user".idimage = image.idimage
-            """)
+                where iduser != %s
+            """, (iduserSearching,))
             
             return cur.fetchall()
            

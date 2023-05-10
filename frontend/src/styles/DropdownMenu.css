@@ -16,7 +16,6 @@
     padding: 6px;
     width: 4em !important ;
     height: 4em !important;
-    border: 3px solid black;
 }
   
 .dropdown-items {
@@ -44,3 +43,15 @@
     background-color: #eee;
 }
   
+.areFriends{
+    color: rgba(2, 131, 2, 0.866);    
+}
+
+.friendRequest{
+    border: solid 2px black;
+    background-color: #ffc800;;
+}
+
+.friendRequest:hover{
+    border: 1px solid #0f0f0f;
+}

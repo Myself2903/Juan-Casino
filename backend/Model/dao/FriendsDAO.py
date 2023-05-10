@@ -54,7 +54,7 @@ class FriendsDAO():
                 'iduser1': iduser1,
                 'iduser2': iduser2
             })
-
+            
             if cur.fetchone() is None:
                 return False
             else: return True
