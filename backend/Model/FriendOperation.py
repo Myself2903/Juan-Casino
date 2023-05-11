@@ -4,7 +4,7 @@ from Model.dao.UserDAO import UserDAO
 from Model.entity.User import User
 
 
-async def getFriends(iduser: int, accepted: bool):
+async def getFriends(iduser: int):
     conn = FriendsDAO()
     userConn = UserDAO()
 
@@ -12,7 +12,12 @@ async def getFriends(iduser: int, accepted: bool):
     if userConn.getUserShow(iduser) is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="usuario no registrado")
 
-    return conn.getFriends(iduser, accepted)
+    return conn.getFriends(iduser)
+
+#userPerspectives references the userposition in friends table, 1 is for sent  2 is for received
+async def getPendingFriends(iduser:int, userPerspective: int):
+    conn = FriendsDAO()
+    return conn.getPendingFriends(iduser, userPerspective)
 
 async def addFriend(iduserRequest: int, iduserRequested: int):
     conn = FriendsDAO()
