@@ -1,7 +1,7 @@
-import '../styles/Modal.css'
+import '../styles/Loading.css'
 import { CSSTransition } from 'react-transition-group'
 import ReactDOM from 'react-dom';
-import load1 from '../assets/LoadingBack.svg'
+import load1 from '../assets/PlaceholderLoadingScreen.gif'
 import load2 from '../assets/Roulete.svg'
 
 /* 
@@ -19,9 +19,9 @@ const Loading = props =>{
          unmountOnExit
          timeout={{enter: 0, exit:300}}
          >
-            <div className={'modal'}>
-                <div className="modal-content" onClick={e => e.stopPropagation()}>
-                    <img src={load2}></img>
+            <div className={'loading'}>
+                <div className="loading-content" onClick={e => e.stopPropagation()}>
+                    {/*<img src={load2}></img>*/}
                     <img src={load1}></img>
                 </div>
             </div>

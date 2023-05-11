@@ -6,12 +6,14 @@ import logo from '../assets/Juan_Logo.svg';
 import decoration from '../assets/slotMachine.svg';
 import leftchips from '../assets/greenPurpleChips.svg';
 import rightchips from '../assets/orangeBlueChips.svg';
+import Loading from '../components/Loading'
 
 export default function Register(){
     const navigate = useNavigate();
     const url = 'https://juan-casino-backend.onrender.com'
     // const url = 'http://127.0.0.1:8000'
     const urlExtension = '/register'
+    const [showLoading, setShowLoading] = useState(false) //loading screen
     const [userData, setUserData] = useState({
         username: "",
         name: "",
@@ -24,6 +26,7 @@ export default function Register(){
 
     const register = async(event)=>{
         event.preventDefault()
+        setShowLoading(true)
         //API Call
         await axios
         .post(url+urlExtension, userData, { 
@@ -38,6 +41,7 @@ export default function Register(){
         .catch(error =>{
             console.log(error)
         })
+        setShowLoading(false)
     }
     
     return(
@@ -57,7 +61,13 @@ export default function Register(){
 
             <div className="registerItems">
                 <form className="registerForm">
-                    <div className="field">   
+                    <div className="field">
+                    <Loading
+                        show = {showLoading}
+                        onClose = {() => {
+                            setShowLoading(false)
+                        }}
+                    /> 
                         <label>Nombres: </label>
                     </div>
                     <div className="field"> 

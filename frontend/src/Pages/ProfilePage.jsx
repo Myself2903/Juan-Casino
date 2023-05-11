@@ -19,6 +19,9 @@ export default function Profile() {
   const token = fetchToken()
   const [userData, setuserData] = useState([])
   const [userFriends, setUserFriends] = useState([])
+  const [pendingRequests, setPendingRequests] = useState([])
+  const [pendingRecieved, setPendingRecieved] = useState([])
+
   const instance = axios.create({
     headers: {
       'Content-Type': 'application/json',
@@ -59,8 +62,42 @@ export default function Profile() {
         setUserFriends(response.data)
         console.log(response.data)
       })
+      instance.get(url+urlExtension+'/pendingFriends/sent', {
+        
+      }).then(response =>{
+        setPendingRequests(response.data)
+        console.log(response.data)
+      })
+      instance.get(url+urlExtension+'/pendingFriends/recieved', {
+        
+      }).then(response =>{
+        setPendingRecieved(response.data)
+        console.log(response.data)
+      })
     }
   },[userData])
+
+  function reload(){
+    window.location.reload(false);
+  }
+
+  {/* Still not tested
+  function acceptRequest(sender){
+    console.log(sender)
+    instance.get(url+urlExtension+'/friends/accept', {
+      params:{
+        iduser: sender
+      }
+    }).then({
+    
+    })
+    .catch(error =>{
+      console.log("error: "+ error)
+      localStorage.removeItem('auth_token');
+      navigate("/")
+    })
+    window.location.reload(false);
+  }*/}
 
   return (
     <>
@@ -94,13 +131,57 @@ export default function Profile() {
               <img id="sadHorse" src={man} alt="caballo triste" />
             </div>
             :
-            <p>i do have friends c:</p>
+            <div className="friendsGrid">
+              {userFriends.map((friend) => (
+                    <UserCard params={{
+                      'iduser': friend[0],
+                      'username': friend[1],
+                      'birthdate': friend[2],
+                      'picture': friend[3]
+                      }}/>)
+                  )}
+                  {/*<UserCard params={}/>*/}
+            </div>
           }
 
-          <div className="friends">
+          <button className="button" onClick={()=>navigate('/friends')}>Añadir amigos</button>
 
+          <div className="requests">
+            <div className="sentRequests">
+              <h2>Solicitudes enviadas</h2>
+              {pendingRequests.length == 0 ? <>
+              <h3>No hay solicitudes pendientes</h3>
+              </> : 
+                  <div>
+                    {pendingRequests.map(item => (
+                        <div key={item[0]} className="requestData">
+                          <img className="userImage" src= {item[3]} alt="user image"/>
+                          {item[1]}<label className="userID">#{item[0]}</label>
+                          <button className="deny" onClick={reload}>Eliminar</button>
+                        </div>
+                    ))}
+                  </div>
+                }
+            </div>
+
+            <div className="incomingRequests">
+              <h2>Solicitudes recibidas</h2>
+              {pendingRecieved.length == 0 ? <>
+                <h3>No hay solicitudes pendientes</h3>
+              </> : 
+                  <div>
+                    {pendingRecieved.map(item => (
+                        <div key={item[0]} className="requestData">
+                          <img className="userImage" src= {item[3]} alt="user image"/>
+                          {item[1]}<label className="userID">#{item[0]}</label>
+                          <button className="confirm">Aceptar</button> {/*onClick={acceptRequest(item[0])}*/}
+                          <button className="deny">Eliminar</button>
+                        </div>
+                    ))}
+                  </div>
+                }
+            </div>
           </div>
-            <button className="button" onClick={()=>navigate('/friends')}>Añadir amigos</button>
           </div>
       </main>
     </>

@@ -5,6 +5,7 @@ import axios from "axios";
 import Modal from './Modal'
 import '../styles/EditUser.css'
 import qs from 'qs'
+import Loading from './Loading'
 
 
 //Guide: https://dev.to/oyedeletemitope/login-authentication-with-react-and-fastapi-397b
@@ -12,7 +13,7 @@ import qs from 'qs'
 
 export default function Edit(){
     const [showModal, setShowModal] = useState(false) // Modal hook
-
+    const [showLoading, setShowLoading] = useState(false) //loading screen
     const navigate = useNavigate()
     const token = localStorage.getItem("auth_token")
     const url = 'https://juan-casino-backend.onrender.com'
@@ -37,25 +38,30 @@ export default function Edit(){
     const edit = async(event) => {
         event.preventDefault(); //prevent page to reload
         console.log(EditUser); //shows query params
-        
+        setShowLoading(true)
+
         //check for not empty
         if(EditUser.name == ""){ 
             setNameValid(false)
+            setShowLoading(false)
             return;
         }
 
         if(EditUser.surname == ""){
             setSurnameValid(false)
+            setShowLoading(false)
             return;
         }
 
         if(EditUser.username == ""){
             setUsernameValid(false)
+            setShowLoading(false)
             return;
         }
 
         if(EditUser.birthdate == ""){
             setBirthdateValid(false)
+            setShowLoading(false)
             return;
         }
         
@@ -93,6 +99,9 @@ export default function Edit(){
                     break;
             }
         });
+    setShowLoading(false)
+    setShowModal(false)
+    window.location.reload(false);
     }
     
     //modal header
@@ -117,7 +126,6 @@ export default function Edit(){
                                         onChange={(e) => setEditUser({...EditUser, name: e.target.value})} //save name info in hook.
                                         className={`formInput ${nameValid ? '': 'invalidInput'}`} //apply styles when error message
                                         placeholder= 'Nombre'
-                                        defaultValue={"Juan"}
                                     />
                                     
                                     <input
@@ -162,6 +170,12 @@ export default function Edit(){
                     setBirthdateValid(true)
                 }}
                 params ={{'header': header, 'content': content, 'footer': footer}}
+            />
+            <Loading
+            show = {showLoading}
+                    onClose = {() => {
+                    setShowLoading(false)
+                }}
             />
         </div>
     )

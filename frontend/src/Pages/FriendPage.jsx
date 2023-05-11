@@ -4,8 +4,9 @@
   import logo from '../assets/Juan_Logo.svg';
   import UserCard from "../components/UserCard";
   import '../styles/FriendsPage.css';
-import { fetchToken } from "../Auth";
-import DropdownMenu from "../components/DropdownMenu";
+  import { fetchToken } from "../Auth";
+  import DropdownMenu from "../components/DropdownMenu";
+  import Loading from "../components/Loading";
 
   export default function FriendPage() {
     const navigate = useNavigate();
@@ -14,6 +15,7 @@ import DropdownMenu from "../components/DropdownMenu";
     //test access
     // const url = 'http://127.0.0.1:8000'
     const urlExtension = '/profile'
+    const [showLoading, setShowLoading] = useState(false) //loading screen
     const [usrImage, setUsrImage] = useState("")
     const [data, setData] = useState([])
     const [userFound, setUserFound] = useState([])
@@ -66,6 +68,10 @@ import DropdownMenu from "../components/DropdownMenu";
       e.preventDefault()
     }
 
+    function hideUserData(){
+      setDisplayData(false)
+    }
+
     async function showUserData(user){
       await axios.get(url+urlExtension+"/areFriends",{
           params: {
@@ -103,6 +109,7 @@ import DropdownMenu from "../components/DropdownMenu";
 
     async function addFriend(iduserRequested){
       // console.log(iduser)
+      setShowLoading(true)
       await axios.post(url+urlExtension+"/friends/new", { iduserRequested  }, config)
         .then(response => {
           console.log(response.data)
@@ -111,7 +118,7 @@ import DropdownMenu from "../components/DropdownMenu";
         .catch(error => {
           console.error(error.response.data)
         });
-      
+        setShowLoading(false)
     }
 
     async function removeFriend(iduserDeleted){
@@ -141,6 +148,12 @@ import DropdownMenu from "../components/DropdownMenu";
 
         <main className="searchSection">
           <div className="friendAdd">
+                <Loading
+                    show = {showLoading}
+                    onClose = {() => {
+                    setShowLoading(false)
+                  }}
+                />
                 <form onSubmit={onSubmit}>
                   <input
                     value={query}

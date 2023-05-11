@@ -77,7 +77,7 @@ class FriendsDAO():
             cur.execute("""
                 update friends set
                     accepted = true
-                where (iduser1 = %(iduser1)s and iduser2 = %(iduser2)s)  
+                where iduser1 = %(iduser1)s and iduser2 = %(iduser2)s  
                         or (iduser2= %(iduser1)s and iduser1 = %(iduser2)s)
             """,{
                 'iduser1': iduser1,

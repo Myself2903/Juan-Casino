@@ -1,9 +1,16 @@
 
-.header{
+.edit-header{
     padding: 0;
     margin: 0;
     text-align: center;
     font-size: xx-large;
+}
+
+.edit-content{
+    width: 100%;
+    background-color: gold;
+    border-radius: 1.5em;
+    color: white;
 }
 
 .editForm{
@@ -45,13 +52,6 @@
 .formInput::placeholder{
     color: #999;
     font-style: italic;
-}
-
-.forgotPassword{
-    color: rgb(53, 115, 201);
-    font-size: small;
-    margin-top: 0px;
-    margin-bottom: 10px;
 }
 
 .footer{

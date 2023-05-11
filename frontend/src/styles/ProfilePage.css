@@ -91,23 +91,77 @@
     height: 6em;
     width: 6em;
     background-color: white;
-    border-radius: 50%;
+    border-radius: 0.5em;
     padding: 2px;
 }
 
 .friendInfo{
     width: 12em;
-    font-size: 1.8em;
+    font-size: 1.5em;
     display: flex;
-    flex-direction: column;
     margin: 0.1em 0;
+    text-align: center;
 }
 
-.friendInfo h4{
-    color: rgba(0, 0, 0, 0.6);
-    margin: 0;
+.friendsGrid{
+    display: grid;
+    grid-template-columns: 40% 40%;
+    gap: 10%;
+    margin: 10%;
 }
 
-.friendInfo p{
-    margin: 0;
+.requests{
+    display: flex;
+    justify-content: space-around;
+}
+
+.requests h3{
+    color: #eec170;
+}
+
+.sentRequests{
+ width: 50%;
+}
+
+.incomingRequests{
+ width: 50%;
+}
+
+.requestData{
+    width: 80%;
+    height: 3em;
+    margin: 1em;
+    padding: 1em;
+    background-color: rgba(0, 0, 0, 0.2);
+    font-size: 22px;
+    color: black;
+    vertical-align: middle;
+}
+
+.confirm{
+    border: transparent;
+    background-color: #bfff00;
+    height: max-content;
+    margin-left: 1em;
+    font-size: small;
+    font-weight: bold;
+}
+
+.confirm:hover{
+    color: black;
+    background-color: rgba(72, 222, 117, 0.866);
+}
+
+.deny{
+    border: transparent;
+    background-color: #ffa600;;
+    height: max-content;
+    margin-left: 1em;
+    font-size: small;
+    font-weight: bold;
+}
+
+.deny:hover{
+    color: black;
+    background-color: rgba(222, 72, 72, 0.866);
 }
