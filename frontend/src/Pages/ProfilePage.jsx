@@ -68,7 +68,7 @@ export default function Profile() {
         setPendingRequests(response.data)
         console.log(response.data)
       })
-      instance.get(url+urlExtension+'/pendingFriends/recieved', {
+      instance.get(url+urlExtension+'/pendingFriends/received', {
         
       }).then(response =>{
         setPendingRecieved(response.data)
@@ -77,27 +77,20 @@ export default function Profile() {
     }
   },[userData])
 
-  function reload(){
+  const acceptFriendship = idfriendAccept=>{
+    instance.post(url + urlExtension + "/friends/accept", {idfriendAccept})
+    .then(response =>{ console.log(response); reload()  })
+    .catch(err => console.log("error: " + err))
     window.location.reload(false);
   }
 
-  {/* Still not tested
-  function acceptRequest(sender){
-    console.log(sender)
-    instance.get(url+urlExtension+'/friends/accept', {
-      params:{
-        iduser: sender
-      }
-    }).then({
-    
-    })
-    .catch(error =>{
-      console.log("error: "+ error)
-      localStorage.removeItem('auth_token');
-      navigate("/")
-    })
+  const deleteFriend = idfriendDelete=>{
+    instance.delete(url + urlExtension + "/friends/delete", {data: idfriendDelete})
+    .then(response =>{ console.log(response); reload()  })
+    .catch(err => console.log("error: " + err))
     window.location.reload(false);
-  }*/}
+  }
+    //window.location.reload(false);
 
   return (
     <>
@@ -157,7 +150,7 @@ export default function Profile() {
                         <div key={item[0]} className="requestData">
                           <img className="userImage" src= {item[3]} alt="user image"/>
                           {item[1]}<label className="userID">#{item[0]}</label>
-                          <button className="deny" onClick={reload}>Eliminar</button>
+                          <button className="deny" onClick={() => deleteFriend(item[0])}>Eliminar</button>
                         </div>
                     ))}
                   </div>
@@ -174,8 +167,8 @@ export default function Profile() {
                         <div key={item[0]} className="requestData">
                           <img className="userImage" src= {item[3]} alt="user image"/>
                           {item[1]}<label className="userID">#{item[0]}</label>
-                          <button className="confirm">Aceptar</button> {/*onClick={acceptRequest(item[0])}*/}
-                          <button className="deny">Eliminar</button>
+                          <button className="confirm" onClick={() => acceptFriendship(item[0])}>Aceptar</button> {/* onClick={() => acceptRequest(item[0])} */}
+                          <button className="deny" onClick={() => deleteFriend(item[0])}>Eliminar</button>
                         </div>
                     ))}
                   </div>

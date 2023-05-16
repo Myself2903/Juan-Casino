@@ -59,9 +59,10 @@ async def newFriend(request_data: dict= Body(...), userRequest: User = Depends(a
     return await fo.addFriend(userRequest[0], request_data.get('iduserRequested'))
 
 @router.delete("/profile/friends/delete")
-async def deleteFriend(request_data: dict = Body(...), iduser1: User = Depends(auth_user)):
-    return await fo.deleteFriend(iduser1[0], request_data.get("iduserDeleted"))
+async def deleteFriend(idfriendDelete: int = Body(...), iduser1: User = Depends(auth_user)):
+    return await fo.deleteFriend(iduser1[0], idfriendDelete)
 
 @router.post("/profile/friends/accept")
-async def acceptFriendship(iduser1: int, iduser2: User = Depends(auth_user)):
-    return await fo.acceptFrienship(iduser1, iduser2[0])
+async def acceptFriendship(request_data: dict = Body(...), iduser2: User = Depends(auth_user)):
+    print(request_data.get("idfriendAccept"))
+    return await fo.acceptFrienship(request_data.get("idfriendAccept"), iduser2[0])
