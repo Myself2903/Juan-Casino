@@ -10,14 +10,10 @@ import '../styles/Login.css'
 //Guide: https://dev.to/oyedeletemitope/login-authentication-with-react-and-fastapi-397b
 //Guide: https://www.youtube.com/watch?v=fN_jxm_47xI
 
-export default function Login(){
-    const [showModal, setShowModal] = useState(false) // Modal hook
+export default function Login({ showModal, setShowModal, redirection }){
     const [showLoading, setShowLoading] = useState(false) //loading screen
-    // access on cloud
-    const url = 'https://juan-casino-backend.onrender.com'
-    //test access
-    // const url = 'http://127.0.0.1:8000'
-    const urlExtension = '/login'
+    const URL = import.meta.env.VITE_BASE_URL
+    const URLEXTENSION = '/login'
 
     const navigate = useNavigate() 
 
@@ -54,7 +50,7 @@ export default function Login(){
 
         //API call
         await axios
-        .post(url+urlExtension, loginForm, {
+        .post(URL+URLEXTENSION, loginForm, {
             headers:{
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
@@ -65,7 +61,7 @@ export default function Login(){
                 localStorage.setItem("auth_token", response.data.access_token)  //token
                 localStorage.setItem("auth_token_type", response.data.token_type) //token type
                 setShowLoading(false)
-                navigate("/profile"); //navigate to profile page
+                navigate(`/${redirection}`)
             }
         })
         .catch((error) => {
@@ -128,25 +124,21 @@ export default function Login(){
 
     return (
         <div>
-            <button className='button' onClick={() => setShowModal(true)}>
-                Inicia sesión
-            </button>
-            <Modal
-                show = {showModal}
-                onClose = {() => {
-                    setShowModal(false)
-                    setEmailValid(true)
-                    setPasswordValid(true)
-                }}
-                params ={{'header': header, 'content': content, 'footer': footer}}
-            />
-            <Loading
-                show = {showLoading}
-                onClose = {() => {
-                    setShowLoading(false)
-                }}
-            />
+          <Modal
+            show={showModal}
+            onClose={() => {
+              setShowModal(false);
+              setEmailValid(true);
+              setPasswordValid(true);
+            }}
+            params={{ header: header, content: content, footer: footer }}
+          />
+          <Loading
+            show={showLoading}
+            onClose={() => {
+              setShowLoading(false);
+            }}
+          />
         </div>
-    )
-
+      );
 }

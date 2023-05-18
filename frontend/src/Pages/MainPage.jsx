@@ -9,13 +9,15 @@ import '../styles/MainPage.css'
 import DropdownMenu from '../components/DropdownMenu'
 import axios from 'axios'
 import { fetchToken } from '../Auth'
-import { useNavigate } from 'react-router-dom'
+import { redirect, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 
 
 const MainPage = ()=>{
     const [modalShow, setModalShow] = useState(false); //hook for modal window
     const [modalParams, setModalParams] = useState([]);  //hook for params used on <Modal>
+    const [showLogin, setShowLogin] = useState(false)
+    const [loginRedirection, setLoginRedirection] = useState("")
     const [usrImage, setUsrImage] = useState("")
     const navigate = useNavigate(); // navigate instance
     const token = fetchToken()
@@ -29,25 +31,28 @@ const MainPage = ()=>{
         setModalParams({'header': header, 'content': content, 'footer': footer})
         setModalShow(true)        
     }
+    const handleOpenLoginModal = redirection => {
+        setModalShow(false);
+        setShowLogin(true);
+        setLoginRedirection(redirection)
+        console.log(loginRedirection)
+      };
 
     //specific set form for game Modal
     const showModalGame = (game, description)=>{ //Show game info with Modal
         let header = <h2 className="modal-title">{game}</h2>
         let footer = <>
                         <button className="button" onClick={()=> setModalShow(false)} >Cerrar</button>
-                        <a className="button play" onClick={()=>console.log(`${game} no disponible`)}>Jugar</a> 
+                        <a className="button play" onClick={() => handleOpenLoginModal(game)}>Jugar</a> 
                      </>
         manageModal(header, description, footer)
     }
 
     if(token){
         async function getImg(){
-            // access on cloud
-            const url = 'https://juan-casino-backend.onrender.com'
-            //test access
-            // const url = 'http://127.0.0.1:8000'
+            const URL = import.meta.env.VITE_BASE_URL
             const urlExtension = '/profile/getImage'
-            await axios.get(url+urlExtension, {
+            await axios.get(URL+urlExtension, {
                 headers: {
                   'Content-Type': 'application/json',
                   'Authorization' : `Bearer ${token}`
@@ -73,7 +78,7 @@ const MainPage = ()=>{
                     {token ?  <DropdownMenu image={usrImage}/> :
                         <ul className="user_bar">
                             <li> <button className='button' onClick={()=>navigate('/register')}>Registrate</button></li>
-                            <li><Login/></li>
+                            <li><button className="button login" onClick={()=>handleOpenLoginModal("profile")}>Iniciar sesión</button></li>
                         </ul>
                     }
                     
@@ -91,38 +96,48 @@ const MainPage = ()=>{
                     <div id="game_selector">
                         <ul id="game_list">
                             <li>
-                                <div className='game' onClick={()=> showModalGame("Póker", "Crea la mejor combinación de 5 cartas para ganar. 2 - 4 jugadores. Se necesitan mínimo 25 fichas para jugar.")}>
+                                <div className='game' onClick={
+                                    token ? ()=>navigate('/Poker') :
+                                    ()=> showModalGame("Poker", "Crea la mejor combinación de 5 cartas para ganar. 2 - 4 jugadores. Se necesitan mínimo 25 fichas para jugar.")}>
                                     <img alt="poker" src={poker}></img><br />
                                     <span>Poker</span>
                                 </div>
                             </li>
                                     
                             <li>
-                                <div className='game' onClick={()=> showModalGame("Tragamonedas", "Consigue una de las combinaciones posibles para ganar fichas. 1 jugador. Se necesitan mínimo 2 fichas para jugar.")}>
+                                <div className='game' onClick={
+                                    token ? ()=>navigate('/Tragamonedas') :
+                                    ()=> showModalGame("Tragamonedas", "Consigue una de las combinaciones posibles para ganar fichas. 1 jugador. Se necesitan mínimo 2 fichas para jugar.")}>
                                     <img alt="tragamonedas" src={slots}></img><br />
                                     <span>Tragamonedas</span>
                                 </div>
                             </li>
 
                             <li>
-                                <div className='game' onClick={()=> showModalGame("Blackjack", "Intenta acercarte lo más posible hasta el 21 sin pasarte. 2 - 4 jugadores. Se necesitan mínimo 25 fichas para jugar.")}>
+                                <div className='game' onClick={
+                                    token ? ()=>navigate('/Blackjack') : 
+                                    ()=> showModalGame("Blackjack", "Intenta acercarte lo más posible hasta el 21 sin pasarte. 2 - 4 jugadores. Se necesitan mínimo 25 fichas para jugar.")}>
                                     <img alt="blackjack" src={blackjack}></img><br />
                                     <span>Blackjack</span>  
                                 </div>
                             </li>
 
                             <li>
-                                <div className='game' onClick={()=> showModalGame("Ruleta", "Atina la posición en la que se detiene la ruleta para multiplicar tu apuesta. 1 - 4 jugadores. Se necesitan mínimo 5 fichas para jugar.")}>
+                                <div className='game' onClick={
+                                    token ? ()=>navigate('/Ruleta') :
+                                    ()=> showModalGame("Ruleta", "Atina la posición en la que se detiene la ruleta para multiplicar tu apuesta. 1 - 4 jugadores. Se necesitan mínimo 5 fichas para jugar.")
+                                    }>
                                     <img alt="ruleta" src={roulette}></img><br />
                                     <span>Ruleta</span>  
                                 </div>
                             </li>
                         </ul>
                         {token ?  <></> :
-                            <Login/>
+                            <button className="button login" onClick={()=>handleOpenLoginModal("profile")}>Iniciar sesión</button>
                         }
                     </div>
                     <Modal show={modalShow} onClose={()=> setModalShow(false)} params={modalParams} />
+                    <Login showModal={showLogin} setShowModal={setShowLogin} redirection={loginRedirection}/>
                 </section>
             </main>
 

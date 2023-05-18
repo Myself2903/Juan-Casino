@@ -5,6 +5,8 @@ import MainPage from './Pages/MainPage'
 import Register from './Pages/RegisterPage'
 import Profile from './Pages/ProfilePage'
 import Friend from './Pages/FriendPage'
+import Construction from './Pages/ConstructionPage'
+import Slots from './Pages/SlotPage'
 
 function App() {
 
@@ -40,6 +42,34 @@ function App() {
           path="/register"
           element = {
             <Register />
+          }
+        />
+
+        <Route 
+          path="/Tragamonedas"
+          element = {
+            <Construction />
+          }
+        />
+
+        <Route 
+          path="/Poker"
+          element = {
+            <Construction />
+          }
+        />
+
+        <Route 
+          path="/Blackjack"
+          element = {
+            <Construction />
+          }
+        />
+
+        <Route 
+          path="/Ruleta"
+          element = {
+            <Construction />
           }
         />
       </Routes>

@@ -16,9 +16,8 @@ export default function Edit(){
     const [showLoading, setShowLoading] = useState(false) //loading screen
     const navigate = useNavigate()
     const token = localStorage.getItem("auth_token")
-    const url = 'https://juan-casino-backend.onrender.com'
-    // const url = 'http://127.0.0.1:8000'
-    const urlExtension = '/profile/update'
+    const URL = import.meta.env.VITE_BASE_URL
+    const URLEXTENSION = '/profile/update'
 
     //json structure need for query
     const [EditUser, setEditUser] = useState({
@@ -73,7 +72,7 @@ export default function Edit(){
         
         //API call
         await axios
-        .put(url + urlExtension, EditUser
+        .put(URL + URLEXTENSION, EditUser
         , {
             headers:{
                 'Content-Type': 'application/json',

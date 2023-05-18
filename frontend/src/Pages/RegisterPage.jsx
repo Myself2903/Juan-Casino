@@ -10,9 +10,8 @@ import Loading from '../components/Loading'
 
 export default function Register(){
     const navigate = useNavigate();
-    const url = 'https://juan-casino-backend.onrender.com'
-    // const url = 'http://127.0.0.1:8000'
-    const urlExtension = '/register'
+    const URL = import.meta.env.VITE_BASE_URL
+    const URLEXTENSION = '/register'
     const [showLoading, setShowLoading] = useState(false) //loading screen
     const [userData, setUserData] = useState({
         username: "",
@@ -29,14 +28,16 @@ export default function Register(){
         setShowLoading(true)
         //API Call
         await axios
-        .post(url+urlExtension, userData, { 
+        .post(URL+URLEXTENSION, userData, { 
             headers:{
                 'Content-Type': 'application/json'
             }
         })
         .then(response =>{
+            if (response.status == 201){
                 console.log(response)
                 navigate(("/"))
+            }
         })
         .catch(error =>{
             console.log(error)

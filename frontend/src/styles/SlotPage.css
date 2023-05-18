@@ -1,0 +1,102 @@
+/* body{
+    background-image: url('../img/slot/background.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    margin: 0px;
+}
+
+h2{
+    color: #cfb94bff;
+} */
+
+#mainPage{
+    display: flex;
+}
+
+#reels{
+    width: 60%;
+    align-items: center;
+}
+
+#spinSlot{
+    background-image: url('../img/slot/spinButton.png');
+    height: 220px;
+    background-size: 90%;
+    background-repeat: no-repeat;
+    background-position: 20px 20px;
+    display: flex;
+}
+
+#currentChips{
+    color: white;
+    font-size: 35px;
+    position: sticky;
+    left: 50px;
+    padding-top: 63px;
+}
+
+#spin{
+    width: 172px;
+    height: 172px;
+    position: absolute;
+    top: 27.28em;
+    left: 35.96em;
+}
+
+#prizeBank{
+    width: 36%;
+    background-color: #650d79ff;
+    border: solid 5px #ffdb59ff;
+    padding: 5px;
+}
+
+#prizeSign{
+    height: 25px;
+}
+
+#prizeList{
+    display: grid;
+    grid-template-columns: 45% 45%;
+    color: white;
+}
+
+.prize{
+    display: flex;
+    font-size: 25px;
+    background-repeat: no-repeat;
+}
+
+.prizeFruit{
+    width: 25px;
+    height: 25px;
+}
+
+#fruit1{
+    width: 200px;
+    height: 200px;
+    border: solid 3px;
+    margin: 10px;
+    padding: 5px;
+}
+
+#fruit2{
+    width: 200px;
+    height: 200px;
+    border: solid 3px;
+    margin: 10px;
+    padding: 5px;
+}
+
+#fruit3{
+    width: 200px;
+    height: 200px;
+    border: solid 3px;
+    margin: 10px;
+    padding: 5px;
+}
+
+#slotReels{
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
+    margin: 0px;
+}

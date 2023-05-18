@@ -1,0 +1,29 @@
+.construction{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.constructionImage{
+    margin-top: 2em;
+    width: 40em;
+    height: auto;
+}
+
+.pageConstructionMessage{
+    font-weight: bold;
+    color: beige;
+}
+
+.masterBuilderImage{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 20em;
+    height: auto;
+    padding: 0;
+    margin: 0;
+    /* background-color: aliceblue; */
+}

@@ -1,13 +1,23 @@
 import "../styles/DropdownMenu.css"
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
 
 const DropdownMenu = props =>{
     const [isOpen, setIsOpen] = useState(false);
     const navigate = useNavigate() 
-    const toggleMenu = () => {
-      setIsOpen(!isOpen);
-    }
+    
+    let menuRef = useRef()
+
+    useEffect(()=>{
+      const handler = e => {
+        if (!menuRef.current.contains(e.target)){  setIsOpen(false); }
+      } 
+
+      document.addEventListener("mousedown", handler)
+      return()=>{
+        document.removeEventListener("mousedown", handler)
+      }
+    })
   
     const handleOptionClick = (option) => {
       switch (option) {
@@ -41,18 +51,16 @@ const DropdownMenu = props =>{
     }
   
     return (
-      <div className="user-dropdown-menu">
-        <button className="dropdown-trigger" onClick={toggleMenu}>
+      <div className="user-dropdown-menu" ref ={menuRef}>
+        <button className="dropdown-trigger" onClick={()=>setIsOpen(!isOpen)}>
           <img className="user-dropdown-menu-image" src={props.image} alt="User" />
         </button>
-        {isOpen && (
-          <ul className="dropdown-items">
-            <li className="dropdown-item" onClick={() => handleOptionClick('ver perfil')}>Ver perfil</li>
+        <ul className= {`dropdown-items ${isOpen ? 'active': 'inactive'}`}>
+            <li className="dropdown-item first-item" onClick={() => handleOptionClick('ver perfil')}>Ver perfil</li>
             <li className="dropdown-item" onClick={() => handleOptionClick('ver amigos')}>Ver amigos</li>
             <li className="dropdown-item" onClick={() => handleOptionClick('juegos')}>Juegos</li>
-            <li className="dropdown-item" onClick={() => handleOptionClick('cerrar sesión')}>Cerrar sesión</li>
-          </ul>
-        )}
+            <li className="dropdown-item last-item" onClick={() => handleOptionClick('cerrar sesión')}>Cerrar sesión</li>
+        </ul>
       </div>
     );
 }

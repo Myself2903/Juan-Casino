@@ -10,11 +10,8 @@
 
   export default function FriendPage() {
     const navigate = useNavigate();
-    // access on cloud
-    const url = 'https://juan-casino-backend.onrender.com'
-    //test access
-    // const url = 'http://127.0.0.1:8000'
-    const urlExtension = '/profile'
+    const URL = import.meta.env.VITE_BASE_URL
+    const URLEXTENSION = '/profile'
     const [showLoading, setShowLoading] = useState(false) //loading screen
     const [usrImage, setUsrImage] = useState("")
     const [data, setData] = useState([])
@@ -39,7 +36,7 @@
     // useEffect for save data at hook
     useEffect(()=>{
       async function fetchData(){
-        await axios.get(url+"/users", config) //get query with token as a header config
+        await axios.get(URL+"/users", config) //get query with token as a header config
         .then(response =>{
           setData(response.data)
           console.log("data:") 
@@ -51,7 +48,7 @@
       }
 
       async function getImg(){
-        await axios.get(url+urlExtension+'/getImage', config)
+        await axios.get(URL+URLEXTENSION+'/getImage', config)
         .then(response =>{
           setUsrImage(response.data)
         })
@@ -73,7 +70,7 @@
     }
 
     async function showUserData(user){
-      await axios.get(url+urlExtension+"/areFriends",{
+      await axios.get(URL+URLEXTENSION+"/areFriends",{
           params: {
             iduser: user[0]
           },
@@ -110,7 +107,7 @@
     async function addFriend(iduserRequested){
       // console.log(iduser)
       setShowLoading(true)
-      await axios.post(url+urlExtension+"/friends/new", { iduserRequested  }, config)
+      await axios.post(URL+URLEXTENSION+"/friends/new", { iduserRequested  }, config)
         .then(response => {
           console.log(response.data)
           navigate("/profile")
@@ -122,7 +119,7 @@
     }
 
     async function removeFriend(iduserDeleted){
-      await axios.delete(url+urlExtension+"/friends/delete", {
+      await axios.delete(URL+URLEXTENSION+"/friends/delete", {
         data: { iduserDeleted },
         headers: config.headers,
       })

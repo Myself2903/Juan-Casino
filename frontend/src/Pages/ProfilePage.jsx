@@ -11,11 +11,8 @@ import { fetchToken } from "../Auth";
 
 export default function Profile() {
   const navigate = useNavigate();
-  // access on cloud
-  const url = 'https://juan-casino-backend.onrender.com'
-  //test access
-  // const url = 'http://127.0.0.1:8000'
-  const urlExtension = '/profile'
+  const URL = import.meta.env.VITE_BASE_URL
+  const URLEXTENSION = '/profile'
   const token = fetchToken()
   const [userData, setuserData] = useState([])
   const [userFriends, setUserFriends] = useState([])
@@ -32,7 +29,7 @@ export default function Profile() {
 
   // useEffect for save userData at hook
   useEffect(()=>{
-    instance.get(url+urlExtension) //get query with token as a header config
+    instance.get(URL+URLEXTENSION) //get query with token as a header config
     .then(response =>{
       const info = response.data
       setuserData({
@@ -54,7 +51,7 @@ export default function Profile() {
   
   useEffect(()=>{
     if(userData.length != 0){
-      instance.get(url+urlExtension+'/friends', {
+      instance.get(URL+URLEXTENSION+'/friends', {
         params:{
           iduser: userData['iduser']
         }
@@ -62,13 +59,13 @@ export default function Profile() {
         setUserFriends(response.data)
         console.log(response.data)
       })
-      instance.get(url+urlExtension+'/pendingFriends/sent', {
+      instance.get(URL+URLEXTENSION+'/pendingFriends/sent', {
         
       }).then(response =>{
         setPendingRequests(response.data)
         console.log(response.data)
       })
-      instance.get(url+urlExtension+'/pendingFriends/received', {
+      instance.get(URL+URLEXTENSION+'/pendingFriends/received', {
         
       }).then(response =>{
         setPendingRecieved(response.data)
@@ -78,14 +75,14 @@ export default function Profile() {
   },[userData])
 
   const acceptFriendship = idfriendAccept=>{
-    instance.post(url + urlExtension + "/friends/accept", {idfriendAccept})
+    instance.post(URL + URLEXTENSION + "/friends/accept", {idfriendAccept})
     .then(response =>{ console.log(response); reload()  })
     .catch(err => console.log("error: " + err))
     window.location.reload(false);
   }
 
   const deleteFriend = idfriendDelete=>{
-    instance.delete(url + urlExtension + "/friends/delete", {data: idfriendDelete})
+    instance.delete(URL + URLEXTENSION + "/friends/delete", {data: idfriendDelete})
     .then(response =>{ console.log(response); reload()  })
     .catch(err => console.log("error: " + err))
     window.location.reload(false);
