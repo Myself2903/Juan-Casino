@@ -127,7 +127,8 @@ export default function Profile() {
                       'iduser': friend[0],
                       'username': friend[1],
                       'birthdate': friend[2],
-                      'picture': friend[3]
+                      'picture': friend[3],
+                      'areFriends': <button className= "button friendRemove" onClick={()=> deleteFriend(friend[0])}>Eliminar amigo</button>
                       }}/>)
                   )}
                   {/*<UserCard params={}/>*/}

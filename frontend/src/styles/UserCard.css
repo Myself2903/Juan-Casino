@@ -67,3 +67,23 @@
     color: black;
     background-color: rgba(222, 72, 72, 0.866);
 }
+
+@media (max-width: 480px) {
+    .userCard{
+        width: 70%;
+        margin:1em;
+    }
+    .userInfo p {
+        font-size: small;
+    }
+
+    .friendRemove, .friendRequest{
+        width: 100%;
+        height: auto;
+        font-size: small;
+    }
+    .profilePicture{
+        width: 5em;
+        height: auto;
+    }
+}

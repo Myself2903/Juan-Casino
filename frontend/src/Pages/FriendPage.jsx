@@ -7,6 +7,7 @@
   import { fetchToken } from "../Auth";
   import DropdownMenu from "../components/DropdownMenu";
   import Loading from "../components/Loading";
+  import { getUsrImage } from '../Functions'
 
   export default function FriendPage() {
     const navigate = useNavigate();
@@ -24,19 +25,20 @@
 
     const token = fetchToken()
 
-    const config = {
+    const instance = axios.create({
       headers: {
         'Content-Type': 'application/json',
-        'Authorization' : `Bearer ${token}`
+        'Authorization': 'Bearer ' + token
       }
-    }
+    });    
+    
     const searchBarRef = useRef(null)
 
 
     // useEffect for save data at hook
     useEffect(()=>{
       async function fetchData(){
-        await axios.get(URL+"/users", config) //get query with token as a header config
+        await instance.get(URL+"/users") //get query with token as a header config
         .then(response =>{
           setData(response.data)
           console.log("data:") 
@@ -47,17 +49,13 @@
         })
       }
 
-      async function getImg(){
-        await axios.get(URL+URLEXTENSION+'/getImage', config)
-        .then(response =>{
-          setUsrImage(response.data)
-        })
-        .catch(error =>{
-          console.log("error: "+error)
-        })
-      }
+      const fetchUserImage = async () => {
+        const image = await getUsrImage();
+        setUsrImage(image);
+      };
+  
+      fetchUserImage();
       fetchData()
-      getImg()
     } , [])
 
 
@@ -70,11 +68,10 @@
     }
 
     async function showUserData(user){
-      await axios.get(URL+URLEXTENSION+"/areFriends",{
+      await instance.get(URL+URLEXTENSION+"/areFriends",{
           params: {
             iduser: user[0]
-          },
-          headers: config.headers 
+          }
         })
         .then(response =>{
           searchBarRef.current.value = ''
@@ -84,7 +81,7 @@
           if(response.data){
             areFriends =  <div className="areFriendsContainer">
                             <p className="areFriends"> ¡Ya son amigos!</p>
-                            <button className= "button friendRemove" onClick={()=> removeFriend(user[0])}>Eliminar amigo</button>
+                            <button className= "button friendRemove" onClick={()=> deleteFriend(user[0])}>Eliminar amigo</button>
                           </div> 
           }
           else{ areFriends = <button className="button friendRequest" onClick={() => addFriend(user[0])}>Agregar amigo</button> }
@@ -104,10 +101,10 @@
         })
     }
 
-    async function addFriend(iduserRequested){
+    const addFriend = iduserRequested =>{
       // console.log(iduser)
       setShowLoading(true)
-      await axios.post(URL+URLEXTENSION+"/friends/new", { iduserRequested  }, config)
+      instance.post(URL+URLEXTENSION+"/friends/new", { iduserRequested })
         .then(response => {
           console.log(response.data)
           navigate("/profile")
@@ -118,18 +115,11 @@
         setShowLoading(false)
     }
 
-    async function removeFriend(iduserDeleted){
-      await axios.delete(URL+URLEXTENSION+"/friends/delete", {
-        data: { iduserDeleted },
-        headers: config.headers,
-      })
-        .then(response => {
-          console.log(response.data);
-          navigate("/profile")
-        })
-        .catch(error => {
-          console.error(error.response.data)
-        })
+
+    const deleteFriend = idfriendDelete=>{
+      instance.delete(URL + URLEXTENSION + "/friends/delete", {data: idfriendDelete})
+      .then(response =>{ console.log(response); navigate("/profile")  })
+      .catch(error => console.log("error: " + error))
     }
     
 
@@ -151,7 +141,7 @@
                     setShowLoading(false)
                   }}
                 />
-                <form onSubmit={onSubmit}>
+                <form onSubmit={onSubmit} className="searchBar">
                   <input
                     value={query}
                     onChange= {e => setQuery(e.target.value)}

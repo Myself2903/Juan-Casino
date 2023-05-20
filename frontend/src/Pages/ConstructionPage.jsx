@@ -3,9 +3,10 @@ import construction from '../assets/construction.svg'
 import masterBuilder from '../assets/JuanMaestroDeObra.svg'
 import DropdownMenu from '../components/DropdownMenu'
 import axios from 'axios'
+import {getUsrImage} from '../Functions'
 import { fetchToken } from '../Auth'
 import { useNavigate } from 'react-router-dom'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import '../styles/ConstructionPage.css'
 
 export default function ConstructionPage(){
@@ -13,32 +14,21 @@ export default function ConstructionPage(){
     const [usrImage, setUsrImage] = useState("")
     const token = fetchToken()
     const navigate = useNavigate();
+    useEffect(() => {
+        const fetchUserImage = async () => {
+          const image = await getUsrImage();
+          setUsrImage(image);
+        };
+    
+        fetchUserImage();
+      }, []);
 
-    if(token){
-        async function getImg(){
-            const URL = import.meta.env.VITE_BASE_URL
-            const urlExtension = '/profile/getImage'
-            await axios.get(URL+urlExtension, {
-                headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization' : `Bearer ${token}`
-                }
-            })
-            .then(response =>{
-              setUsrImage(response.data)
-            })
-            .catch(error =>{
-              console.log("error: "+error.response.data)
-            })
-        }
-          getImg() 
-    }
-
+    // setUsrImage(getUsrImage)
     return(
         <>
             <header>
                 <nav className="nav_content">
-                    <img alt="logo" src={logo} />
+                    <img alt="logo" className="logo" src={logo} />
                     <h1 className='title'>Página en Construcción</h1>
                     <DropdownMenu image={usrImage}/>
                 </nav>

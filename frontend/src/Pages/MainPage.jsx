@@ -10,7 +10,8 @@ import DropdownMenu from '../components/DropdownMenu'
 import axios from 'axios'
 import { fetchToken } from '../Auth'
 import { redirect, useNavigate } from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { getUsrImage } from '../Functions'
 
 
 const MainPage = ()=>{
@@ -49,23 +50,14 @@ const MainPage = ()=>{
     }
 
     if(token){
-        async function getImg(){
-            const URL = import.meta.env.VITE_BASE_URL
-            const urlExtension = '/profile/getImage'
-            await axios.get(URL+urlExtension, {
-                headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization' : `Bearer ${token}`
-                }
-            })
-            .then(response =>{
-              setUsrImage(response.data)
-            })
-            .catch(error =>{
-              console.log("error: "+error.response.data)
-            })
-        }
-          getImg() 
+        useEffect(() => {
+            const fetchUserImage = async () => {
+              const image = await getUsrImage();
+              setUsrImage(image);
+            };
+        
+            fetchUserImage();
+          }, []);
     }
     
     //page 
@@ -73,7 +65,7 @@ const MainPage = ()=>{
         <>
             <header>
                 <nav className="nav_content">
-                    <img alt="logo" src={logo} />
+                    <img alt="logo" className="logo" src={logo} />
                     <h1 className='title'>¡Juega y Gana!</h1>
                     {token ?  <DropdownMenu image={usrImage}/> :
                         <ul className="user_bar">

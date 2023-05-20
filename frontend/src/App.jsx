@@ -7,6 +7,7 @@ import Profile from './Pages/ProfilePage'
 import Friend from './Pages/FriendPage'
 import Construction from './Pages/ConstructionPage'
 import Slots from './Pages/SlotPage'
+import Roulette from './Pages/RoulettePage'
 
 function App() {
 
@@ -69,7 +70,7 @@ function App() {
         <Route 
           path="/Ruleta"
           element = {
-            <Construction />
+            <Roulette />
           }
         />
       </Routes>

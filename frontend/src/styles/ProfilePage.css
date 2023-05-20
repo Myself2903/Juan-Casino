@@ -107,7 +107,7 @@
     display: grid;
     grid-template-columns: 40% 40%;
     gap: 10%;
-    margin: 10%;
+    margin: 2%;
 }
 
 .requests{
@@ -119,12 +119,9 @@
     color: #eec170;
 }
 
-.sentRequests{
- width: 50%;
-}
 
-.incomingRequests{
- width: 50%;
+.sentRequests, .incomingRequests{
+    width: 50%;
 }
 
 .requestData{
@@ -135,12 +132,18 @@
     background-color: rgba(0, 0, 0, 0.2);
     font-size: 22px;
     color: black;
-    vertical-align: middle;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.requestData button{
+    margin: 1em;
 }
 
 .confirm{
     border: transparent;
-    background-color: #bfff00;
+    background-color: rgb(128, 201, 17);
     height: max-content;
     margin-left: 1em;
     font-size: small;
@@ -164,4 +167,23 @@
 .deny:hover{
     color: black;
     background-color: rgba(222, 72, 72, 0.866);
+}
+
+
+@media(max-width: 480px){
+    .userCardContainer{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    
+
+    .friendsGrid{
+        margin: 0 10%;
+        grid-template-columns: 20em;
+        gap: 0;
+        /* margin:0; */
+    }
 }

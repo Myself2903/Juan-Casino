@@ -97,3 +97,38 @@
     padding: 1em;
 }
 
+@media (max-width: 480px) {
+    .friendAdd{
+        display:flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .searchBar{
+        width: auto;
+    }
+    
+    .userData{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        padding: 0;
+        width: min-content;
+        height: min-content;
+    }
+    .userData div{
+        width: 18.4em;
+        margin: 0;
+        padding: 1em 0;
+        /* background-color: green; */
+    }
+
+    .userFound{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+    }
+}
