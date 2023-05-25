@@ -48,6 +48,7 @@ export default function Login({ showModal, setShowModal, redirection }){
         setEmailValid(true)
         setPasswordValid(true)
 
+        setShowLoading(true)
         //API call
         await axios
         .post(URL+URLEXTENSION, loginForm, {
@@ -113,7 +114,7 @@ export default function Login({ showModal, setShowModal, redirection }){
                                     </label>
                                     <a className='forgotPassword'>¿Olvidaste tu contraseña?</a>
 
-                                    <button className='button loginButton' type='submit' onClick={()=>setShowLoading(true)}>Iniciar sesión </button>
+                                    <button className='button loginButton' type='submit'>Iniciar sesión </button>
                                 </form>
                             </div>
                         )}

@@ -10,6 +10,23 @@
     background-color: #232c33;
 }
 
+.delete{
+    background-color: rgb(182, 41, 41);
+    border-radius: 20px;
+    font-size: x-large;
+    font-weight: bold;
+    padding: 2px 7px;
+    height: min-content;
+    width: max-content;
+    border: 1px solid rgb(182, 41, 41);
+    color: black;
+}
+
+.delete:hover{
+    background-color: rgb(218, 19, 19);
+    border: 1px solid rgb(218, 19, 19);
+}
+
 .profilePage h2{
     color: white;
     font-weight: bold;
@@ -157,7 +174,7 @@
 
 .deny{
     border: transparent;
-    background-color: #ffa600;;
+    background-color: #ffa600;
     height: max-content;
     margin-left: 1em;
     font-size: small;

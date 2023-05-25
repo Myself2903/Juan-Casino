@@ -40,12 +40,22 @@
     font-weight: bold;
 }
 
-.field input{
+.fieldInput{
     height: 2em;
     width: 20em;
-    background-color: #f8e5ee;
+    background-color: #f0dee6;
     color: black;
-    border-image: url(../assets/goldBorder.png) 30 stretch;
+    border: gold solid 3px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.invalidRegister{
+    height: 2em;
+    width: 20em;
+    background-color: pink;
+    color: black;
+    border: red solid 3px;
     border-radius: 8px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
@@ -58,6 +68,7 @@
     text-align: center;
     margin-top: 3em;
     margin-bottom: 3em;
+    color: white;
 }
 
 .chipsDecoration{

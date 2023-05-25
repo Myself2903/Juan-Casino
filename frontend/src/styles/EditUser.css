@@ -58,6 +58,29 @@
     text-align: center;
 }
 
+.footerDelete{
+    display: flex;
+    justify-content: space-around;
+}
+
+.deleteButton{
+    border-radius: 20px;
+    font-size: x-large;
+    font-weight: bold;
+    padding: 2px 7px;
+    background-color: #ffa600;
+    height: min-content;
+    width: max-content;
+    border: 1px solid #ffa600;
+    color: black;
+}
+
+.deleteButton:hover{
+    font-weight: bold;
+    background-color: rgba(222, 72, 72, 0.866);
+    border: 1px solid rgba(222, 72, 72, 0.866);
+}
+
 .registerButton{
     border-radius: 10px;
     width: 8em;

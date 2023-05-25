@@ -8,6 +8,7 @@ import Edit from '../components/EditUser';
 import UserCard from "../components/UserCard";
 import DropdownMenu from "../components/DropdownMenu"
 import { fetchToken } from "../Auth";
+import DeleteUser from "../components/DeleteUser";
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -108,6 +109,7 @@ export default function Profile() {
         </div>
         <div className="editButton">
           <Edit/>
+          <DeleteUser/>
         </div>
 
         <div className="friendsTittle">

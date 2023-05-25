@@ -9,13 +9,17 @@ h2{
     color: #cfb94bff;
 } */
 
-#mainPage{
+.slotGame{
+    padding-top: 3em;
+    padding-bottom: 3em;
     display: flex;
+    background-color: #9f2042;
 }
 
 #reels{
     width: 60%;
     align-items: center;
+    margin-top: 6%;
 }
 
 #spinSlot{
@@ -25,29 +29,33 @@ h2{
     background-repeat: no-repeat;
     background-position: 20px 20px;
     display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
 }
 
 #currentChips{
     color: white;
     font-size: 35px;
-    position: sticky;
-    left: 50px;
+
+
     padding-top: 63px;
 }
 
 #spin{
     width: 172px;
     height: 172px;
-    position: absolute;
-    top: 27.28em;
-    left: 35.96em;
+
+    
 }
 
 #prizeBank{
     width: 36%;
-    background-color: #650d79ff;
+    background-color: #232c33;
+    background-image: url("../assets/background.png");
     border: solid 5px #ffdb59ff;
     padding: 5px;
+    text-align: center;
 }
 
 #prizeSign{
@@ -58,6 +66,7 @@ h2{
     display: grid;
     grid-template-columns: 45% 45%;
     color: white;
+    text-align: left;
 }
 
 .prize{
@@ -74,7 +83,7 @@ h2{
 #fruit1{
     width: 200px;
     height: 200px;
-    border: solid 3px;
+    border: solid 3px gold;
     margin: 10px;
     padding: 5px;
 }
@@ -82,7 +91,7 @@ h2{
 #fruit2{
     width: 200px;
     height: 200px;
-    border: solid 3px;
+    border: solid 3px gold;
     margin: 10px;
     padding: 5px;
 }
@@ -90,7 +99,7 @@ h2{
 #fruit3{
     width: 200px;
     height: 200px;
-    border: solid 3px;
+    border: solid 3px gold;
     margin: 10px;
     padding: 5px;
 }

@@ -49,7 +49,7 @@ function App() {
         <Route 
           path="/Tragamonedas"
           element = {
-            <Construction />
+            <Slots />
           }
         />
 
