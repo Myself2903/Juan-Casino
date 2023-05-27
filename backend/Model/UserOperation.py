@@ -58,6 +58,14 @@ async def updatePassword(idUser: int, newPassword: str):
     conn.updatePassword(idUser, password)
     raise HTTPException(status_code=status.HTTP_200_OK, detail="contraseña actualizada")
 
+async def getCoins(idUser:int):
+    conn = UserDAO()
+    coins = conn.getCoins(idUser)
+    if not coins:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="usuario no encontrado")
+        return -1
+    return coins
+
 async def updateCoins(amount:int, currentCoins:int, iduser: int):
     conn = UserDAO()
     if(type(amount) == int):

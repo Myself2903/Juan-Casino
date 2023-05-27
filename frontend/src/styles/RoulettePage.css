@@ -18,9 +18,13 @@
     align-items: center;
 }
 
-@media (max-width: 1024px){
+@media (max-width: 1444px){
     .roulette_info{
         display:flex;
+        flex-direction: column;
+    }
+    .gameController{
+        display: flex;
         flex-direction: column;
     }
 }
@@ -66,6 +70,10 @@
     background-color: #3a0770;
 }
 
+.currentCoins{
+    margin-left: 0;
+}
+
 .coins{
     font-size: x-large;
     margin: 0.5em 0.2em 0.5em 1em;
@@ -109,8 +117,56 @@
 .betBoardMaping td, .generalBetBoardMaping td{
     border: solid 4px white;
     text-align: center;
+    position:relative;
 }
 
 .betBoardMaping td, .generalBetBoardMaping td:hover{
     cursor: pointer;
+}
+
+.chipSelector{
+    display: inline-flex;
+    justify-content: center;
+}
+
+.chipContainer{
+    position: relative;
+    will-change: filter;
+    transition: filter 300ms;
+    margin: 1em;
+}
+
+.chipContainer:hover{
+    cursor: pointer;
+}
+
+.currentChip{
+    filter: drop-shadow(0 0 2em #c5ffe9)
+}
+
+.chipContainer p{
+    position: absolute;
+    top: 2.2em;
+    left: 3.3em;
+    transform: translate(-50%,-50%);
+    color: black;
+    font-size: larger;
+    font-weight: bolder;
+}
+
+.chipImage{
+    position: relative;
+    height: 8em;
+    width: 8em;
+}
+
+.betChip{
+    position: absolute;
+    width: 1.5em;
+    height: 1.5em;
+}
+
+td{
+    width: fit-content;
+    height: fit-content;
 }

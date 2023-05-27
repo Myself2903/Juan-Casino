@@ -25,15 +25,19 @@ async def updateProfile(username: str = Body(...), surname: str = Body(...), nam
 
 @router.put("/profile/updatepassword")
 async def updatePassword(newPassword: str, user: User = Depends(auth_user)):
-    return await usrOp.updatePassword(user['iduser'] , newPassword)
+    return await usrOp.updatePassword(user[0] , newPassword)
 
-@router.put("/profile/coins")
+@router.get("/profile/coins")
+async def getCoins(user: User = Depends(auth_user)):
+    return await usrOp.getCoins(user[0])
+
+@router.put("/profile/updateCoins")
 async def updateCoins(amount: int, user: User = Depends(auth_user)):
-    return await usrOp.updateCoins(amount,user['coins'], user['iduser'])
+    return await usrOp.updateCoins(amount,user[6], user[0])
 
 @router.delete("/profile/delete")
 async def deleteProfile(user: User = Depends(auth_user)):
-    return await usrOp.delete(user['iduser'])
+    return await usrOp.delete(user[0])
 
 #friends router
 

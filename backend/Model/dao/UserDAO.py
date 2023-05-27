@@ -120,6 +120,19 @@ class UserDAO():
             print(err)
 
 
+    def getCoins(self, iduser:int):
+        try:
+            with self.conn.cursor() as cur:
+                cur.execute("""
+                    Select coins
+                    from "user"
+                    where iduser = %s
+                """, (iduser,))
+                return cur.fetchone()
+        except Exception as err:
+            print(err)
+
+
     def updateCoins(self, updatedCoins:int, iduser: int):
         try:
             with self.conn.cursor() as cur:
