@@ -18,11 +18,11 @@ import '../styles/RoulettePage.css'
 
 export default function RoulettePage(){
     const [usrImage, setUsrImage] = useState("");
+    const navigate = useNavigate();
     const token = fetchToken();
-    let rouletteRef = useRef();
+    const rouletteRef = useRef();
     const URL = import.meta.env.VITE_BASE_URL
-    const [color, setColor] = useState('');
-    const [value, setValue] = useState(0);
+
     const [coins, setCoins] = useState(0);
     const [selectedCoins, setSelectedCoins] = useState(1)
     const [bet, setBet] = useState({})
@@ -41,6 +41,15 @@ export default function RoulettePage(){
 
     const chips = {1: chipRed, 5: chipBlue, 10: chipYellow, 25: chipGreen, 50: chipPurple, 100: chipOrange}
 
+    const [totalBet, setTotalBet] = useState(0)
+    const instance = axios.create({
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        }
+      });
+      
+    const [cellsBlocked, setCellsBlocked] = useState(false)
     /*
         Todo los que incluyen 18 números (negro, rojo, par, impar, primera mitad y segunda mitad) dan el doble de lo apostado
         Las columnas y las docenas dan tres veces lo apostado
@@ -57,16 +66,17 @@ export default function RoulettePage(){
     */
 
     useEffect(() => {
+        if(!token){
+            navigate("/")
+        }
+
         const fetchUserImage = async () => {
           const image = await getUsrImage();
           setUsrImage(image);
         };
         
         const getUserCoins = async() =>{
-            await axios.get(URL+'/profile/coins', {  headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-              }})
+            await instance.get(URL+'/profile/coins')
               .then(response => setCoins(response.data))
               .catch(error => console.log(error))
         }
@@ -90,15 +100,7 @@ export default function RoulettePage(){
     }
 
     const spinRoulette = ()=>{
-        rowDozen.current.style.visibility = 'hidden';
-        colDozen.current.style.visibility = 'hidden';
-        numericValues.current.forEach(element => element.style.visibility = 'hidden')
-        let childs = halfBoardBet.current.children 
-        for(let i=0; i<childs.length; i++){
-            childs[i].style.visibility = 'hidden'
-        }
-        
-
+        setCellsBlocked(true)
         const rotatedDeg = Math.floor(5000 + Math.random() * 5000);
 
         spinButton.current.style.pointerEvents = "none";
@@ -111,16 +113,26 @@ export default function RoulettePage(){
         console.log(`grados actuales: ${currentDeg}°`);
 
         const final_result = getResult(currentDeg);
-        setValue(final_result)
 
-        console.log(betType)
         console.log(bet)
-        
 
+        let color
+        if(final_result == 0){
+            color = "Verde";
+        }else if(values.indexOf(final_result)%2){ // si el elemento es par en la lista de elementos de la rueda, entonces es rojo, si no, como no es 0 entonces es negro.
+            color = "Rojo";
+        }else{
+            color = "Negro";
+        }
+            
+        console.log(`color: ${color}`)
+
+        let reward = 0
         switch(betType){
             case NUMBERBET.TYPE:
                 for(const betValue in bet){
                     if(betValue == final_result){
+                        reward = bet[betValue]["value"]*36
                         console.log(`ganaste con el numero: ${final_result}`)
                     }
                 }
@@ -129,11 +141,11 @@ export default function RoulettePage(){
             
             case DOZENBET.TYPE:
                 if (DOZENBET.FIRST12 in bet || DOZENBET.SECOND12 in bet || DOZENBET.THIRD12 in bet){
-                    
                     const resultDozen = Math.floor((final_result-1)/12);
                     for(const betValue in bet){
                         console.log("Betvalue: "+betValue+" resultDozen: "+resultDozen)
                         if(betValue == resultDozen){
+                            reward = bet[betValue]["value"]*3
                             console.log(`ganaste con el numero: ${final_result}`)
                             break;
                         }
@@ -145,6 +157,7 @@ export default function RoulettePage(){
                     for(const betValue in bet){
                         console.log("Betvalue: "+betValue+" rowDozen: "+rowDozen)
                         if((betValue+1)%3 == rowDozen){
+                           reward = bet[betValue]["value"]*3
                             console.log(`ganaste con el numero: ${final_result}`)
                             break;
                         }
@@ -157,55 +170,65 @@ export default function RoulettePage(){
                 // console.log(typeof(Object.keys(bet)[0]))
                 switch(parseInt(Object.keys(bet)[0])){
                     case HALFBOARDBET.FIRST18:
-                        console.log("entered first18")
-                        if(1<=final_result && final_result <=18){console.log(`ganaste con el numero: ${final_result}`)}
+                        if(1<=final_result && final_result <=18){
+                            reward = bet[HALFBOARDBET.FIRST18]["value"]*2
+                            console.log(`ganaste con el numero: ${final_result}`)
+                        }
                         break;
                         
                     case HALFBOARDBET.EVEN:
-                        console.log("entered even")
-                        if(!(final_result%2)){console.log(`ganaste con el numero: ${final_result}`)}
+                        if(!(final_result%2)){
+                            reward = bet[HALFBOARDBET.EVEN]["value"]*2
+                            console.log(`ganaste con el numero: ${final_result}`)
+                        }
                         break;
                     
                     case HALFBOARDBET.REDCOLOR:
-                        console.log("entered redcolor")
-                        if(values.indexOf(final_result)%2){console.log(`ganaste con el numero: ${final_result}`)}
+                        if(values.indexOf(final_result)%2){
+                            reward = bet[HALFBOARDBET.REDCOLOR]["value"]*2
+                            console.log(`ganaste con el numero: ${final_result}`)
+                        }
                         break;
                     
                     case HALFBOARDBET.BLACKCOLOR:
-                        console.log("entered blackcolor")
-                        if(!(values.indexOf(final_result)%2)){console.log(`ganaste con el numero: ${final_result}`)}
+                        if(!(values.indexOf(final_result)%2)){
+                            reward = bet[HALFBOARDBET.BLACKCOLOR]["value"]*2
+                            console.log(`ganaste con el numero: ${final_result}`)
+                        }
                         break;
 
                     case HALFBOARDBET.ODD:
-                        console.log("entered odd")
-                        if(final_result%2){console.log(`ganaste con el numero: ${final_result}`)}
+                        if(final_result%2){
+                            reward = bet[HALFBOARDBET.ODD]["value"]*2
+                            console.log(`ganaste con el numero: ${final_result}`)
+                        }
                         break;
 
                     case HALFBOARDBET.LAST18:
-                        console.log("entered last18 ")
-                        if(19<=final_result && final_result <=36){console.log(`ganaste con el numero: ${final_result}`)}
+                        if(19<=final_result && final_result <=36){
+                            reward = bet[HALFBOARDBET.LAST18]["value"]*2
+                            console.log(`ganaste con el numero: ${final_result}`)
+                        }
                         break;
                     default:
                         console.log("Ninguno")
                         break;
                 }
-
+                
         }
 
+        console.log("reward: "+reward)
+        console.log("totalbet: "+totalBet)
+
+        const amount = reward-totalBet
+        instance.put(`${URL}/profile/updateCoins`, { amount })
+        .then(response => console.log(response))
+        .catch(error => console.log(error));
+
+        setTotalBet(0)
+        
         setTimeout(()=>{
-
-
-            let color
-            if(final_result == 0){
-                color = "Verde";
-            }else if(values.indexOf(final_result)%2){ // si el elemento es par en la lista de elementos de la rueda, entonces es rojo, si no, como no es 0 entonces es negro.
-                color = "Rojo";
-            }else{
-                color = "Negro";
-            }
-            setColor(color)
-            console.log(`color: ${color}`)
-
+            setCoins(coins+reward)
             spinButton.current.style.pointerEvents = "auto";
             rouletteElement.style.transition = "none";    
             rouletteElement.style.transform = `rotate(${currentDeg}deg)`;
@@ -215,13 +238,14 @@ export default function RoulettePage(){
             colDozen.current.style.visibility = 'visible';
             halfBoardBet.current.style.visibility = 'visible';
             numericValues.current.forEach(element => element.style.visibility = 'visible')
+            let childs = halfBoardBet.current.children 
             for(let i=0; i<childs.length; i++){
                 childs[i].style.visibility = 'visible'
             }
 
             setBet({})
             setBetType(-1)
-            
+            setCellsBlocked(false)
         },10000)
     }
 
@@ -231,9 +255,26 @@ export default function RoulettePage(){
         for(let i = 1; i<=n; i+=3){
             rows.push((
                 <tr>
-                    <td ref={el => numericValues.current = [...numericValues.current, el]} onClick={(e)=>handleBet(numericValues, NUMBERBET.TYPE, i, e.target)} key={i}> {betType == NUMBERBET.TYPE && bet[i] ? bet[i]['chips']: ''}</td>
-                    <td ref={el => numericValues.current = [...numericValues.current, el]} onClick={(e)=>handleBet(numericValues, NUMBERBET.TYPE, i+1, e.target)} key={i+1}> {betType == NUMBERBET.TYPE && bet[i+1] ? bet[i+1]['chips']: ''} </td>
-                    <td ref={el => numericValues.current = [...numericValues.current, el]} onClick={(e)=>handleBet(numericValues, NUMBERBET.TYPE, i+2, e.target)} key={i+2}> {betType == NUMBERBET.TYPE && bet[i+2] ? bet[i+2]['chips']: ''} </td>
+                    <td 
+                        className={ cellsBlocked ? 'unactiveCells' : ''} 
+                        ref={el => numericValues.current = [...numericValues.current, el]} 
+                        onClick={()=>handleBet(numericValues, NUMBERBET.TYPE, i)} key={i}
+                    > 
+                            {betType == NUMBERBET.TYPE && bet[i] ? bet[i]['chips']: ''}
+                    </td>
+                    <td 
+                        className={ cellsBlocked ? 'unactiveCells' : ''} 
+                        ref={el => numericValues.current = [...numericValues.current, el]}
+                        onClick={()=>handleBet(numericValues, NUMBERBET.TYPE, i+1)} key={i+1}
+                        > 
+                            {betType == NUMBERBET.TYPE && bet[i+1] ? bet[i+1]['chips']: ''} </td>
+                    <td 
+                        className={ cellsBlocked ? 'unactiveCells' : ''} 
+                        ref={el => numericValues.current = [...numericValues.current, el]} 
+                        onClick={()=>handleBet(numericValues, NUMBERBET.TYPE, i+2)} key={i+2}
+                    > 
+                        {betType == NUMBERBET.TYPE && bet[i+2] ? bet[i+2]['chips']: ''} 
+                    </td>
                 </tr>
             ))
         }
@@ -256,54 +297,14 @@ export default function RoulettePage(){
         return generatedChips
     }
 
-    const handleBet = (betRef, selectedBetType, betValue, target) =>{        
-        if(betType == -1){
-            for(let i = 0; i< refs.length; i++){
-                if (refs[i] != betRef){
-                    if(refs[i] == numericValues){
-                        numericValues.current.forEach(element => element.style.visibility = 'hidden')
-                    }else if(refs[i] == halfBoardBet){
-                        let childs = halfBoardBet.current.children 
-                        for(let i=0; i<childs.length; i++){
-                            childs[i].style.visibility = 'hidden'
-                        }
-                    }
-                    else{
-                        refs[i].current.style.visibility = 'hidden'
-                    }
-                }
-            }
-            setBetType(selectedBetType)
-        }
-
-        if(bet[betValue]){
-            setBet({...bet, [betValue]: {value: bet[betValue]["value"]+selectedCoins, chips: genChipBet(bet[betValue]["value"]+selectedCoins, 100)}})
-        }else{
-            setBet({...bet, [betValue]: {value: selectedCoins, chips: genChipBet(selectedCoins, 100)}})
-        }
-    }
-
-    const handleHalfBoardBet = (target, bet) =>{
-        if(betType == -1){
-            let childs = halfBoardBet.current.children 
-            for(let i=0; i<childs.length; i++){
-                if(childs[i] != target){
-                    childs[i].style.visibility = 'hidden'
-                }
-            }
-        }    
-        handleBet(halfBoardBet, HALFBOARDBET.TYPE , bet, target)
-    }
-
     const genChipBet = (amount, verify) => {        
         let generatedChips = []
-        console.log(amount, verify)
         
         if(verify == 1){
             for(let i = 0; i<amount; i++){
                 generatedChips.push((
                     <img src={chips[1]} alt="apuesta de 1 moneda" className='betChip' 
-                    style={{ position: 'absolute', top: `${Math.floor(Math.random()*51 )}%`, left: `${Math.floor(Math.random()*71)}%` }}
+                    style={{ position: 'absolute', top: `${Math.floor(Math.random()*41+10 )}%`, left: `${Math.floor(Math.random()*51+11)}%` }}
                     />
                 ))
             }
@@ -314,7 +315,7 @@ export default function RoulettePage(){
                 for(let i = 0; i<check; i++){
                     generatedChips.push((
                         <img src={chips[verify]} alt={`apuesta de ${verify} monedas`} className='betChip'
-                        style={{ position: 'absolute', top: `${Math.floor(Math.random()*51 )}%`, left: `${Math.floor(Math.random()*71)}%` }}
+                        style={{ position: 'absolute', top: `${Math.floor(Math.random()*41+10 )}%`, left: `${Math.floor(Math.random()*51+11)}%` }}
                         />
                     ))
                 }
@@ -345,6 +346,51 @@ export default function RoulettePage(){
         return generatedChips
     }
 
+    const handleHalfBoardBet = (target, bet) =>{
+        if(betType == -1 && !cellsBlocked){
+            let childs = halfBoardBet.current.children 
+            for(let i=0; i<childs.length; i++){
+                if(childs[i] != target){
+                    childs[i].style.visibility = 'hidden'
+                }
+            }
+        }    
+        handleBet(halfBoardBet, HALFBOARDBET.TYPE , bet)
+    }
+
+
+    const handleBet = (betRef, selectedBetType, betValue) =>{       
+        if(coins >= selectedCoins && !cellsBlocked){
+            if(betType == -1){
+                for(let i = 0; i< refs.length; i++){
+                    if (refs[i] != betRef){
+                        if(refs[i] == numericValues){
+                            numericValues.current.forEach(element => element.style.visibility = 'hidden')
+                        }else if(refs[i] == halfBoardBet){
+                            let childs = halfBoardBet.current.children 
+                            for(let i=0; i<childs.length; i++){
+                                childs[i].style.visibility = 'hidden'
+                            }
+                        }
+                        else{
+                            refs[i].current.style.visibility = 'hidden'
+                        }
+                    }
+                }
+                setBetType(selectedBetType)
+            }
+
+            setCoins(coins-selectedCoins)
+            setTotalBet(totalBet+selectedCoins)
+
+            if(bet[betValue]){
+                setBet({...bet, [betValue]: {value: bet[betValue]["value"]+selectedCoins, chips: genChipBet(bet[betValue]["value"]+selectedCoins, 100)}})
+            }else{
+                setBet({...bet, [betValue]: {value: selectedCoins, chips: genChipBet(selectedCoins, 100)}})
+            }
+        }
+    }
+
     return (
         <>
             <header>
@@ -366,19 +412,23 @@ export default function RoulettePage(){
                             <table className='betBoardMaping'>
                                 <tbody>
                                     <tr ref={el => numericValues.current = [el]}>
-                                        <td colSpan={3} onClick={() =>handleBet(numericValues, NUMBERBET.TYPE,0)}>
+                                        <td 
+                                            colSpan={3}
+                                            className={ cellsBlocked ? 'unactiveCells' : ''}
+                                            onClick={() =>handleBet(numericValues, NUMBERBET.TYPE,0)}
+                                        >
                                             {betType == NUMBERBET.TYPE && bet[0] ? bet[0]['chips']: ''}
                                         </td>
                                     </tr>
                                     {genBetTableRow()}
                                     <tr ref={rowDozen}>
-                                        <td onClick={(e)=>handleBet(rowDozen, DOZENBET.TYPE, DOZENBET.FIRSTROW,e.target)}>
+                                        <td onClick={()=>handleBet(rowDozen, DOZENBET.TYPE, DOZENBET.FIRSTROW)}>
                                             {betType == DOZENBET.TYPE && bet[DOZENBET.FIRSTROW] ? bet[DOZENBET.FIRSTROW]['chips']: ''}
                                         </td>
-                                        <td onClick={(e)=>handleBet(rowDozen, DOZENBET.TYPE, DOZENBET.SECONDROW,e.target)}> 
+                                        <td onClick={()=>handleBet(rowDozen, DOZENBET.TYPE, DOZENBET.SECONDROW)}> 
                                             {betType == DOZENBET.TYPE && bet[DOZENBET.SECONDROW] ? bet[DOZENBET.SECONDROW]['chips']: ''}
                                         </td>
-                                        <td onClick={(e)=>handleBet(rowDozen, DOZENBET.TYPE, DOZENBET.THIRDROW,e.target)}>
+                                        <td onClick={()=>handleBet(rowDozen, DOZENBET.TYPE, DOZENBET.THIRDROW)}>
                                             {betType == DOZENBET.TYPE && bet[DOZENBET.THIRDROW] ? bet[DOZENBET.THIRDROW]['chips']: ''}
                                         </td>
                                     </tr>
@@ -387,13 +437,13 @@ export default function RoulettePage(){
                             <table className='generalBetBoardMaping'>
                                 <tbody>
                                     <tr ref={colDozen}>
-                                        <td colSpan={2} onClick={(e)=>handleBet(colDozen, DOZENBET.TYPE, DOZENBET.FIRST12,e.target)}>
+                                        <td colSpan={2} onClick={()=>handleBet(colDozen, DOZENBET.TYPE, DOZENBET.FIRST12)}>
                                             {betType == DOZENBET.TYPE && bet[DOZENBET.FIRST12] ? bet[DOZENBET.FIRST12]['chips']: ''}
                                         </td>
-                                        <td colSpan={2} onClick={(e)=>handleBet(colDozen, DOZENBET.TYPE, DOZENBET.SECOND12,e.target)}>
+                                        <td colSpan={2} onClick={()=>handleBet(colDozen, DOZENBET.TYPE, DOZENBET.SECOND12,)}>
                                             {betType == DOZENBET.TYPE && bet[DOZENBET.SECOND12] ? bet[DOZENBET.SECOND12]['chips']: ''}
                                         </td>
-                                        <td colSpan={2} onClick={(e)=>handleBet(colDozen, DOZENBET.TYPE, DOZENBET.THIRD12,e.target)}>
+                                        <td colSpan={2} onClick={()=>handleBet(colDozen, DOZENBET.TYPE, DOZENBET.THIRD12)}>
                                             {betType == DOZENBET.TYPE && bet[DOZENBET.THIRD12] ? bet[DOZENBET.THIRD12]['chips']: ''}
                                         </td>
                                     </tr>

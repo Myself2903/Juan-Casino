@@ -120,8 +120,12 @@
     position:relative;
 }
 
-.betBoardMaping td, .generalBetBoardMaping td:hover{
+.betBoardMaping td:hover, .generalBetBoardMaping td:hover{
     cursor: pointer;
+}
+
+.unactiveCells:hover{
+    cursor: default !important;
 }
 
 .chipSelector{

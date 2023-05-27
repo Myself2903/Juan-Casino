@@ -32,8 +32,8 @@ async def getCoins(user: User = Depends(auth_user)):
     return await usrOp.getCoins(user[0])
 
 @router.put("/profile/updateCoins")
-async def updateCoins(amount: int, user: User = Depends(auth_user)):
-    return await usrOp.updateCoins(amount,user[6], user[0])
+async def updateCoins(request_data: dict= Body(...), user: User = Depends(auth_user)):
+    return await usrOp.updateCoins(request_data.get("amount"),user[6], user[0])
 
 @router.delete("/profile/delete")
 async def deleteProfile(user: User = Depends(auth_user)):
