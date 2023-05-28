@@ -51,6 +51,21 @@ class UserDAO():
         except Exception as err:
             print(err)
     
+    def getUserImageId(self, iduser:int):
+        try:
+            with self.conn.cursor() as cur:
+                cur.execute("""
+                    SELECT 
+                        idimage                   
+                    FROM "user"
+                    WHERE iduser=%s
+                """, (iduser,))
+                
+                return cur.fetchone()
+            
+        except Exception as err:
+            print(err)
+
     #validation query, return only id and password
     def getUserAuth(self, email: str):
         try:
@@ -90,7 +105,7 @@ class UserDAO():
         except Exception as err:
             print(err)
 
-    def updateUser(self, iduser: int,  username: str, surname: str, name: str, birthdate: date):
+    def updateUser(self, iduser: int,  username: str, surname: str, name: str, birthdate: date, idimage:int):
         try:
             with self.conn.cursor() as cur:
                 cur.execute("""
@@ -98,9 +113,10 @@ class UserDAO():
                         name=%s, 
                         surname=%s, 
                         username=%s,
-                        birthdate=%s
+                        birthdate=%s,
+                        idimage = %s
                     WHERE idUser=%s
-                """, (name, surname, username, birthdate, iduser))
+                """, (name, surname, username, birthdate, idimage,iduser))
 
                 self.conn.commit()
         except Exception as err:

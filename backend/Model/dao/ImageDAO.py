@@ -16,3 +16,32 @@ class ImageDAO():
             
         except Exception as err:
             print(err)
+
+    def uploadImage(self, iduser: int, url: str):
+        try:
+            with self.conn.cursor() as cur:
+                cur.execute("""
+                    INSERT INTO image (src, description)
+                    VALUES (%(src)s, %(description)s)
+                    RETURNING idimage
+                """, {"src": url, "description": f'imagen de perfil del usuario {iduser}'})
+                
+                image_id = cur.fetchone()
+                self.conn.commit()                
+                return image_id 
+
+        except Exception as err:
+            print(err)
+
+    def removeImage(self, idImage: int):
+        try:
+            with self.conn.cursor() as cur:
+                cur.execute("""
+                    DELETE FROM image 
+                    where idimage = %s
+                """, (idImage,))
+            
+                self.conn.commit()                
+            
+        except Exception as err:
+            print(err)

@@ -1,6 +1,7 @@
 from fastapi import Depends, HTTPException, status
 from Model.entity.User import UserDB
 from Model.dao.UserDAO import UserDAO
+from Model.dao.ImageDAO import ImageDAO
 from datetime import date
 from dateutil.relativedelta import relativedelta
 import bcrypt
@@ -34,14 +35,34 @@ async def getUserImage(iduser: int):
     conn = UserDAO()
     return conn.getUserShow(iduser)[-1]
 
-async def update(idUser: int, username: str, surname: str, name: str, birthdate: date):
-    conn = UserDAO()
+   
+
+async def update(idUser: int, username: str, surname: str, name: str, birthdate: date, urlImage: str):
+    imageConn = ImageDAO()
+    userConn = UserDAO()
     edad = relativedelta(date.today(), birthdate).years
+
     if edad >= 10 and edad <= 80:
-        conn.updateUser(idUser,username, surname, name ,birthdate)
+        id_image = await uploadProfileImage(idUser, urlImage)
+        print(id_image)
+        id_oldImage = userConn.getUserImageId(idUser)
+        print(id_oldImage)
+        userConn.updateUser(idUser,username, surname, name ,birthdate, id_image)
+        if(id_oldImage != 1):
+            imageConn.removeImage(id_oldImage)
         raise HTTPException(status_code=status.HTTP_200_OK, detail="cuenta actualizada")
     
     raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="no cumple los requisitos minimos de edad")
+
+async def uploadProfileImage(iduser:int, url: str):
+    imageConn = ImageDAO()
+    userConn = UserDAO()
+
+    if(url != ""):
+        id_image = imageConn.uploadImage(iduser, url)
+        return id_image
+
+    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="url vacía")     
 
 async def delete(idUser: int):
     conn = UserDAO()

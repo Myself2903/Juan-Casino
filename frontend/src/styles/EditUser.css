@@ -13,6 +13,51 @@
     color: white;
 }
 
+.formContainer{
+    display: inline-flex;
+    align-items: center;
+}
+
+.editImageContainer{
+    position: relative;
+}
+
+.overlay{
+    left: -2px;
+    position:absolute;
+    width: 9em;
+    height: 9em;
+    border-radius: 50%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.3s ease;
+}
+
+.overlay label{
+    opacity: 0;
+    font-weight: bold;
+}
+
+.overlay:hover{
+    cursor: pointer;
+    background-color: rgba(62, 62, 62, 0.6);
+}
+
+.overlay:hover label{
+    cursor: pointer;
+    opacity: 1;
+}
+
+.editImage{
+    border-radius: 50%;
+    background-color: aliceblue;
+    padding: 6px;
+    width: 8em !important ;
+    height: 8em !important;
+}
+
+
 .editForm{
     display: flex;
     flex-direction: column;

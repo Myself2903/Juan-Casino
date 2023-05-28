@@ -108,7 +108,7 @@ export default function Profile() {
           <UserCard params={userData} /> 
         </div>
         <div className="editButton">
-          <Edit/>
+          <Edit params={{user: userData}}/>
           <DeleteUser/>
         </div>
 

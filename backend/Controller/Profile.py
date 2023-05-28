@@ -3,7 +3,7 @@ from Model.entity.User import User
 from Model.Auth import auth_user
 import Model.UserOperation as usrOp
 import Model.FriendOperation as fo
-from datetime import date
+from datetime import datetime
 
 router = APIRouter() #fastAPI instance
 
@@ -19,9 +19,14 @@ async def getUsers(user: User = Depends(auth_user)):
 async def getUserImage(user: User = Depends(auth_user)):
     return await usrOp.getUserImage(user[0])
 
+@router.post("/profile/uploadImage")
+async def uploadImage(request_data: dict = Body(...),user: User = Depends(auth_user)):
+    return await usrOp.uploadProfileImage(user[0], request_data.get("url"), user[-1])
+
 @router.put("/profile/update")
-async def updateProfile(username: str = Body(...), surname: str = Body(...), name: str = Body(...), birthdate: date = Body(...), user: User = Depends(auth_user)):
-    return await usrOp.update(user[0] , username, surname, name ,birthdate)
+async def updateProfile(request_data: dict = Body(...), user: User = Depends(auth_user)):
+    birthdate = datetime.strptime(request_data.get("birthdate"), '%Y-%m-%d').date()
+    return await usrOp.update(idUser=user[0] , username=request_data.get("username"), surname=request_data.get("surname"), name=request_data.get("name") , birthdate=birthdate, urlImage=request_data.get("picture"))
 
 @router.put("/profile/updatepassword")
 async def updatePassword(newPassword: str, user: User = Depends(auth_user)):
