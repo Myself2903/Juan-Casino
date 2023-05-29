@@ -51,13 +51,15 @@ class UserDAO():
         except Exception as err:
             print(err)
     
-    def getUserImageId(self, iduser:int):
+    def getUserImage(self, iduser:int):
         try:
             with self.conn.cursor() as cur:
                 cur.execute("""
                     SELECT 
-                        idimage                   
+                        image.idimage,
+                        image.src                
                     FROM "user"
+                    JOIN image ON "user".idimage = image.idimage
                     WHERE iduser=%s
                 """, (iduser,))
                 

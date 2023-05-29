@@ -1,6 +1,7 @@
 import {useNavigate} from 'react-router'
 import {fetchToken} from '../Auth'
 import { useState } from 'react'
+import { deleteUserImage } from '../firebase/config'
 import axios from "axios";
 import Modal from './Modal'
 import '../styles/EditUser.css'
@@ -8,7 +9,7 @@ import Loading from './Loading'
 
 
 
-export default function Edit(){
+export default function Edit(props){
     const [showModal, setShowModal] = useState(false) // Modal hook
     const [showLoading, setShowLoading] = useState(false) //loading screen
     const navigate = useNavigate()
@@ -25,11 +26,18 @@ export default function Edit(){
 
     //Delete function
     const deleteAccount = async() => {      
+        const data = props.params
+        if(data.image != "assets/horsePortrait.png"){
+            deleteUserImage(data.iduser)
+        }
+
         //API call
         instance.delete(URL+URLEXTENSION)
         .then(response => {
             console.log(response)    
             console.log(response.data.access_token, "response.data.token");
+            localStorage.removeItem('auth_token');
+            navigate("/")
         })
         .catch((error) => {
             console.log(error, "error");

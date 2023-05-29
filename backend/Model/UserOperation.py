@@ -2,6 +2,7 @@ from fastapi import Depends, HTTPException, status
 from Model.entity.User import UserDB
 from Model.dao.UserDAO import UserDAO
 from Model.dao.ImageDAO import ImageDAO
+from Model.dao.FriendsDAO import FriendsDAO
 from datetime import date
 from dateutil.relativedelta import relativedelta
 import bcrypt
@@ -43,21 +44,22 @@ async def update(idUser: int, username: str, surname: str, name: str, birthdate:
     edad = relativedelta(date.today(), birthdate).years
 
     if edad >= 10 and edad <= 80:
-        id_image = await uploadProfileImage(idUser, urlImage)
-        print(id_image)
-        id_oldImage = userConn.getUserImageId(idUser)
-        print(id_oldImage)
+        oldImage = userConn.getUserImage(idUser)
+        id_image = oldImage[0]
+
+        if oldImage[0] == 1:
+            if urlImage != oldImage[1]:
+                id_image = await uploadProfileImage(idUser, urlImage)
+        else:
+            imageConn.updateImage(oldImage[0], urlImage)
+        
         userConn.updateUser(idUser,username, surname, name ,birthdate, id_image)
-        if(id_oldImage != 1):
-            imageConn.removeImage(id_oldImage)
         raise HTTPException(status_code=status.HTTP_200_OK, detail="cuenta actualizada")
     
     raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="no cumple los requisitos minimos de edad")
 
 async def uploadProfileImage(iduser:int, url: str):
     imageConn = ImageDAO()
-    userConn = UserDAO()
-
     if(url != ""):
         id_image = imageConn.uploadImage(iduser, url)
         return id_image
@@ -65,11 +67,19 @@ async def uploadProfileImage(iduser:int, url: str):
     raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="url vacía")     
 
 async def delete(idUser: int):
-    conn = UserDAO()
-    if(conn.getUserShow(idUser) is None):
+    userConn = UserDAO()
+    friendsConn = FriendsDAO()
+    imageConn = ImageDAO()
+    if(userConn.getUserShow(idUser) is None):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="usuario inexistente")
     else:
-        conn.deleteUser(idUser)
+        user_image = userConn.getUserImage(idUser)
+        friendsConn.deleteFriends(idUser)
+        userConn.deleteUser(idUser)
+        
+        if(user_image[0] != 1):
+            imageConn.deleteImage(user_image[0])
+
         raise HTTPException(status_code=status.HTTP_204_NO_CONTENT, detail="usuario eliminado")
 
     

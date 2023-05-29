@@ -109,7 +109,7 @@ export default function Profile() {
         </div>
         <div className="editButton">
           <Edit params={{user: userData}}/>
-          <DeleteUser/>
+          <DeleteUser params = {{iduser: userData["iduser"] ,image: userData["picture"]}}/>
         </div>
 
         <div className="friendsTittle">

@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage"
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage"
 
 const firebaseConfig = {
   apiKey: "AIzaSyD3VOuvmAq0ZiiHz5clhPnV13Miqf6sT38",
@@ -27,4 +27,11 @@ export async function uploadUserImage(img, userid){
     await uploadBytes(storageRef, img )
     const url = await getDownloadURL(storageRef)
     return url
+}
+
+export async function deleteUserImage(userid){
+  const storageRef = ref(storage, `/avatar/user${userid}`)
+  await deleteObject(storageRef)
+    .then(response => {console.log("deleted successfully");console.log(response)})
+    .catch(error => console.log(error))
 }

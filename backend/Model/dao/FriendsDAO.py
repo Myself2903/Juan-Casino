@@ -109,6 +109,21 @@ class FriendsDAO():
         except Exception as err:
             print(err)
 
+    def deleteFriends(self, iduser):
+        try:
+            with self.conn.cursor() as cur:
+                cur.execute("""
+                    delete from friends
+                    where iduser1 = %(iduser)s or iduser2 = %(iduser)s
+                """,{
+                    'iduser': iduser,
+                })
+                self.conn.commit()
+
+
+        except Exception as err:
+            print(err)
+
     def acceptFriend(self, iduser1: int, iduser2: int):
         try:
             with self.conn.cursor() as cur:

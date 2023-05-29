@@ -95,21 +95,14 @@ export default function Edit(props){
         setBirthdateValid(true)
 
         try{
-            const response = await uploadUserImage(EditUser["picture"], EditUser["iduser"])
-            console.log(response)
-            // await setEditUser({...EditUser, picture: response}) 
             let userdata = EditUser
-            userdata["picture"] = response
-            console.log("done")
+            if (EditUser["picture"] != "public/assets/horsePortrait.png"){
+                const response = await uploadUserImage(EditUser["picture"], EditUser["iduser"])
+                console.log(response)
+                userdata["picture"] = response
+                console.log("done")
+            }
 
-            // await instance
-            // .post(URL+"/profile/uploadImage", {url: response})
-            // .then(response => {
-            //     console.log("image changed in db")
-            //     console.log(response)
-            // })
-            console.log(EditUser["picture"])
-            // while(EditUser["picture"] != response){}
 
             //API call
             await instance

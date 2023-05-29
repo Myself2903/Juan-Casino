@@ -33,7 +33,22 @@ class ImageDAO():
         except Exception as err:
             print(err)
 
-    def removeImage(self, idImage: int):
+    def updateImage(self, idimage, src):
+        try:
+            #update "user" set idimage = 1 where iduser = 3
+            with self.conn.cursor() as cur:
+                cur.execute("""
+                    UPDATE image SET
+                        src = %s
+                    WHERE idimage = %s
+                """, (src, idimage,))
+
+                self.conn.commit()                
+        except Exception as err:
+            print(err)
+
+
+    def deleteImage(self, idImage: int):
         try:
             with self.conn.cursor() as cur:
                 cur.execute("""
