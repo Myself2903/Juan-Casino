@@ -61,22 +61,28 @@
       #f6e27a 45%,
       #f6f2c0 50%,
       #f6e27a 55%,
-      #cb9b51 78%,
+      #cb9b51 98%,
       #462523 100%
     );
 
     /* padding: 0 0.8em; */
     margin: 2em;
-    background-color: #3a0770;
+    background-color: #7b0d1e;
 }
 
 .currentCoins{
     margin-left: 0;
 }
 
+.congratulations{
+    color: white;
+    font-weight: bold;
+}
+
 .coins{
     font-size: x-large;
     margin: 0.5em 0.2em 0.5em 1em;
+    color: white;
 }
 
 

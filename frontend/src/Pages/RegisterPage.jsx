@@ -29,6 +29,7 @@ export default function Register(){
     const [usernameValid, setUsernameValid] = useState(true)
     const [dateValid, setDateValid] = useState(true)
     const [passwordValid, setPasswordValid] = useState(true)
+    const [emailInUse, setEmailInUse] = useState(false)
     let empty = 0;
     const register = async(event)=>{
         event.preventDefault()
@@ -76,12 +77,6 @@ export default function Register(){
         if(empty > 0){
             return;
         }
-
-        {/*let today = new Date();
-        console.log(today);
-        if(((today - userData.birthdate)/100/60/60/24) < 3650){
-            setDateValid(false)
-        }*/}
         
         //close error message
         setEmailValid(true)
@@ -102,8 +97,12 @@ export default function Register(){
         })
         .catch(error =>{
             console.log(error)
-            switch(error.response.status){         
-                case 403: //error unvalid entity
+            switch(error.response.status){  
+                case 403:
+                    setEmailValid(false)
+                    setEmailInUse(true)
+                    break;       
+                case 406: //error unvalid entity
                     setDateValid(false)
                     break;
 
@@ -204,6 +203,13 @@ export default function Register(){
                     </div>               
                 </form>
                 <div id="registerButton">
+                    <div>
+                    {emailInUse ? (
+                            <p className="inUse">¡La dirección de correo ingresada ya se encuentra en uso!</p>
+                        ) : (
+                            <p></p>
+                        )}
+                    </div>
                     <p>Para registrarte debes tener al menos 10 años de edad.</p>
                     <button className="button" onClick={register} type="submit">registrarse</button>
                 </div>

@@ -35,10 +35,10 @@ async def updatePassword(newPassword: str, user: User = Depends(auth_user)):
 @router.get("/profile/coins")
 async def getCoins(user: User = Depends(auth_user)):
     return await usrOp.getCoins(user[0])
-
+    
 @router.put("/profile/updateCoins")
 async def updateCoins(request_data: dict= Body(...), user: User = Depends(auth_user)):
-    return await usrOp.updateCoins(request_data.get("amount"),user[6], user[0])
+    return await usrOp.updateCoins(request_data.get("bet"), request_data.get("reward"),user[6], user[0])
 
 @router.delete("/profile/delete")
 async def deleteProfile(user: User = Depends(auth_user)):

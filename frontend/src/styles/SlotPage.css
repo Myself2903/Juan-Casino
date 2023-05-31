@@ -14,6 +14,7 @@ h2{
     padding-bottom: 3em;
     display: flex;
     background-color: #9f2042;
+    background-image: url("../assets/background.png");
 }
 
 #reels{
@@ -23,7 +24,6 @@ h2{
 }
 
 #spinSlot{
-    background-image: url('../img/slot/spinButton.png');
     height: 220px;
     background-size: 90%;
     background-repeat: no-repeat;
@@ -75,33 +75,48 @@ h2{
     background-repeat: no-repeat;
 }
 
+.spinButton{
+    font-weight: bold;
+    border-radius: 50%;
+    padding: 2em 1.5em;
+    box-shadow: 3em;
+    font-size: x-large;
+    background-color: #ffda59;
+    border: 1px solid #ffda59;
+    color: black;
+}
+
+.spinButton:hover{
+    font-weight: bold;
+  background-color: #0f0f0f;
+  border: 1px solid #0f0f0f;
+  color: gold;
+}
+
+.spinButton:disabled{
+    font-weight: bold;
+  background-color: #0f0f0f;
+  border: 1px solid #0f0f0f;
+  color: gold;
+}
+
+.noChips{
+    color: white;
+    font-weight: bold;
+}
+
 .prizeFruit{
     width: 25px;
     height: 25px;
 }
 
-#fruit1{
+.fruitReel{
     width: 200px;
     height: 200px;
-    border: solid 3px gold;
-    margin: 10px;
+    border: solid 5px gold;
+    margin: 8px;
     padding: 5px;
-}
-
-#fruit2{
-    width: 200px;
-    height: 200px;
-    border: solid 3px gold;
-    margin: 10px;
-    padding: 5px;
-}
-
-#fruit3{
-    width: 200px;
-    height: 200px;
-    border: solid 3px gold;
-    margin: 10px;
-    padding: 5px;
+    background-color: white;
 }
 
 #slotReels{
