@@ -32,7 +32,8 @@
   <g
      inkscape:groupmode="layer"
      inkscape:label="Image"
-     id="g138">
+     id="g138"
+     transform="translate(-5760.0001,-1920)">
     <image
        width="13568.905"
        height="7632.5088"
@@ -46326,7 +46327,10 @@ YII=
        id="rect300"
        width="1920"
        height="1920"
-       x="0"
-       y="0" />
+       x="5760"
+       y="1920"
+       inkscape:export-filename="..\Fruits\Strawberry.svg"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
   </g>
 </svg>

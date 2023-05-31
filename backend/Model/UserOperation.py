@@ -97,14 +97,14 @@ async def getCoins(idUser:int):
         return -1
     return coins
 
-async def updateCoins(amount:int, currentCoins:int, iduser: int):
+async def updateCoins(bet: int, reward:int, currentCoins:int, iduser: int):
     conn = UserDAO()
-    if(type(amount) == int):
-        totalCoins = currentCoins+amount
-        if(totalCoins < 0):
-            conn.updateCoins(0, iduser)
+    if(type(bet) == int and type(reward) == int):
+        coinsLeft = currentCoins-bet
+        if(coinsLeft < 0):
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail= "monedas insuficiente")
         else:
-            conn.updateCoins(totalCoins, iduser)
+            conn.updateCoins(coinsLeft+reward, iduser)
         raise HTTPException(status_code=status.HTTP_200_OK, detail="monedas actualizadas")
     else:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail= "monto invalido")

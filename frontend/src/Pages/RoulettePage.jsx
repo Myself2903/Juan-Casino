@@ -15,8 +15,25 @@ import { useNavigate } from 'react-router-dom'
 import React, { useState, useEffect, useRef } from 'react'
 import { getUsrImage } from '../Functions'
 import '../styles/RoulettePage.css'
+import drumRoll from '../assets/Slots/timpaniroll.ogg';
+import applause from '../assets/Slots/applause.ogg';
+import sigh from '../assets/Slots/sigh.ogg';
+//Sound Effect from <a href="https://pixabay.com/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=100606">Pixabay</a>
+import fewClaps from '../assets/Roulette/claps-few-people.mp3';
+import exitedCrowd from '../assets/Roulette/pleased-crowd.mp3';
 
 export default function RoulettePage(){
+    //Audio
+    const drumRollRef = useRef(null);
+    const applauseRef = useRef(null);
+    const sighRef = useRef(null);
+    const fewRef = useRef(null);
+    const exitedRef = useRef(null);
+    //Things Juan Added
+    const [spining, setSpining] = useState(true);
+    const [chipsWon, setChipsWon] = useState(-1);
+    let prizeMultiplier = 0;
+    //Normal
     const [usrImage, setUsrImage] = useState("");
     const navigate = useNavigate();
     const token = fetchToken();
@@ -101,6 +118,9 @@ export default function RoulettePage(){
 
     const spinRoulette = ()=>{
         setCellsBlocked(true)
+        setSpining(true)
+        setChipsWon(-1)
+        prizeMultiplier = 0;
         const rotatedDeg = Math.floor(5000 + Math.random() * 5000);
 
         spinButton.current.style.pointerEvents = "none";
@@ -134,6 +154,8 @@ export default function RoulettePage(){
                     if(betValue == final_result){
                         reward = bet[betValue]["value"]*36
                         console.log(`ganaste con el numero: ${final_result}`)
+                        setChipsWon(reward)
+                        prizeMultiplier = 36
                     }
                 }
                 
@@ -147,6 +169,8 @@ export default function RoulettePage(){
                         if(betValue == resultDozen){
                             reward = bet[betValue]["value"]*3
                             console.log(`ganaste con el numero: ${final_result}`)
+                            setChipsWon(reward)
+                            prizeMultiplier = 3
                             break;
                         }
                     }
@@ -159,6 +183,8 @@ export default function RoulettePage(){
                         if((betValue+1)%3 == rowDozen){
                            reward = bet[betValue]["value"]*3
                             console.log(`ganaste con el numero: ${final_result}`)
+                            setChipsWon(reward)
+                            prizeMultiplier = 3
                             break;
                         }
                     }
@@ -168,11 +194,14 @@ export default function RoulettePage(){
             case HALFBOARDBET.TYPE:
                 console.log("entered")
                 // console.log(typeof(Object.keys(bet)[0]))
+                if( final_result != 0){
                 switch(parseInt(Object.keys(bet)[0])){
                     case HALFBOARDBET.FIRST18:
                         if(1<=final_result && final_result <=18){
                             reward = bet[HALFBOARDBET.FIRST18]["value"]*2
                             console.log(`ganaste con el numero: ${final_result}`)
+                            setChipsWon(reward)
+                            prizeMultiplier = 2
                         }
                         break;
                         
@@ -180,6 +209,8 @@ export default function RoulettePage(){
                         if(!(final_result%2)){
                             reward = bet[HALFBOARDBET.EVEN]["value"]*2
                             console.log(`ganaste con el numero: ${final_result}`)
+                            setChipsWon(reward)
+                            prizeMultiplier = 2
                         }
                         break;
                     
@@ -187,6 +218,8 @@ export default function RoulettePage(){
                         if(values.indexOf(final_result)%2){
                             reward = bet[HALFBOARDBET.REDCOLOR]["value"]*2
                             console.log(`ganaste con el numero: ${final_result}`)
+                            setChipsWon(reward)
+                            prizeMultiplier = 2
                         }
                         break;
                     
@@ -194,6 +227,8 @@ export default function RoulettePage(){
                         if(!(values.indexOf(final_result)%2)){
                             reward = bet[HALFBOARDBET.BLACKCOLOR]["value"]*2
                             console.log(`ganaste con el numero: ${final_result}`)
+                            setChipsWon(reward)
+                            prizeMultiplier = 2
                         }
                         break;
 
@@ -201,6 +236,8 @@ export default function RoulettePage(){
                         if(final_result%2){
                             reward = bet[HALFBOARDBET.ODD]["value"]*2
                             console.log(`ganaste con el numero: ${final_result}`)
+                            setChipsWon(reward)
+                            prizeMultiplier = 2
                         }
                         break;
 
@@ -208,27 +245,53 @@ export default function RoulettePage(){
                         if(19<=final_result && final_result <=36){
                             reward = bet[HALFBOARDBET.LAST18]["value"]*2
                             console.log(`ganaste con el numero: ${final_result}`)
+                            setChipsWon(reward)
+                            prizeMultiplier = 2
                         }
                         break;
                     default:
                         console.log("Ninguno")
                         break;
-                }
+                }}
                 
         }
 
         console.log("reward: "+reward)
         console.log("totalbet: "+totalBet)
 
-        const amount = reward-totalBet
-        instance.put(`${URL}/profile/updateCoins`, { amount })
+        instance.put(`${URL}/profile/updateCoins`, { 'bet':totalBet, reward })
         .then(response => console.log(response))
-        .catch(error => console.log(error));
+        .catch(error => {
+            console.log(error)
+            switch(error.response.status){
+                case 403:
+                    failedRef.current.play();
+                    setCoins(0);
+                break;
+        }});
 
         setTotalBet(0)
         
         setTimeout(()=>{
+            drumRollRef.current.play();
+        }, 8000)
+
+        setTimeout(()=>{
             setCoins(coins+reward)
+            switch(prizeMultiplier){
+                case 2:
+                    fewRef.current.play();
+                    break;
+                case 3:
+                    applauseRef.current.play();
+                    break;
+                case 36:
+                    exitedRef.current.play();
+                    break;
+                default:
+                    sighRef.current.play();
+                    break;
+            }
             spinButton.current.style.pointerEvents = "auto";
             rouletteElement.style.transition = "none";    
             rouletteElement.style.transform = `rotate(${currentDeg}deg)`;
@@ -246,6 +309,7 @@ export default function RoulettePage(){
             setBet({})
             setBetType(-1)
             setCellsBlocked(false)
+            setSpining(false)
         },10000)
     }
 
@@ -395,12 +459,29 @@ export default function RoulettePage(){
         <>
             <header>
                 <nav className="nav_content">
-                    <img alt="logo" className="logo" src={logo} />
+                    <img alt="logo" className="logo" src={logo} onClick={()=>navigate('/')} />
                     <h1 className='title'>Ruleta</h1>
                     <DropdownMenu image={usrImage}/>
                 </nav>
             </header>
             <main className='roulette_game'>
+                <audio ref={drumRollRef}>
+                    <source src={drumRoll}/>
+                    Tu navegador no admite la reproducción de audio
+                </audio>
+                <audio ref={applauseRef}>
+                    <source src={applause}/>
+                </audio>
+                <audio ref={exitedRef}>
+                    <source src={exitedCrowd}/>
+                </audio>
+                <audio ref={fewRef}>
+                    <source src={fewClaps}/>
+                </audio>
+                <audio ref={sighRef}>
+                    <source src={sigh}/>
+                </audio>
+
                 <div className='roulette_info'>
                     <div className='roulette_container'>
                         <img alt="selector" className='selector' src = {Selector}/>
@@ -477,6 +558,15 @@ export default function RoulettePage(){
 
                     <div className="chipSelector">
                         {genChips()}
+                    </div>
+                    <div className='congratulations'>
+                        {spining ? (<p></p>):(
+                            <div>
+                            {(chipsWon < 0) ? (<p>Mejor suerte la próxima vez</p>):(
+                                <p>¡Felicitaciones, has ganado {chipsWon} fichas!</p>
+                            )}
+                            </div>
+                        )}
                     </div>
                     <div className='currentCoins'>
                         <h2 className='coins'>{coins}</h2>

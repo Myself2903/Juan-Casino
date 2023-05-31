@@ -3,12 +3,17 @@ import { useState, useEffect, useRef } from "react";
 import axios from 'axios';
 import '../styles/SlotPage.css';
 import logo from '../assets/Juan_Logo.svg';
+import { fetchToken } from "../Auth";
+import { getUsrImage } from '../Functions'
+import DropdownMenu from '../components/DropdownMenu'
+//<a href="https://www.vecteezy.com/free-vector/fruit-icon">Fruit Icon Vectors by Vecteezy</a>
 import apple from '../assets/Slots/Apple.svg';
 import lemon from '../assets/Slots/Lemon.svg';
 import cherry from '../assets/Slots/Cherry.svg';
 import orange from '../assets/Slots/Orange.svg';
 import strawberry from '../assets/Slots/Strawberry.svg';
-import mango from '../assets/Slots/Mango.svg';
+import watermelon from '../assets/Slots/Watermelon.svg';
+import grapes from '../assets/Slots/Grapes.svg';
 
 import drumRoll from '../assets/Slots/timpaniroll.ogg';
 import applause from '../assets/Slots/applause.ogg';
@@ -18,56 +23,80 @@ import coin from '../assets/Slots/Coin.ogg';
 
 
 export default function SlotPage() {
-  // const navigate = useNavigate();
-  // const URL = import.meta.env.VITE_BASE_URL
-  // const token = localStorage.getItem("auth_token")
-  // const [userData, setuserData] = useState([])
-  // const instance = axios.create({
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //     'Authorization': 'Bearer ' + token
-  //   }
-  // });
+   const navigate = useNavigate();
+   const URL = import.meta.env.VITE_BASE_URL
+   const URLEXTENSION = '/profile'
+   const token = localStorage.getItem("auth_token")
+   const [enoughChips, setEnoughChips] = useState(true)
+   const [spining, setSpining] = useState(false);
+   const [chips, changeChips] = useState(0);
+   const [usrImage, setUsrImage] = useState("")
+   const instance = axios.create({
+     headers: {
+       'Content-Type': 'application/json',
+       'Authorization': 'Bearer ' + token
+     }
+   });
 
+  useEffect(() =>{
+    if(!token){
+      navigate("/")
+    }
 
-  // // useEffect for save userData at hook
-  // useEffect(()=>{
-  //   instance.get(URL+URLEXTENSION) //get query with token as a header config
-  //   .then(response =>{
-  //     const info = response.data
-  //     setuserData({
-  //       'iduser': info[0],
-  //       'name': info[1],
-  //       'surname': info[2],
-  //       'username': info[3],
-  //       'email': info[4],
-  //       'birthdate': info[5],
-  //       'picture': info[7]
-  //     }) //store userData     
-  //   })
-  //   .catch(error =>{
-  //     console.log("error: "+ error)
-  //   })
-  // },[])
+    const fetchUserImage = async () => {
+      const image = await getUsrImage();
+      setUsrImage(image);
+    };
+    fetchUserImage();
 
+    instance.get(URL+URLEXTENSION+"/coins")
+    .then(response =>{
+      const info = response.data
+      changeChips(info[0]); 
+    })
+    .catch(error =>{
+      console.log("error: "+ error)
+      changeChips(0);
+    })
+  }, [])
   //Slot logic
-  const fruits = [apple, strawberry, lemon, cherry, orange, strawberry, cherry, mango]
-  const totalFruits = 8;
-  var chips = 200;
+  const fruits = [apple, strawberry, lemon, cherry, orange, strawberry, cherry, watermelon, grapes]
+  const totalFruits = 9;
+  let reward = 0;
+  let bet = 2;
   const fruit1Ref = useRef(null);
   const fruit2Ref = useRef(null);
   const fruit3Ref = useRef(null);
+  const prizeRef = useRef(null);
+  //Posible prizes
+  /*const melonRef = useRef(null);
+  const grapeRef = useRef(null);
+  const appleRef = useRef(null);
+  const orangeRef = useRef(null);
+  const lemonRef = useRef(null);
+  const strawberryRef = useRef(null);
+  const cherryRef = useRef(null);
+  const strawberry2Ref = useRef(null);
+  const cherry2Ref = useRef(null);*/
   //Audio
   const drumRollRef = useRef(null);
   const applauseRef = useRef(null);
   const sighRef = useRef(null);
   const coinRef = useRef(null);
   const failedRef = useRef(null);
-  /*const playSound = () =>{
-    if(audio1Ref.current){
-      audio1Ref.current.play();
-    }
-  }*/
+
+  const chipChecks = () =>{
+    setSpining(true);
+    if(chips < 2){
+      setEnoughChips(false);
+      failedRef.current.play();
+      setSpining(false);
+    }else{
+      changeChips(chips - 2);
+      reward = 0;
+      spinReels();
+      }
+  }
 
   const spinReels = () =>{
     coinRef.current.play();
@@ -132,44 +161,52 @@ export default function SlotPage() {
         applauseRef.current.play();
         switch (result3){
           case apple:
-            chips += 16;
+            reward = 16;
           break;
           case lemon:
-            chips += 8;
+            reward = 8;
           break;
           case cherry:
-            chips += 4;
+            reward = 4;
           break;
           case orange:
-            chips += 12;
+            reward = 12;
           break;
           case strawberry:
-            chips += 6;
+            reward = 6;
           break;
-          case mango:
-            chips += 24;
+          case watermelon:
+            reward = 24;
           break;
+          case grapes:
+            reward = 20;
+            break;
+          default:
+            console.log("Ha ocurrido un error inesperado");
+            break;
         }
+        setSpining(false);
       }else if(suspense == true){
         switch(result2){
           case cherry:
             applauseRef.current.play();
-            chips += 2;
+            reward = 2;
           break;
           case strawberry:
             applauseRef.current.play();
-            chips += 3;
+            reward = 3;
           break;
           default:
             sighRef.current.play();
           break;
         }
+        setSpining(false);
       }else{
         switch(result2){
           case cherry:
             if(result2 == result3){
               applauseRef.current.play();
-              chips += 2;
+              reward = 2;
             }else{
               failedRef.current.play();
             }
@@ -177,7 +214,7 @@ export default function SlotPage() {
           case strawberry:
             if(result2 == result3){
               applauseRef.current.play();
-              chips += 3;
+              reward = 3;
             }else{
               failedRef.current.play();
             }
@@ -187,6 +224,24 @@ export default function SlotPage() {
           break;
         }
       }
+      instance.put(URL+URLEXTENSION+"/updateCoins", {bet, reward})
+        .then(response =>{
+        console.log(response);
+      })
+      .catch(error =>{
+        console.log("error: "+ error)
+        switch(error.response.status){
+          case 403:
+            failedRef.current.play();
+            changeChips(0);
+            break;
+          default:
+            break;
+        }
+      })
+      console.log(chips);
+      changeChips(chips - bet + reward);
+      setSpining(false);
     }
     reel3--;
   }, 100);
@@ -198,9 +253,7 @@ export default function SlotPage() {
           <nav className="nav_content">
               <img alt="logo" src={logo} onClick={()=>navigate('/')}/>
               <h1 className='title'>Tragamonedas</h1>
-              <div id="user_bar">
-                {/* <SignOut/> */}
-              </div>
+              <DropdownMenu image={usrImage}/>
           </nav>
       </header>
 
@@ -224,30 +277,35 @@ export default function SlotPage() {
 
         <div id="reels">
           <div id="slotReels">
-            <img src={apple} id="fruit1" ref={fruit1Ref}/>
-            <img src={apple} id="fruit2" ref={fruit2Ref}/>
-            <img src={apple} id="fruit3" ref={fruit3Ref}/>
+            <img src={apple} className="fruitReel" ref={fruit1Ref}/>
+            <img src={apple} className="fruitReel" ref={fruit2Ref}/>
+            <img src={apple} className="fruitReel" ref={fruit3Ref}/>
           </div>
           
           <div id="spinSlot">
-            <p id="currentChips"><b>69.420.000</b></p>
+            <p className="currentCoins"><b className="coins">{chips}</b></p>
             {/*<img src="img/slot/spin.png" alt="spin" onclick={() => spinReels()} id="spin" />*/}
-            <button onClick={spinReels} className='button'>Spin</button>
+            <button onClick={chipChecks} disabled={spining} className='spinButton'>GIRAR</button>
           </div>
+          {enoughChips ? (
+            <p></p>
+            ) : (
+            <p className="noChips">No tienes suficientes fichas</p>
+          )}
         </div>
         
         <div id="prizeBank">
           <h1 className='title'>Premios</h1><br/>
           <div id="prizeList">
-            <div class="prize" id="mango"><p>Mango Mango Mango: 24</p></div>
-            <div class="prize" id="grape"><p>&#127815;&#127815;&#127815;: 20</p></div>
-            <div class="prize" id="apple"><p>&#127822;&#127822;&#127822;: 16</p></div>
-            <div class="prize" id="orange"><p>&#127818;&#127818;&#127818;: 12</p></div>
-            <div class="prize" id="lemon"><p>&#127819;&#127819;&#127819;: 8</p></div>
-            <div class="prize" id="strawberry"><p>&#127827;&#127827;&#127827;: 6</p></div>
-            <div class="prize" id="cherry"><p>&#127826;&#127826;&#127826;: 4</p></div>
-            <div class="prize" id="strawberry2"><p>&#127827;&#127827;: 3</p></div>
-            <div class="prize"id="cherry2"><p>&#127826;&#127826;: 2</p></div>
+            <div className="prize"><p>&#127817;&#127817;&#127817;: 24</p></div>
+            <div className="prize"><p>&#127815;&#127815;&#127815;: 20</p></div>
+            <div className="prize"><p>&#127822;&#127822;&#127822;: 16</p></div>
+            <div className="prize"><p>&#127818;&#127818;&#127818;: 12</p></div>
+            <div className="prize"><p>&#127819;&#127819;&#127819;: 8</p></div>
+            <div className="prize"><p>&#127827;&#127827;&#127827;: 6</p></div>
+            <div className="prize"><p>&#127826;&#127826;&#127826;: 4</p></div>
+            <div className="prize"><p>&#127827;&#127827;: 3</p></div>
+            <div className="prize"><p>&#127826;&#127826;: 2</p></div>
           </div>
         </div>
       </div>

@@ -40,6 +40,10 @@
     font-weight: bold;
 }
 
+.inUse{
+    color: red;
+}
+
 .fieldInput{
     height: 2em;
     width: 20em;
