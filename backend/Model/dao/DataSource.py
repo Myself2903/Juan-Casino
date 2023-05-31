@@ -1,5 +1,6 @@
 import psycopg2
-from dotenv import dotenv_values
+from dotenv import load_dotenv
+import os
 
 class DataSource:
     conn = None
@@ -7,8 +8,8 @@ class DataSource:
     #connection setting
     def __init__ (self):
         try:
-            env_vars = dotenv_values(".env")
-            URL = env_vars.get('DB_CONNECTION')
+            load_dotenv()
+            URL = os.getenv('DB_CONNECTION')
             self.conn = psycopg2.connect(URL)
            
         except psycopg2.OperationalError as error:

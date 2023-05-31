@@ -1,4 +1,4 @@
-from fastapi import Depends, HTTPException, status
+from fastapi import HTTPException, status
 from fastapi_mail import FastMail, MessageSchema, ConnectionConfig, MessageType
 from fastapi.templating import Jinja2Templates
 from Model.entity.User import UserDB
@@ -7,7 +7,8 @@ from Model.dao.ImageDAO import ImageDAO
 from Model.dao.FriendsDAO import FriendsDAO
 from dateutil.relativedelta import relativedelta
 from datetime import date
-from dotenv import dotenv_values
+from dotenv import load_dotenv
+import os
 from Model.Auth import genVerifyToken
 import bcrypt
 
@@ -32,28 +33,25 @@ async def register(newUser: UserDB):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="cuenta ya existente")
 
 async def send_email(request, user: UserDB):
-    # Cargar la plantilla HTML utilizando jinja2
-    # env = Environment(loader=FileSystemLoader('./templates'))
-    # template = env.get_template('/verifyAccount.html')
-    env_vars = dotenv_values(".env")
+    load_dotenv()
     templates = Jinja2Templates(directory="templates")
     token = genVerifyToken(user.iduser)
     conn = UserDAO()
     conn.updateVerifyToken(user.iduser, token)
     conf = ConnectionConfig(
-        MAIL_USERNAME=env_vars['MAIL_USERNAME'],
-        MAIL_PASSWORD=env_vars['MAIL_PASSWORD'],
-        MAIL_FROM=env_vars['MAIL_FROM'],
-        MAIL_PORT=env_vars['MAIL_PORT'], 
-        MAIL_SERVER=env_vars['MAIL_SERVER'],
-        MAIL_FROM_NAME=env_vars['MAIL_FROM_NAME'],
+        MAIL_USERNAME=os.getenv('MAIL_USERNAME'),
+        MAIL_PASSWORD=os.getenv('MAIL_PASSWORD'),
+        MAIL_FROM=os.getenv('MAIL_FROM'),
+        MAIL_PORT=os.getenv('MAIL_PORT'),
+        MAIL_SERVER=os.getenv('MAIL_SERVER'),
+        MAIL_FROM_NAME=os.getenv('MAIL_FROM_NAME'),
         MAIL_STARTTLS=True,
         MAIL_SSL_TLS=False,
         USE_CREDENTIALS=True,
         VALIDATE_CERTS=True
     )
 
-    URL = env_vars['FRONTEND_URL']
+    URL = os.getenv('FRONTEND_URL')
     html = templates.TemplateResponse("verifyAccount.html" , 
         {
             "request": request,
