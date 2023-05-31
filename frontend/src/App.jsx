@@ -8,6 +8,7 @@ import Friend from './Pages/FriendPage'
 import Construction from './Pages/ConstructionPage'
 import Slots from './Pages/SlotPage'
 import Roulette from './Pages/RoulettePage'
+import VerifyAccount from './Pages/VerifyAccount'
 
 function App() {
 
@@ -43,6 +44,13 @@ function App() {
           path="/register"
           element = {
             <Register />
+          }
+        />
+
+        <Route 
+          path="register/verifyAccount"
+          element = {
+            <VerifyAccount />
           }
         />
 

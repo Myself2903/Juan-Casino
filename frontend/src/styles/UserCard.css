@@ -8,7 +8,7 @@
     background-color: gold;
     border-radius: 1.5em;
     height: auto;
-    width: 100%;
+    width: fit-content;
     min-width: 20%;
     padding: 2em 0.5em;
     color: black;
@@ -16,16 +16,18 @@
     font-weight: bold;
     box-shadow: rgba(0, 0, 0, 0.5) 0.5em 0.5em;
     margin: 2em 0 4em 0;
+    padding: 20px
 }
 
 .userPicture{
     width: 40%;
     height: 40%;
+    margin-right: 20px;
 }
 
 .profilePicture{
-    height: 70%;
-    width: 70%;
+    height: 144px;
+    width: auto;
     background-color: white;
     border-radius: 0.5em;
 }

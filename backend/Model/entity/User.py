@@ -10,6 +10,8 @@ class User(BaseModel): #user to show
     email: str
     birthdate: date
     coins: Optional[int]
+    verifyToken: Optional[str]
+    state: Optional[int]
     idimage: Optional[str]
 
 class UserDB(User):

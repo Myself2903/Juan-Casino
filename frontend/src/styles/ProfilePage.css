@@ -40,7 +40,7 @@
 
 .userCardContainer{
     align-self: center;
-    width: 28%;
+    width: fit-content;
 }
 
 

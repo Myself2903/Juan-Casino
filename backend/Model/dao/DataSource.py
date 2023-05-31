@@ -1,4 +1,5 @@
 import psycopg2
+from dotenv import dotenv_values
 
 class DataSource:
     conn = None
@@ -6,7 +7,9 @@ class DataSource:
     #connection setting
     def __init__ (self):
         try:
-            self.conn = psycopg2.connect("postgresql://postgres:bsfO5olNTfMnD6dC3rg9@containers-us-west-86.railway.app:6510/railway")
+            env_vars = dotenv_values(".env")
+            URL = env_vars.get('DB_CONNECTION')
+            self.conn = psycopg2.connect(URL)
            
         except psycopg2.OperationalError as error:
             print(error)

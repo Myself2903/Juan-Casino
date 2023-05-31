@@ -75,8 +75,8 @@ class UserDAO():
                 cur.execute("""
                     SELECT 
                         idUser,
-                        password
-                    
+                        password,
+                        idstate
                     FROM "user"
                     WHERE email=%s
                 """, (email,))
@@ -90,8 +90,9 @@ class UserDAO():
         try:
             with self.conn.cursor() as cur:
                 cur.execute("""
-                    INSERT INTO "user" (name, surname, username, email, password, birthdate, coins, idImage) 
-                    VALUES (%(name)s, %(surname)s, %(username)s, %(email)s, %(password)s, %(birth_date)s, %(coins)s, %(img)s)
+                    INSERT INTO "user" (name, surname, username, email, password, birthdate, coins, idImage, verifyToken, idstate) 
+                    VALUES (%(name)s, %(surname)s, %(username)s, %(email)s, %(password)s, %(birth_date)s, %(coins)s, %(img)s, %(verifyToken)s, %(state)s)
+                    RETURNING iduser
                 """, {
                     'name': data.name,
                     'surname': data.surname,
@@ -100,8 +101,27 @@ class UserDAO():
                     'password': data.password,
                     'birth_date': data.birthdate,
                     'coins': data.coins,
+                    'verifyToken': data.verifyToken,
+                    'state': data.state,
                     'img': data.idimage,
                 })    
+
+                user_id = cur.fetchone()
+                self.conn.commit()
+                return user_id[0]
+
+        except Exception as err:
+            print(err)
+
+    def updateVerifyToken(self, iduser:int, token: str):
+        try:
+            with self.conn.cursor() as cur:
+                cur.execute("""
+                    UPDATE "user" SET
+                        verifyToken=%s
+                    where iduser=%s
+                """,(token, iduser))
+
                 self.conn.commit()
 
         except Exception as err:
@@ -172,5 +192,17 @@ class UserDAO():
                 """, (id,))
                 self.conn.commit()
                 
+        except Exception as err:
+            print(err)
+
+    def activateUser(self, id:int):
+        try:
+            with self.conn.cursor() as cur:
+                cur.execute("""
+                    UPDATE "user" SET idstate = 2
+                    WHERE idUser = %s
+                """, (id,))
+                self.conn.commit()
+
         except Exception as err:
             print(err)

@@ -4,3 +4,4 @@ __pycache__
 yarn.lock
 venv
 dist
+.env

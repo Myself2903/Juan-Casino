@@ -4,10 +4,12 @@ from jose import jwt, JWTError
 from passlib.context import CryptContext
 from datetime import datetime, timedelta
 from Model.dao.UserDAO import UserDAO
+import secrets
 
 SECRET_KEY  = '40sasldkjwd2123bvquweo0pimsañpoqweim' 
 ALGORITHM = "HS256"
-ACCES_TOKEN_DURATION = 800
+ACCES_TOKEN_DURATION = 10
+VERIFY_TOKEN_DURATION = 30
 
 oauth2 = OAuth2PasswordBearer(tokenUrl="login") #OAuth protocol instance
 crypt = CryptContext(schemes=["bcrypt"])
@@ -35,7 +37,7 @@ async def verifyLogin(form: OAuth2PasswordRequestForm = Depends()):
         user = conn.getUserAuth(form.username) #search email in data base. username is convention from OAuth library
 
         #User not found
-        if not user:
+        if not user or user[2] == 1:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuario no encontrado")
         
         #check password
@@ -46,8 +48,38 @@ async def verifyLogin(form: OAuth2PasswordRequestForm = Depends()):
         access_token = {
             "id": user[0],
             "password": user[1],
-            "exp": datetime.utcnow() + timedelta(minutes=ACCES_TOKEN_DURATION)
+            "exp": datetime.utcnow() + timedelta(days=ACCES_TOKEN_DURATION)
         }
 
         return {"access_token": jwt.encode(access_token, SECRET_KEY , algorithm=ALGORITHM), "token_type": "bearer"} #acces token encryption
 
+
+async def verifyUser(token: dict = Depends()):
+    exception = HTTPException(
+                    status_code = status.HTTP_401_UNAUTHORIZED, 
+                    detail="Credenciales de autenticación inválidas", 
+                    headers={"WWW-Authenticate": "Bearer"}
+                )
+    
+    try:
+        data = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        date = datetime.fromtimestamp(data["exp"])
+        
+        if data is None or date > datetime.utcnow():
+            raise exception
+       
+    except JWTError:
+        raise exception
+
+    conn = UserDAO()
+    conn.activateUser(data["id"])
+    raise HTTPException(status_code=status.HTTP_202_ACCEPTED, detail="usuario validado")
+
+def genVerifyToken(iduser:int ):
+     token = {
+          "id": iduser,
+          "verifyToken": secrets.token_hex(16),
+          "exp": datetime.utcnow()+ timedelta(minutes=VERIFY_TOKEN_DURATION)
+     }
+
+     return jwt.encode(token, SECRET_KEY , algorithm=ALGORITHM)

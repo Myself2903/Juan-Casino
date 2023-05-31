@@ -1,11 +1,16 @@
 from fastapi import Depends, HTTPException, status
+from fastapi_mail import FastMail, MessageSchema, ConnectionConfig, MessageType
+from fastapi.templating import Jinja2Templates
 from Model.entity.User import UserDB
 from Model.dao.UserDAO import UserDAO
 from Model.dao.ImageDAO import ImageDAO
 from Model.dao.FriendsDAO import FriendsDAO
-from datetime import date
 from dateutil.relativedelta import relativedelta
+from datetime import date
+from dotenv import dotenv_values
+from Model.Auth import genVerifyToken
 import bcrypt
+
 
 def encryptPassword(password: str):
     hashPassword = password.encode()
@@ -13,20 +18,62 @@ def encryptPassword(password: str):
     password = bcrypt.hashpw(hashPassword, sal).decode('utf-8') #decode to convert the encrypted password into a str
     return password
 
-async def register(newUser: UserDB = Depends()):
+async def register(newUser: UserDB):
     conn = UserDAO()
     if conn.getUserAuth(newUser.email) is None:
         edad = relativedelta(date.today(), newUser.birthdate).years
         if edad >= 10 and edad <= 80:
             newUser.password = encryptPassword(newUser.password)
-            newUser.idimage = 1
-            conn.addUser(newUser)
-            raise HTTPException(status_code=status.HTTP_201_CREATED, detail="Usuario creado")
+            return conn.addUser(newUser)
+            
         else:
             raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail="no cumple los requisitos minimos de edad")
     else:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="cuenta ya existente")
 
+async def send_email(request, user: UserDB):
+    # Cargar la plantilla HTML utilizando jinja2
+    # env = Environment(loader=FileSystemLoader('./templates'))
+    # template = env.get_template('/verifyAccount.html')
+    env_vars = dotenv_values(".env")
+    templates = Jinja2Templates(directory="templates")
+    token = genVerifyToken(user.iduser)
+    conn = UserDAO()
+    conn.updateVerifyToken(user.iduser, token)
+    conf = ConnectionConfig(
+        MAIL_USERNAME=env_vars['MAIL_USERNAME'],
+        MAIL_PASSWORD=env_vars['MAIL_PASSWORD'],
+        MAIL_FROM=env_vars['MAIL_FROM'],
+        MAIL_PORT=env_vars['MAIL_PORT'], 
+        MAIL_SERVER=env_vars['MAIL_SERVER'],
+        MAIL_FROM_NAME=env_vars['MAIL_FROM_NAME'],
+        MAIL_STARTTLS=True,
+        MAIL_SSL_TLS=False,
+        USE_CREDENTIALS=True,
+        VALIDATE_CERTS=True
+    )
+
+    URL = env_vars['FRONTEND_URL']
+    html = templates.TemplateResponse("verifyAccount.html" , 
+        {
+            "request": request,
+            'title': 'Verifica tu cuenta',
+            'name': user.name,
+            "url": f'{URL}/register/verifyAccount?token={token}'
+        }
+    )
+
+    message = MessageSchema(
+        subject='Correo de verificación',
+        recipients=[user.email],
+        body=html.body,
+        subtype=MessageType.html
+    )
+
+    fm = FastMail(conf)
+    await fm.send_message(message)
+
+    return token
 
 async def getUsers(iduserSearching: int):
     conn = UserDAO()
