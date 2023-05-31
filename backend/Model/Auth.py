@@ -63,9 +63,8 @@ async def verifyUser(token: dict = Depends()):
     
     try:
         data = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        date = datetime.fromtimestamp(data["exp"])
         
-        if data is None or date > datetime.utcnow():
+        if data is None:
             raise exception
        
     except JWTError:
