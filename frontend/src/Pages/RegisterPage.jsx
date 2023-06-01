@@ -7,7 +7,6 @@ import decoration from '../assets/slotMachine.svg';
 import leftchips from '../assets/greenPurpleChips.svg';
 import rightchips from '../assets/orangeBlueChips.svg';
 import Loading from '../components/Loading';
-import CheckEmail from '../components/CheckYourEmail';
 import Modal from '../components/Modal';
 
 export default function Register(){
