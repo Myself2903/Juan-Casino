@@ -89,7 +89,7 @@ export default function SlotPage() {
       }
       rnd1++;
       reel1--;
-    }, 800);
+    }, 1000);
   }, [])
 
   //Posible prizes

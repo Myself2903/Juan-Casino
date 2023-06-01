@@ -17,7 +17,7 @@ class UserDAO():
                         image.src
                     FROM "user"
                     JOIN image ON "user".idimage = image.idimage
-                    where iduser != %s
+                    where iduser != %s and idstate != 1
                 """, (iduserSearching,))
                 
                 return cur.fetchall()
@@ -43,7 +43,7 @@ class UserDAO():
                     
                     FROM "user"
                     JOIN image ON "user".idimage = image.idimage
-                    WHERE iduser=%s
+                   where iduser != %s and idstate != 1
                 """, (id,))
                 
                 return cur.fetchone()
