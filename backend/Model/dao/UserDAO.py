@@ -43,7 +43,7 @@ class UserDAO():
                     
                     FROM "user"
                     JOIN image ON "user".idimage = image.idimage
-                   where iduser != %s and idstate != 1
+                    where iduser = %s and idstate != 1
                 """, (id,))
                 
                 return cur.fetchone()

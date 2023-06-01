@@ -76,20 +76,18 @@ export default function SlotPage() {
   useEffect(() =>{
     setSpining(true);
     setShowLoading(true);
-    let reel1 = 9;
-    let rnd1 = 0;
+    let reel1 = 8;
     let rotate1 = setInterval(function(){
-      fruit1Ref.current.src = fruits[rnd1];
+      fruit1Ref.current.src = fruits[reel1];
       if(reel1 == 0){
-        fruit1Ref.current.src = fruits[rnd1];
+        fruit1Ref.current.src = fruits[reel1];
         clearInterval(rotate1);
         setShowLoading(false);
         setSpining(false);
         fruit1Ref.current.src = apple;
       }
-      rnd1++;
       reel1--;
-    }, 1000);
+    }, 1200);
   }, [])
 
   //Posible prizes
