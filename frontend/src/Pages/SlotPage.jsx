@@ -8,13 +8,13 @@ import { getUsrImage } from '../Functions'
 import DropdownMenu from '../components/DropdownMenu';
 import Loading from '../components/Loading'
 //<a href="https://www.vecteezy.com/free-vector/fruit-icon">Fruit Icon Vectors by Vecteezy</a>
-import apple from '../assets/Slots/Apple.svg';
-import lemon from '../assets/Slots/Lemon.svg';
-import cherry from '../assets/Slots/Cherry.svg';
-import orange from '../assets/Slots/Orange.svg';
-import strawberry from '../assets/Slots/Strawberry.svg';
-import watermelon from '../assets/Slots/Watermelon.svg';
-import grapes from '../assets/Slots/Grapes.svg';
+import apple from '../assets/Slots/Apple.png';
+import lemon from '../assets/Slots/Lemon.png';
+import cherry from '../assets/Slots/Cherry.png';
+import orange from '../assets/Slots/Orange.png';
+import strawberry from '../assets/Slots/Strawberry.png';
+import watermelon from '../assets/Slots/Watermelon.png';
+import grapes from '../assets/Slots/Grapes.png';
 
 import drumRoll from '../assets/Slots/timpaniroll.ogg';
 import applause from '../assets/Slots/applause.ogg';
@@ -87,7 +87,7 @@ export default function SlotPage() {
         fruit1Ref.current.src = apple;
       }
       reel1--;
-    }, 1200);
+    }, 500);
   }, [])
 
   //Posible prizes
