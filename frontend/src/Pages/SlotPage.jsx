@@ -131,7 +131,7 @@ export default function SlotPage() {
         clearInterval(rotate1);
       }
       reel1--;
-  }, 100);
+  }, 250);
   // second reel
   let rotate2 = setInterval(function(){
     rnd2++;
@@ -144,7 +144,7 @@ export default function SlotPage() {
       clearInterval(rotate2);
     }
     reel2--;
-  }, 100);
+  }, 250);
   //third reel
   let rotate3 = setInterval(function(){
     rnd3++;
@@ -252,7 +252,7 @@ export default function SlotPage() {
       setSpining(false);
     }
     reel3--;
-  }, 100);
+  }, 250);
   }
 
   return (
@@ -304,7 +304,7 @@ export default function SlotPage() {
           {enoughChips ? (
             <p></p>
             ) : (
-            <p className="noChips">No tienes suficientes fichas</p>
+            <p className="noChips">¡No tienes suficientes fichas!</p>
           )}
         </div>
         
