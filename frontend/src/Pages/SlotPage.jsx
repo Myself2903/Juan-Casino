@@ -14,6 +14,7 @@ import cherry from '../assets/Slots/Cherry.png';
 import orange from '../assets/Slots/Orange.png';
 import strawberry from '../assets/Slots/Strawberry.png';
 import watermelon from '../assets/Slots/Watermelon.png';
+import mango from '../assets/Slots/Mango.png';
 import grapes from '../assets/Slots/Grapes.png';
 
 import drumRoll from '../assets/Slots/timpaniroll.ogg';
@@ -63,32 +64,14 @@ export default function SlotPage() {
   }, [])
 
   //Slot logic
-  const fruits = [apple, strawberry, lemon, cherry, orange, strawberry, cherry, watermelon, grapes]
-  const totalFruits = 9;
+  const fruits = [apple, strawberry, lemon, cherry, orange, strawberry, cherry, watermelon, grapes, mango]
+  const totalFruits = 10;
   let reward = 0;
   let bet = 2;
   const fruit1Ref = useRef(null);
   const fruit2Ref = useRef(null);
   const fruit3Ref = useRef(null);
   const prizeRef = useRef(null);
-
-  //bruteforces loading all images
-  useEffect(() =>{
-    setSpining(true);
-    setShowLoading(true);
-    let reel1 = 8;
-    let rotate1 = setInterval(function(){
-      fruit1Ref.current.src = fruits[reel1];
-      if(reel1 == 0){
-        fruit1Ref.current.src = fruits[reel1];
-        clearInterval(rotate1);
-        setShowLoading(false);
-        setSpining(false);
-        fruit1Ref.current.src = apple;
-      }
-      reel1--;
-    }, 500);
-  }, [])
 
   //Posible prizes
   /*const melonRef = useRef(null);
@@ -198,10 +181,13 @@ export default function SlotPage() {
             reward = 6;
           break;
           case watermelon:
-            reward = 24;
+            reward = 30;
           break;
           case grapes:
             reward = 20;
+            break;
+          case mango:
+            reward = 24;
             break;
           default:
             console.log("Ha ocurrido un error inesperado");
@@ -325,15 +311,16 @@ export default function SlotPage() {
         <div id="prizeBank">
           <h1 className='title'>Premios</h1><br/>
           <div id="prizeList">
-            <div className="prize"><p>&#127817;&#127817;&#127817;: 24</p></div>
-            <div className="prize"><p>&#127815;&#127815;&#127815;: 20</p></div>
-            <div className="prize"><p>&#127822;&#127822;&#127822;: 16</p></div>
-            <div className="prize"><p>&#127818;&#127818;&#127818;: 12</p></div>
-            <div className="prize"><p>&#127819;&#127819;&#127819;: 8</p></div>
-            <div className="prize"><p>&#127827;&#127827;&#127827;: 6</p></div>
-            <div className="prize"><p>&#127826;&#127826;&#127826;: 4</p></div>
-            <div className="prize"><p>&#127827;&#127827;: 3</p></div>
-            <div className="prize"><p>&#127826;&#127826;: 2</p></div>
+            <div className="prize"><img src={watermelon}/><img src={watermelon}/><img src={watermelon}/><p>: 30</p></div>
+            <div className="prize"><img src={mango}/><img src={mango}/><img src={mango}/><p>: 24</p></div>
+            <div className="prize"><img src={grapes}/><img src={grapes}/><img src={grapes}/><p>: 20</p></div>
+            <div className="prize"><img src={apple}/><img src={apple}/><img src={apple}/><p>: 16</p></div>
+            <div className="prize"><img src={orange}/><img src={orange}/><img src={orange}/><p>: 12</p></div>
+            <div className="prize"><img src={lemon}/><img src={lemon}/><img src={lemon}/><p>: 8</p></div>
+            <div className="prize"><img src={strawberry}/><img src={strawberry}/><img src={strawberry}/><p>: 6</p></div>
+            <div className="prize"><img src={cherry}/><img src={cherry}/><img src={cherry}/><p>: 4</p></div>
+            <div className="prize"><img src={strawberry}/><img src={strawberry}/><p>: 3</p></div>
+            <div className="prize"><img src={cherry}/><img src={cherry}/><p>: 2</p></div>
           </div>
         </div>
       </div>
