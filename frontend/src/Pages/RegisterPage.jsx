@@ -6,13 +6,16 @@ import logo from '../assets/Juan_Logo.svg';
 import decoration from '../assets/slotMachine.svg';
 import leftchips from '../assets/greenPurpleChips.svg';
 import rightchips from '../assets/orangeBlueChips.svg';
-import Loading from '../components/Loading'
+import Loading from '../components/Loading';
+import CheckEmail from '../components/CheckYourEmail';
+import Modal from '../components/Modal';
 
 export default function Register(){
     const navigate = useNavigate();
     const URL = import.meta.env.VITE_BASE_URL
     const URLEXTENSION = '/register'
     const [showLoading, setShowLoading] = useState(false) //loading screen
+    const [showCheck, setShowCheck] = useState(false) // check your email notification
     const [userData, setUserData] = useState({
         username: "",
         name: "",
@@ -22,6 +25,19 @@ export default function Register(){
         coins: 100, //default coins when new account created
         password: "",
     })
+
+    //modal header
+    const header = <h2 className='header'>Revisa tu correo</h2>
+    
+    //modal content
+    const content= <div>
+                        <p>Hemos enviado un correo de verificación a {userData.email}, accede al enlace adjunto para activar tu cuenta. No podrás iniciar sesión hasta haberlo hecho.</p>
+                    </div>
+
+    //Modal footer
+    const footer = <div className="footerDelete">
+                        <button className='button' onClick={() => navigate('/')}>Aceptar</button>
+                    </div>
 
     const [nameValid, setNameValid] = useState(true)
     const [surnameValid, setSurnameValid] = useState(true)
@@ -92,7 +108,7 @@ export default function Register(){
         .then(response =>{
             if (response.status == 201){
                 console.log(response)
-                navigate(("/"))
+                setShowCheck(true)
             }
         })
         .catch(error =>{
@@ -136,7 +152,14 @@ export default function Register(){
                         onClose = {() => {
                             setShowLoading(false)
                         }}
-                    /> 
+                    />
+                    <Modal
+                        show = {showCheck}
+                        onClose = {() => {
+                            setShowCheck(false)
+                        }}
+                        params ={{'header': header, 'content': content, 'footer': footer}}
+                    />
                         <label>Nombres: </label>
                     </div>
                     <div className="field"> 

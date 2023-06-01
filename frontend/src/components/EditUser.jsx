@@ -96,7 +96,7 @@ export default function Edit(props){
 
         try{
             let userdata = EditUser
-            if (EditUser["picture"] != "public/assets/horsePortrait.png"){
+            if (EditUser["picture"] != props.params["user"]["picture"]){
                 const response = await uploadUserImage(EditUser["picture"], EditUser["iduser"])
                 console.log(response)
                 userdata["picture"] = response

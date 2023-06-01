@@ -41,7 +41,7 @@ const DropdownMenu = props =>{
           case 'cerrar sesión':
           localStorage.removeItem("auth_token") 
           localStorage.removeItem("auth_token_type")
-          navigate("/");
+          window.location.reload(false);
           break;
         
         default:

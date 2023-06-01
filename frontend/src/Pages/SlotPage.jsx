@@ -5,7 +5,8 @@ import '../styles/SlotPage.css';
 import logo from '../assets/Juan_Logo.svg';
 import { fetchToken } from "../Auth";
 import { getUsrImage } from '../Functions'
-import DropdownMenu from '../components/DropdownMenu'
+import DropdownMenu from '../components/DropdownMenu';
+import Loading from '../components/Loading'
 //<a href="https://www.vecteezy.com/free-vector/fruit-icon">Fruit Icon Vectors by Vecteezy</a>
 import apple from '../assets/Slots/Apple.svg';
 import lemon from '../assets/Slots/Lemon.svg';
@@ -26,6 +27,7 @@ export default function SlotPage() {
    const navigate = useNavigate();
    const URL = import.meta.env.VITE_BASE_URL
    const URLEXTENSION = '/profile'
+   const [showLoading, setShowLoading] = useState(false) //loading screen
    const token = localStorage.getItem("auth_token")
    const [enoughChips, setEnoughChips] = useState(true)
    const [spining, setSpining] = useState(false);
@@ -59,6 +61,7 @@ export default function SlotPage() {
       changeChips(0);
     })
   }, [])
+
   //Slot logic
   const fruits = [apple, strawberry, lemon, cherry, orange, strawberry, cherry, watermelon, grapes]
   const totalFruits = 9;
@@ -68,6 +71,27 @@ export default function SlotPage() {
   const fruit2Ref = useRef(null);
   const fruit3Ref = useRef(null);
   const prizeRef = useRef(null);
+
+  //bruteforces loading all images
+  useEffect(() =>{
+    setSpining(true);
+    setShowLoading(true);
+    let reel1 = 9;
+    let rnd1 = 0;
+    let rotate1 = setInterval(function(){
+      fruit1Ref.current.src = fruits[rnd1];
+      if(reel1 == 0){
+        fruit1Ref.current.src = fruits[rnd1];
+        clearInterval(rotate1);
+        setShowLoading(false);
+        setSpining(false);
+        fruit1Ref.current.src = apple;
+      }
+      rnd1++;
+      reel1--;
+    }, 800);
+  }, [])
+
   //Posible prizes
   /*const melonRef = useRef(null);
   const grapeRef = useRef(null);
@@ -274,6 +298,12 @@ export default function SlotPage() {
         <audio ref={failedRef}>
           <source src={failed}/>
         </audio>
+        <Loading
+            show = {showLoading}
+                    onClose = {() => {
+                    setShowLoading(false)
+                }}
+            />
 
         <div id="reels">
           <div id="slotReels">

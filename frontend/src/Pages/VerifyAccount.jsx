@@ -1,6 +1,9 @@
 import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
 import axios from "axios";
 import logo from '../assets/Juan_Logo.svg';
+import '../styles/RegisterPage.css';
+import entrance from '../assets/CasinoEntrance.svg';
 
 export default function VerifyAccount(){
     const location = useLocation();
@@ -22,8 +25,16 @@ export default function VerifyAccount(){
                 </nav>
             </header>
             <main>
-                {token ? <p>Se ha autenticado con exito! favor inice sesion</p>:
-                    <p>Credenciales de autenticacion invalidas</p>
+                {token ? <div className='verifyPage'>
+                            <h1>¡Se ha autenticado con exito!</h1>
+                            <img src={entrance} onClick={()=>navigate('/')} className="casinoDoor"/>
+                            <h2>Bienvenido a Juan Casino</h2>
+                            <button className='button' onClick={()=>navigate('/')}>Ingresar</button>
+                        </div>:
+                        <div className='verifyPage'>
+                            <h1>Credenciales de autenticacion invalidas</h1>
+                            <img src={entrance}/>
+                        </div>
                 }
             </main>
         </>

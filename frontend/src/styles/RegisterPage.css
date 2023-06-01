@@ -10,6 +10,15 @@
     height: max-content;
 }
 
+.verifyPage{
+    color: white;
+    text-align: center;
+}
+
+.casinoDoor:hover{
+    cursor: pointer;
+}
+
 .registerHeader{
     display: inline-flex;
     align-items: center;
